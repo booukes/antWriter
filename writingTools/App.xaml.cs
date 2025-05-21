@@ -2,7 +2,7 @@
 using System.Data;
 using System.Windows;
 
-namespace writingTools
+namespace antWriter
 {
     /// <summary>
     /// Interaction logic for App.xaml

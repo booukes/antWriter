@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace writingTools
+namespace antWriter
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
