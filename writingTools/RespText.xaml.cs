@@ -21,7 +21,7 @@ namespace antWriter
         {
             InitializeComponent();
         }
-
+        //Responsive text element, customisable content for now.
         public static readonly DependencyProperty TextProperty =
             DependencyProperty.Register(nameof(TextProp), typeof(string), typeof(RespText), new PropertyMetadata("Placeholder"));
         public string TextProp

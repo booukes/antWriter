@@ -8,6 +8,7 @@ namespace antWriter
     {
         public RespButton() => InitializeComponent();
 
+        //Background
         public static readonly DependencyProperty BtnBgProperty =
             DependencyProperty.Register(nameof(BtnBg), typeof(Brush), typeof(RespButton), new PropertyMetadata(Brushes.Aqua));
         public Brush BtnBg
@@ -16,6 +17,7 @@ namespace antWriter
             set => SetValue(BtnBgProperty, value);
         }
 
+        //Content
         public static readonly DependencyProperty BtnTextProperty =
             DependencyProperty.Register(nameof(BtnText), typeof(string), typeof(RespButton), new PropertyMetadata("Placeholder"));
         public string BtnText
@@ -24,7 +26,8 @@ namespace antWriter
             set => SetValue(BtnTextProperty, value);
         }
 
-    public static readonly DependencyProperty BtnRadProperty =
+        //Element Radius
+        public static readonly DependencyProperty BtnRadProperty =
             DependencyProperty.Register(nameof(BtnRad), typeof(CornerRadius), typeof(RespButton), new PropertyMetadata(new CornerRadius(10)));
 
         public CornerRadius BtnRad

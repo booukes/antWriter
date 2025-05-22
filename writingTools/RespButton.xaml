@@ -7,7 +7,9 @@
              xmlns:local="clr-namespace:antWriter"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    <!--container - try not to touch anything inside of it, operate ON the border-->
     <Border CornerRadius="{Binding BtnRad, ElementName=root}" Background="{Binding BtnBg, ElementName=root}">
+    <!--container - try not to touch anything inside of it, operate ON the border -->
         <Button BorderThickness="0" Background="Transparent">
             <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <local:RespText TextProp="{Binding BtnText, ElementName=root}"></local:RespText>
