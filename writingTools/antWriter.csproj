@@ -6,15 +6,24 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
     <None Remove="antWriterFinal.png" />
     <None Remove="antWriterFinal.svg" />
+    <None Remove="fonts\Montserrat-Light.ttf" />
+    <None Remove="fonts\Montserrat-VariableFont_wght.ttf" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
     <Resource Include="antWriterFinal.png" />
+    <Resource Include="fonts\Montserrat-Light.ttf" />
+    <Resource Include="fonts\Montserrat-VariableFont_wght.ttf" />
   </ItemGroup>
 
 </Project>
