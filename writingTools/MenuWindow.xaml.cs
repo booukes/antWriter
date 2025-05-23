@@ -14,19 +14,24 @@ using System.Windows.Shapes;
 
 namespace antWriter
 {
-    /// <summary>
-    /// Interaction logic for MenuWindow.xaml
-    /// </summary>
     public partial class MenuWindow : Window
-    {
+    {   
+        private EditorWindow editorWindow;
         public MenuWindow()
         {
             InitializeComponent();
+            editorWindow = new EditorWindow();
         }
         public void EditorWindow_Click(object sender, RoutedEventArgs e)
         {
-            EditorWindow editorWindow = new EditorWindow();
             editorWindow.Show();
+            this.Close();
+        }
+
+        public void SettingsWindow_Click(object sender, RoutedEventArgs e)
+        {
+            SettingsWindow settingsWindow = new SettingsWindow(editorWindow);
+            settingsWindow.Show();
             this.Close();
         }
 

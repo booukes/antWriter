@@ -23,24 +23,39 @@
         </Grid.ColumnDefinitions>
 
         <!-- Navbar -->
-        <Border BorderBrush="Black" BorderThickness="0,0,0,3" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="#432818" />
-        <Image Source="/antWriterFinal.png" Grid.Column="1" HorizontalAlignment="Right">
-            <Image.LayoutTransform>
-                <ScaleTransform ScaleX="0.8" ScaleY="0.8" />
-            </Image.LayoutTransform>
-        </Image>
-
+        
+        <Border BorderBrush="Black" BorderThickness="0,0,0,3" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource AppCompliementaryBrush}" />
+        <Grid Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Image Source="/antWriterFinal.png" Grid.Column="8" HorizontalAlignment="Right"/>
+            <Button Name="Exit" Click="Exit_Click" Grid.Row="0" Grid.Column="0" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+                <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Text="Main menu" Margin="2"
+                        FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Viewbox>
+            </Button>
+        </Grid>
         <!-- File view -->
-        <Border BorderBrush="Black" BorderThickness="0,0,3,0" Grid.Row="1" Grid.Column="0" Background="#636b2f" />
+        <Border BorderBrush="Black" BorderThickness="0,0,3,0" Grid.Row="1" Grid.Column="0" Background="{DynamicResource AppBackgroundBrush}" />
 
         <!-- Editor -->
-        <Border BorderBrush="Black" Grid.Row="1" Grid.Column="1" Background="#636b2f" />
-        <TextBox BorderThickness="0">  
-            <Grid.Row>1</Grid.Row>  
-            <Grid.Column>1</Grid.Column>  
-            <TextBox.Background>Transparent</TextBox.Background>  
+        <Border BorderBrush="Black" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
+        <TextBox x:Name="EditingBoard" BorderThickness="0" FontFamily="{DynamicResource JournalFont}">  
+            <Grid.Row>1</Grid.Row>
+            <Grid.Column>1</Grid.Column>
+            <TextBox.Background>Transparent</TextBox.Background>
+            <TextBox.TextWrapping>Wrap</TextBox.TextWrapping>
             <TextBox.AcceptsReturn>True</TextBox.AcceptsReturn>  
-            <TextBox.TextWrapping>Wrap</TextBox.TextWrapping>  
             <TextBox.VerticalScrollBarVisibility>Auto</TextBox.VerticalScrollBarVisibility>  
         </TextBox>
     </Grid>

@@ -4,6 +4,8 @@
              xmlns:local="clr-namespace:antWriter"
              StartupUri="MenuWindow.xaml">
     <Application.Resources>
-         
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#636b2f"/>
+        <SolidColorBrush x:Key="AppCompliementaryBrush" Color="#432818"/>
+        <FontFamily x:Key="JournalFont">Courier New</FontFamily>
     </Application.Resources>
 </Application>

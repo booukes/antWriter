@@ -15,14 +15,17 @@ using System.Windows.Shapes;
 
 namespace antWriter
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class EditorWindow : Window
     {
         public EditorWindow()
         {
             InitializeComponent();
+        }
+        public void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            MenuWindow menuWindow = new MenuWindow();
+            menuWindow.Show();
+            this.Close();
         }
     }
 }
