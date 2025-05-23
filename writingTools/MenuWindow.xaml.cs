@@ -23,5 +23,16 @@ namespace antWriter
         {
             InitializeComponent();
         }
+        public void EditorWindow_Click(object sender, RoutedEventArgs e)
+        {
+            EditorWindow editorWindow = new EditorWindow();
+            editorWindow.Show();
+            this.Close();
+        }
+
+        public void Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }
