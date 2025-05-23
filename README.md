@@ -4,13 +4,15 @@
 <a id="Changelog"></a>
 # Changelog (Current stage: pre-alpha)
 ## 0.3.0-pre-alpha [24-05-2025]
-- Fully working window routing
-- Added working settings window
-- Set up app-wide Dynaic Resource library
-- ChangeFont method is now using Dynamic Resource Binding instead of passing the editorWindow instance.
-- Improved navbar in EditorWindow preparing it for future additions.
-- Changed default color palette.
-- Fixed unresponsive font sizes
+- Work finished on app routing.
+- Lifecycle management system improved.
+- Added fully functional and modular Settings window.
+- Set up global DynamicResource variable library.
+- Improved window navigation and structure.
+- Refactored font switching to use dynamic resource binding instead of direct references.
+- Prepared EditorWindow navbar for future features.
+- Refreshed default color palette and
+- Fixed responsiveness issues by using viewBox.
 ## 0.2.0-pre-pre-alpha [23-05-2025]
 - Simplified codebase
 - Removed UserControl components
