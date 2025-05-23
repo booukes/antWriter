@@ -3,6 +3,8 @@
 - [Readme](#antWriter)<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 <a id="Changelog"></a>
 # Changelog (Current stage: pre-alpha)
+### 0.3.1-pre-alpha [24-05-2025]
+- Added PowerShell Build script with build logging functionality.
 ## 0.3.0-pre-alpha [24-05-2025]
 - Work finished on app routing.
 - Lifecycle management system improved.
