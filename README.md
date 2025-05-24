@@ -1,11 +1,13 @@
 # Index
 - [Technical Changelog](#changelog)
+- [ETR Log](#ETRlog)
+- [ETR Log PL](#ETRPLlog)
 - [Todo](#todo)
 - [antWriter](#antwriter)
 
 ---
 
-## <a id="changelog"></a>Changelog (Current version: **0.4.1-pre-alpha**)
+## <a id="changelog"></a>Technical Changelog (Current version: **0.4.1-pre-alpha**)
 
 ## 0.4.0-pre-alpha [24-05-2025]
 - Implemented core file operations (`Save`, `Load`, `Save As`) in `EditorWindow` using standard WPF file dialogs.
@@ -50,9 +52,105 @@
 #### 0.1.1-pre-pre-alpha [22-05-2025]
 - Enhanced code readability through systematic commenting and documentation.
 
+---
+
+# <a id="ETRlog"></a>ETR Log (Current version: **0.4.1-pre-alpha**)
+
+## 0.4.0-pre-alpha [24-05-2025]
+This update made the editor fully functional for the first time, adding essential features to manage your files easily and safely!
+
+- You can now **save your work** directly from the editor, **load files** you’ve saved before, and use **Save As** to create new files or save your work in different locations. It uses the standard Windows file dialog for a familiar experience.
+- To protect your progress, the app now **autosaves your work automatically** when you switch between recently used files—no more worrying about losing unsaved changes!
+- A **recent files list** was added that updates automatically as you open and save files. It shows buttons with the file names, and clicking any button loads that file immediately.
+- The currently active file’s button is highlighted with a different color so you always know which file you’re working on.
+- Buttons that shouldn’t be clickable are now disabled but keep their normal appearance—no more confusing grayed-out buttons.
+- You can customize button colors using HEX color codes, giving you a nicer and more flexible look.
+- Under the hood, the code was cleaned up and organized to make future improvements easier and keep everything neat.
+
+
+##### 0.4.1-pre-alpha [24-05-2025]
+- Improved autosave function to be more reliable and smoother.
+
+## 0.3.0-pre-alpha [24-05-2025]
+This update focused on getting the app’s core structure in place:
+
+- The app’s navigation and routing are now fully working, so moving between different parts of the program is smooth.
+- I improved how windows open, close, and manage themselves to avoid bugs.
+- There’s now a fully functional **Settings window** where you can change various options.
+- Fonts and colors got a big upgrade with a new system that makes customizing easier.
+- I fixed how the program adjusts to different screen sizes so everything looks right.
+- The editor’s navigation bar is set up and ready for future features.
+
+##### 0.3.1-pre-alpha [24-05-2025]
+- Added PowerShell build script with build logging functionality.
+
+## 0.2.0-pre-pre-alpha [23-05-2025]
+Simplified the app and started building its basic navigation system:
+
+- The code was cleaned up and made simpler to speed up development.
+- Removed some old components that weren’t needed anymore.
+- Started work on making it possible to switch between different app pages.
+
+## 0.1.0-pre-pre-alpha [21-05-2025]
+Got the foundation ready with initial UI and reusable pieces:
+
+- Added a basic menu, though it’s not working fully yet.
+- Created modular components designed to be reused later on.
+- Made improvements to the build process to make it smoother and more reliable.
+
+##### 0.1.1-pre-pre-alpha [22-05-2025]
+- Added comments throughout the code to make it easier to understand and edit in the future.
+
+*Last updated: 24-05-2025*
 
 ---
 
+## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.4.1-pre-alpha**)
+
+## 0.4.0-pre-alpha [24-05-2025]
+W tej wersji edytor stał się w pełni funkcjonalny i gotowy do codziennego użytku. Dodałem wiele istotnych funkcji, które znacząco ułatwiają i zabezpieczają pracę z plikami:
+
+- Teraz możesz **zapisywać swoją pracę** bezpośrednio w edytorze, **otwierać wcześniej zapisane pliki** oraz korzystać z funkcji **Zapisz jako**, która pozwala tworzyć nowe pliki lub zapisać je w innym miejscu. Całość działa przez standardowe okno dialogowe Windows, co sprawia, że wszystko jest intuicyjne i znajome.
+- Wprowadziłem mechanizm **autosave**, który automatycznie zapisuje zmiany podczas przełączania się między ostatnio używanymi plikami, abyś nie musiał się martwić o utratę danych.
+- Stworzyłem dynamiczną listę **ostatnich plików**, która automatycznie się aktualizuje. Przyciski z nazwami plików umożliwiają szybkie otwieranie wybranych dokumentów.
+- Aktywny plik jest wyraźnie oznaczony innym kolorem, dzięki czemu zawsze wiesz, nad czym aktualnie pracujesz.
+- Przyciski, które nie powinny być klikane, są teraz wyłączone, ale zachowują swój normalny wygląd — bez klasycznego efektu „wyszarzenia”.
+- Dodano wsparcie dla kolorów przycisków definiowanych w formacie HEX, co daje większą swobodę w personalizacji wyglądu interfejsu.
+- Dodatkowo, w tle uporządkowałem i uprościłem kod, aby jego dalsza rozbudowa była łatwiejsza i bardziej przejrzysta.
+
+#### 0.4.1-pre-alpha [24-05-2025]
+- Udoskonaliłem mechanizm autosave, aby działał jeszcze bardziej stabilnie i płynnie.
+
+## 0.3.0-pre-alpha [24-05-2025]
+W tym wydaniu skupiłem się na zbudowaniu solidnych fundamentów aplikacji:
+
+- Nawigacja i przełączanie między różnymi częściami programu działają już płynnie i bez błędów.
+- Poprawiłem sposób zarządzania oknami, aby uniknąć problemów przy ich otwieraniu i zamykaniu.
+- Dodałem w pełni funkcjonalne, modułowe okno Ustawień, gdzie możesz dostosować różne opcje.
+- Zmodernizowałem system czcionek i kolorów, aby personalizacja była łatwiejsza i bardziej elastyczna.
+- Naprawiłem problemy z dopasowaniem interfejsu do różnych rozmiarów ekranu.
+- Przygotowałem pasek nawigacji edytora pod przyszłe rozszerzenia funkcjonalności.
+
+#### 0.3.1-pre-alpha [24-05-2025]
+- Dodano skrypt do budowania projektu w PowerShell z możliwością zapisywania logów procesu.
+
+## 0.2.0-pre-pre-alpha [23-05-2025]
+- Znacząco uprościłem strukturę kodu, żeby praca nad projektem była szybsza.
+- Usunąłem niepotrzebne komponenty, które spowalniały działanie aplikacji.
+- Rozpocząłem tworzenie podstawowej nawigacji między stronami.
+
+## 0.1.0-pre-pre-alpha [21-05-2025]
+- Dodano prostą wersję menu, która jeszcze nie działa.
+- Stworzyłem pierwsze modułowe komponenty do dalszego wykorzystania.
+- Ulepszyłem proces budowania aplikacji, żeby był bardziej niezawodny.
+
+#### 0.1.1-pre-pre-alpha [22-05-2025]
+- Dodałem komentarze w kodzie, co znacznie ułatwia jego zrozumienie i przyszłą pracę nad projektem.
+
+*Ostatnia aktualizacja: 24-05-2025*
+
+
+---
 # TODO<a id="todo"></a>
 
 ### A collection of future ideas and features for development.
