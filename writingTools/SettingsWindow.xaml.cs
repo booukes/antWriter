@@ -22,8 +22,6 @@ namespace antWriter
         {
             InitializeComponent();
             _editorWindow = editorWindow;
-
-            // Populate FontBox with system fonts
             FontBox.ItemsSource = Fonts.SystemFontFamilies;
         }
         
@@ -57,11 +55,6 @@ namespace antWriter
             {
                 Application.Current.Resources["JournalFont"] = selectedFont;
             }
-        }
-
-        private void Test_Settings_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

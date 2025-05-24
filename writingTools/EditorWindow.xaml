@@ -44,10 +44,33 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Viewbox>
             </Button>
+            <Button Name="Save" Click="Save_Click" Grid.Row="0" Grid.Column="1" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+                <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Text="Save" Margin="2"
+                        FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Viewbox>
+            </Button>
+            <Button Name="Load" Click="Load_Click" Grid.Row="0" Grid.Column="3" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+                <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Text="Load" Margin="2"
+                        FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Viewbox>
+            </Button>
+            <Button Name="SaveAs" Click="SaveAs_Click" Grid.Row="0" Grid.Column="2" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+                <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Text="Save As" Margin="2"
+                        FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Viewbox>
+            </Button>
         </Grid>
         <!-- File view -->
-        <Border BorderBrush="Black" BorderThickness="0,0,3,0" Grid.Row="1" Grid.Column="0" Background="{DynamicResource AppBackgroundBrush}" />
-
+        <Border x:Name="BorderFiles" BorderBrush="Black" BorderThickness="0,0,3,0" Grid.Row="1" Grid.Column="0" Background="{DynamicResource AppBackgroundBrush}" />
+        <StackPanel x:Name="RecentFiles" Grid.Row="1">
+            
+        </StackPanel>
         <!-- Editor -->
         <Border BorderBrush="Black" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
         <TextBox x:Name="EditingBoard" BorderThickness="0" FontFamily="{DynamicResource JournalFont}">  
