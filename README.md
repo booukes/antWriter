@@ -1,5 +1,6 @@
 # Index
 - [Changelog](#changelog)
+- [Todo](#todo)
 - [antWriter](#antwriter)
 
 ---
@@ -48,6 +49,59 @@
 
 #### 0.1.1-pre-pre-alpha [22-05-2025]
 - Commented code for improved readability.
+
+---
+
+# TODO<a id="todo"></a>
+
+### A collection of future ideas and features for development.
+
+## ✍️ Editor Features
+- [ ] Undo / Redo functionality
+- [ ] Real-time autosave indicator (e.g., "Saved ✓" / "Saving…")
+- [ ] Multi-tab document support
+- [ ] Word / character / line counter
+- [ ] "Rename file" functionality
+- [ ] Document title detection from first line
+- [ ] Highlight unsaved file button in recent list
+- [ ] Custom font picker dialog
+- [ ] Theme switcher (light/dark/custom)
+- [ ] Markdown preview panel
+
+## 📁 File Management
+- [ ] File version history (local backups)
+- [ ] Export as PDF or HTML
+- [ ] "Open Folder" for workspace-wide editing
+- [ ] Drag-and-drop file support
+- [ ] File recovery after crash
+
+## ⚙️ Settings
+- [ ] Per-file editor settings (font, theme)
+- [ ] Auto-indent and tab width configuration
+- [ ] Custom keybindings support
+- [ ] Reset settings to default button
+
+## 🛠️ Utility & Features
+- [ ] Command palette (Ctrl+P-like fuzzy actions)
+- [ ] Typing sound effects toggle (distraction-free writing)
+- [ ] Daily writing goal tracker
+- [ ] Pomodoro timer integration
+- [ ] Plugin system or scripting support
+
+## ☁️ Cloud & Sharing (Experimental)
+- [ ] Cloud sync with Google Drive / OneDrive
+- [ ] Share document as link (via temp host or cloud)
+- [ ] Live collaboration (multi-user editing)
+
+## 🧪 Fun / Extras
+- [ ] Hidden “typewriter” theme mode
+- [ ] Ambient sound background feature
+- [ ] "Zen mode" full-screen writing with no UI
+
+---
+
+> Add, revise, and cut freely as the project evolves.
+
 
 ---
 
