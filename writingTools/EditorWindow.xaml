@@ -86,7 +86,7 @@
             <Viewbox x:Name="fileNameHeader" Stretch="Uniform" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Stretch">
             </Viewbox>
             <Border BorderBrush="Black" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
-            <TextBox x:Name="EditingBoard" BorderThickness="0" FontFamily="{DynamicResource JournalFont}">
+            <TextBox x:Name="EditingBoard" BorderThickness="0" FontSize="{DynamicResource FontSize}" FontFamily="{DynamicResource JournalFont}">
                 <Grid.Row>1</Grid.Row>
                 <Grid.Column>1</Grid.Column>
                 <TextBox.Background>Transparent</TextBox.Background>

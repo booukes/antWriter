@@ -25,6 +25,11 @@ namespace antWriter
             FontBox.ItemsSource = Fonts.SystemFontFamilies;
         }
         
+        public void SaveFont_Click(object sender, RoutedEventArgs e)
+        {
+            double fontSize = Convert.ToDouble(fontsize.Text);
+            Application.Current.Resources["FontSize"] = fontSize;
+        }
         public void Exit_Click(object sender, RoutedEventArgs e)
         {
             MenuWindow menuWindow = new MenuWindow();
@@ -55,6 +60,11 @@ namespace antWriter
             {
                 Application.Current.Resources["JournalFont"] = selectedFont;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

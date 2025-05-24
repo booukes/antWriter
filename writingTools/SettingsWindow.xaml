@@ -37,7 +37,21 @@
                 FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
                 HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Button>
-        <ComboBox x:Name="FontBox" SelectionChanged="ChangeFont" Grid.Row="2" Margin="50 15 50 15">
+        <Grid Grid.Row="3">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+            <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
+                <TextBlock Margin="8" FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light">Font size</TextBlock>
+            </Viewbox>
+            <TextBox Grid.Column="1" Margin="10" Name="fontsize">
+
+            </TextBox>
+            <Button Content="Submit" Grid.Column="2" Margin="10" Click="SaveFont_Click"/>
+        </Grid>
+    <ComboBox x:Name="FontBox" SelectionChanged="ChangeFont" Grid.Row="2" Margin="50 15 50 15">
         </ComboBox>
         <!-- Footer -->
         <Button Background="#BAC095" Margin="30 10 30 10" HorizontalAlignment="Right" Click="Exit_Click" MaxHeight="50" MaxWidth="400" Grid.Column="2" Grid.Row="7">

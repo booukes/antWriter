@@ -39,7 +39,7 @@ function Write-ErrorLog {
 # Initialize log file with header
 $header = @"
 ════════════════════════════════════════════════════════════════════════
-🛠️  Build Script Log - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
+Build Script Log - $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')
 Directory: $(Get-Location)
 PowerShell Version: $($PSVersionTable.PSVersion)
 OS Version: $([Environment]::OSVersion.VersionString)
@@ -90,31 +90,48 @@ try {
     $cleanDuration = ($cleanEnd - $cleanStart).TotalSeconds
     Write-Log "Cleaning completed in $cleanDuration seconds"
 
-    # SECTION 3: BUILD PROJECT
-    Write-Section "Building the project"
-    $buildStart = Get-Date
-    Write-Log "Running 'dotnet build' command..."
-    # Capture full output including errors
-    $buildOutput = dotnet build 2>&1 | Tee-Object -Variable buildOutputVar
-    $buildExitCode = $LASTEXITCODE
-    Write-Log "dotnet build exit code: $buildExitCode"
+   # SECTION 3: BUILD PROJECT
+        Write-Section "Building the project"
+        $buildStart = Get-Date
+        
+        # Automatically select a solution or project file to build
+        $projectFile = $null
+        $solutionFiles = Get-ChildItem -Filter *.sln
+        $projectFiles = Get-ChildItem -Filter *.csproj
+        
+        if ($solutionFiles.Count -eq 1) {
+            $projectFile = $solutionFiles[0].FullName
+            Write-Log "Detected solution file: $projectFile"
+        } elseif ($projectFiles.Count -eq 1) {
+            $projectFile = $projectFiles[0].FullName
+            Write-Log "Detected project file: $projectFile"
+        } else {
+            Write-ErrorLog "ERROR: Multiple or no .sln/.csproj files found. Please specify the project file manually in the script."
+            exit 1
+        }
+        
+        Write-Log "Running 'dotnet build $projectFile' command..."
+        $buildOutput = dotnet build $projectFile 2>&1 | Tee-Object -Variable buildOutputVar
+        $buildExitCode = $LASTEXITCODE
+        Write-Log "dotnet build exit code: $buildExitCode"
+        
+        if ($buildExitCode -eq 0) {
+            Write-Log "Build succeeded!"
+            Write-Log "Build output:"
+            foreach ($line in $buildOutputVar) {
+                Write-Log " > $line"
+            }
+        } else {
+            Write-ErrorLog "Build failed! Output:"
+            foreach ($line in $buildOutputVar) {
+                Write-ErrorLog " > $line"
+            }
+            exit 1
+        }
+        $buildEnd = Get-Date
+        $buildDuration = ($buildEnd - $buildStart).TotalSeconds
+        Write-Log "Build completed in $buildDuration seconds"
 
-    if ($buildExitCode -eq 0) {
-        Write-Log "Build succeeded!"
-        Write-Log "Build output:"
-        foreach ($line in $buildOutputVar) {
-            Write-Log " > $line"
-        }
-    } else {
-        Write-ErrorLog "Build failed! Output:"
-        foreach ($line in $buildOutputVar) {
-            Write-ErrorLog " > $line"
-        }
-        exit 1
-    }
-    $buildEnd = Get-Date
-    $buildDuration = ($buildEnd - $buildStart).TotalSeconds
-    Write-Log "Build completed in $buildDuration seconds"
 
     # SECTION 4: RUN THE APP
     Write-Section "Attempting to run the application"
@@ -152,7 +169,7 @@ try {
     }
 
     # SECTION 6: DONE
-    Write-Section "Build script completed 🏁"
+    Write-Section "Build script completed"
 } catch {
     Write-ErrorLog "Unexpected error occurred: $_"
     exit 1

@@ -4,9 +4,6 @@ using System.Windows;
 
 namespace antWriter
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
     }
