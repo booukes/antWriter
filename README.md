@@ -1,5 +1,5 @@
 # Index
-- [Changelog](#changelog)
+- [Technical Changelog](#changelog)
 - [Todo](#todo)
 - [antWriter](#antwriter)
 
@@ -8,47 +8,48 @@
 ## <a id="changelog"></a>Changelog (Current version: **0.4.1-pre-alpha**)
 
 ## 0.4.0-pre-alpha [24-05-2025]
-- Implemented Save, Load, and Save As functionality in `EditorWindow`.
-- Save As now uses a Windows file dialog and updates the current path after saving.
-- Added autosave when switching between recent files to prevent data loss.
-- Added persistent recent files system stored in a `List<T>` with dynamic UI updates.
-- Added dynamic recent file buttons showing filenames with full paths stored in `Tag`.
-- Implemented click handler to load files using button `Tag`.
-- Set up `InternalSave` function for cleaner logic separation.
-- Cleaned up Settings window testing code.
-- Created function to highlight the active file button by changing its background color.
-- Enabled button disabling without visual changes using `IsHitTestVisible = false`.
-- Added support for HEX color backgrounds using `BrushConverter`.
+- Implemented core file operations (`Save`, `Load`, `Save As`) in `EditorWindow` using standard WPF file dialogs.
+- Integrated Windows `SaveFileDialog` for "Save As" with current file path updating post-save.
+- Added autosave mechanism triggered on switching between recent files to minimize data loss risks.
+- Developed persistent recent files management via `List<string>` serialized for session retention.
+- Dynamically generate recent file buttons with display filename and full file path stored in `Button.Tag`.
+- Wired button click events to load files by reading file paths from `Tag`.
+- Introduced `InternalSave` method for encapsulating save logic and improving code modularity.
+- Removed obsolete test code from Settings window module for codebase cleanliness.
+- Implemented active file button highlighting by modifying `Background` property based on current file context.
+- Enabled button interaction disabling using `IsHitTestVisible = false` to retain visual style while blocking input.
+- Added hex color parsing support for button backgrounds via `BrushConverter`.
 
 #### 0.4.1-pre-alpha [24-05-2025]
-- Improved autosave function.
+- Optimized autosave routine for improved reliability and performance.
 
 ## 0.3.0-pre-alpha [24-05-2025]
-- Finalized app routing implementation.
-- Improved lifecycle management system.
-- Added a fully functional, modular Settings window.
-- Introduced global `DynamicResource` variable library.
-- Enhanced window navigation and application structure.
-- Refactored font switching to use dynamic resource binding.
-- Prepared `EditorWindow` navbar for future features.
-- Refreshed default color palette.
-- Fixed responsiveness issues using `ViewBox`.
+- Completed app navigation routing using MVVM patterns for seamless window transitions.
+- Enhanced application lifecycle management to improve stability and resource handling.
+- Developed modular, extensible Settings window with data binding and validation.
+- Established global resource dictionary using `DynamicResource` for centralized theming and styles.
+- Refactored window navigation structure for improved UX flow.
+- Replaced static font references with dynamic resource binding for flexible font management.
+- Prepared EditorWindow navbar infrastructure to support future feature integration.
+- Updated color palette assets for UI consistency and accessibility.
+- Resolved UI scaling issues via `ViewBox` to maintain responsiveness across resolutions.
 
 #### 0.3.1-pre-alpha [24-05-2025]
-- Added PowerShell build script with build logging functionality.
+- Integrated PowerShell build automation script including build logging for CI support.
 
 ## 0.2.0-pre-pre-alpha [23-05-2025]
-- Simplified codebase structure.
-- Removed `UserControl` components.
-- Started work on basic app routing.
+- Refactored codebase for reduced complexity and improved maintainability.
+- Deprecated `UserControl` components in favor of streamlined custom controls.
+- Initiated implementation of basic app routing logic.
 
 ## 0.1.0-pre-pre-alpha [21-05-2025]
-- Added a basic, non-functional menu.
-- Created first modular components for future reuse.
-- Optimized build setup.
+- Added skeletal menu structure without functional implementation.
+- Built foundational modular UI components to facilitate reuse.
+- Optimized project build configuration and toolchain.
 
 #### 0.1.1-pre-pre-alpha [22-05-2025]
-- Commented code for improved readability.
+- Enhanced code readability through systematic commenting and documentation.
+
 
 ---
 
