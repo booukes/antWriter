@@ -23,7 +23,7 @@
         </Grid.ColumnDefinitions>
 
         <!-- Navbar -->
-        
+
         <Border BorderBrush="Black" BorderThickness="0,0,0,3" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource AppCompliementaryBrush}" />
         <Grid Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
@@ -65,21 +65,35 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Viewbox>
             </Button>
+            <Button Name="New" Click="CreateNewFile_Click" Grid.Row="0" Grid.Column="4" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+                <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Text="New File" Margin="2"
+            FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Viewbox>
+            </Button>
         </Grid>
         <!-- File view -->
         <Border x:Name="BorderFiles" BorderBrush="Black" BorderThickness="0,0,3,0" Grid.Row="1" Grid.Column="0" Background="{DynamicResource AppBackgroundBrush}" />
-        <StackPanel x:Name="RecentFiles" Grid.Row="1">
-            
-        </StackPanel>
+        <StackPanel x:Name="RecentFiles" Grid.Row="1" Grid.Column="0"/>
         <!-- Editor -->
-        <Border BorderBrush="Black" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
-        <TextBox x:Name="EditingBoard" BorderThickness="0" FontFamily="{DynamicResource JournalFont}">  
-            <Grid.Row>1</Grid.Row>
-            <Grid.Column>1</Grid.Column>
-            <TextBox.Background>Transparent</TextBox.Background>
-            <TextBox.TextWrapping>Wrap</TextBox.TextWrapping>
-            <TextBox.AcceptsReturn>True</TextBox.AcceptsReturn>  
-            <TextBox.VerticalScrollBarVisibility>Auto</TextBox.VerticalScrollBarVisibility>  
-        </TextBox>
+        <Grid Grid.Row="1" Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="25*"/>
+            </Grid.RowDefinitions>
+            <Border BorderBrush="Black" Grid.Row="0" Grid.Column="1" Background="{DynamicResource AppCompliementaryBrush}" />
+            <Viewbox x:Name="fileNameHeader" Stretch="Uniform" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Stretch">
+            </Viewbox>
+            <Border BorderBrush="Black" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
+            <TextBox x:Name="EditingBoard" BorderThickness="0" FontFamily="{DynamicResource JournalFont}">
+                <Grid.Row>1</Grid.Row>
+                <Grid.Column>1</Grid.Column>
+                <TextBox.Background>Transparent</TextBox.Background>
+                <TextBox.TextWrapping>Wrap</TextBox.TextWrapping>
+                <TextBox.AcceptsReturn>True</TextBox.AcceptsReturn>
+                <TextBox.VerticalScrollBarVisibility>Auto</TextBox.VerticalScrollBarVisibility>
+            </TextBox>
+        </Grid>
     </Grid>
 </Window>

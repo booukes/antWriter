@@ -24,6 +24,7 @@ namespace antWriter
         public EditorWindow()
         {
             InitializeComponent();
+            ShowFileName();
         }
 
         void HighlightActiveFileButton()
@@ -75,6 +76,27 @@ namespace antWriter
                 RecentFiles.Children.Add(btn);
             }
         }
+        private void ShowFileName()
+        {
+            TextBlock tb = new TextBlock();
+
+            if (currentFile == null)
+            {
+                tb.Text = "Working in volatile state. Use 'Save As' to persist changes.";
+            }
+            else
+            {
+                tb.Text = currentFile;
+            }
+                tb.Margin = new Thickness(2);
+
+            tb.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./fonts/Montserrat-Light.ttf#Montserrat Light");
+
+            tb.HorizontalAlignment = HorizontalAlignment.Left;
+            tb.VerticalAlignment = VerticalAlignment.Center;
+
+            fileNameHeader.Child = tb;
+        }
 
         private void LoadRecent_Click(object sender, RoutedEventArgs e)
         {
@@ -90,6 +112,7 @@ namespace antWriter
                         InternalSave(currentFile);
                         EditingBoard.Text = content;
                         currentFile = filePath;
+                        ShowFileName();
                         HighlightActiveFileButton();
                     }
                     catch (Exception ex)
@@ -103,7 +126,13 @@ namespace antWriter
                 }
             }
         }
-
+        private void CreateNewFile_Click(object sender, RoutedEventArgs e)
+        {
+            InternalSave(currentFile);
+            EditingBoard.Text = "";
+            currentFile = null;
+            ShowFileName();
+        }
         public void Load_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
@@ -115,6 +144,7 @@ namespace antWriter
                 AddRecentFile(currentFile);
                 recentFiles.Add(currentFile);
                 EditingBoard.Text = File.ReadAllText(currentFile);
+                ShowFileName();
                 HighlightActiveFileButton();
             }
         }
@@ -130,7 +160,8 @@ namespace antWriter
                 string filePath = saveFileDialog.FileName;
                 File.WriteAllText(filePath, EditingBoard.Text);
                 currentFile = filePath;
-                MessageBox.Show("File saved successfully!", "Success");
+                AddRecentFile(currentFile);
+                ShowFileName();
             }
         }
 
@@ -148,7 +179,25 @@ namespace antWriter
         }
         public void InternalSave(string filePath)
         {
-            File.WriteAllText(filePath, EditingBoard.Text);
+            if (!File.Exists(filePath))
+            {
+                SaveFileDialog saveFileDialog = new SaveFileDialog();
+                saveFileDialog.Title = "Save As";
+                saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    filePath = saveFileDialog.FileName;
+                    File.WriteAllText(filePath, EditingBoard.Text);
+                    currentFile = filePath;
+                    AddRecentFile(currentFile);
+                    ShowFileName();
+                }
+            }
+            else
+            {
+                File.WriteAllText(filePath, EditingBoard.Text);
+            }
         }
 
         public void Exit_Click(object sender, RoutedEventArgs e)
