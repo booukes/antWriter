@@ -110,6 +110,7 @@ namespace antWriter
             openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
             {
+                InternalSave(currentFile);
                 currentFile = openFileDialog.FileName;
                 AddRecentFile(currentFile);
                 recentFiles.Add(currentFile);
