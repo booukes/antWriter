@@ -22,6 +22,11 @@
 - Enabled button interaction disabling using `IsHitTestVisible = false` to retain visual style while blocking input.
 - Added hex color parsing support for button backgrounds via `BrushConverter`.
 
+#### 0.4.2-pre-alpha [24-05-2025]
+- Added new file function.
+- App is now warning the user, he is writing in a volatile memory-fed state.
+- Added function to display filename above editor window.
+
 #### 0.4.1-pre-alpha [24-05-2025]
 - Optimized autosave routine for improved reliability and performance.
 
@@ -67,8 +72,12 @@ This update made the editor fully functional for the first time, adding essentia
 - You can customize button colors using HEX color codes, giving you a nicer and more flexible look.
 - Under the hood, the code was cleaned up and organized to make future improvements easier and keep everything neat.
 
+#### 0.4.2-pre-alpha [24-05-2025]
+- You can now create new files directly from the app.
+- The app will warn you if you are NOT writing to a file, and your work is unsafe.
+- There is now a panel which displays the current file.
 
-##### 0.4.1-pre-alpha [24-05-2025]
+#### 0.4.1-pre-alpha [24-05-2025]
 - Improved autosave function to be more reliable and smoother.
 
 ## 0.3.0-pre-alpha [24-05-2025]
@@ -81,7 +90,7 @@ This update focused on getting the app’s core structure in place:
 - I fixed how the program adjusts to different screen sizes so everything looks right.
 - The editor’s navigation bar is set up and ready for future features.
 
-##### 0.3.1-pre-alpha [24-05-2025]
+#### 0.3.1-pre-alpha [24-05-2025]
 - Added PowerShell build script with build logging functionality.
 
 ## 0.2.0-pre-pre-alpha [23-05-2025]
@@ -98,7 +107,7 @@ Got the foundation ready with initial UI and reusable pieces:
 - Created modular components designed to be reused later on.
 - Made improvements to the build process to make it smoother and more reliable.
 
-##### 0.1.1-pre-pre-alpha [22-05-2025]
+#### 0.1.1-pre-pre-alpha [22-05-2025]
 - Added comments throughout the code to make it easier to understand and edit in the future.
 
 *Last updated: 24-05-2025*
@@ -117,6 +126,11 @@ W tej wersji edytor stał się w pełni funkcjonalny i gotowy do codziennego uż
 - Przyciski, które nie powinny być klikane, są teraz wyłączone, ale zachowują swój normalny wygląd — bez klasycznego efektu „wyszarzenia”.
 - Dodano wsparcie dla kolorów przycisków definiowanych w formacie HEX, co daje większą swobodę w personalizacji wyglądu interfejsu.
 - Dodatkowo, w tle uporządkowałem i uprościłem kod, aby jego dalsza rozbudowa była łatwiejsza i bardziej przejrzysta.
+
+#### 0.4.2-pre-alpha [24-05-2025]
+- Dodana funkcja tworzenia nowych plików bezpośrednio w aplikacji.
+- Aplikacja teraz ostrzega użytkownika, że jego praca nie jest zapisywana w pliku.
+- Dodano panel informujący o obecnym pliku.
 
 #### 0.4.1-pre-alpha [24-05-2025]
 - Udoskonaliłem mechanizm autosave, aby działał jeszcze bardziej stabilnie i płynnie.
