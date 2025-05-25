@@ -1,7 +1,7 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Text.Json;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 
 public class FontSettings
 {
@@ -15,6 +15,8 @@ public class EditorSettings
     public int AutoSaveInterval { get; set; } = 60;
     public bool SpellCheck { get; set; } = false;
     public string Theme { get; set; } = "Light";
+    public string Username { get; set; } = "Please set your username in settings!";
+    public string Logo { get; set; } = "/antWriterFinalGreen.png";
 }
 
 public class AppSettings

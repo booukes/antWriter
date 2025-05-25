@@ -1,29 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MahApps.Metro.Controls;
+using Serilog;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using MahApps.Metro;
-using MahApps.Metro.Controls;
 
 namespace antWriter
 {
     public partial class SettingsWindow : MetroWindow
     {
-        public SettingsWindow(EditorWindow editorWindow)
+        public SettingsWindow()
         {
             InitializeComponent();
             FontBox.ItemsSource = Fonts.SystemFontFamilies;
+            Generate_Logo();
         }
-        
+        public void Generate_Logo()
+        {
+            if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png")
+            {
+                Image img = new Image
+                {
+                    Source = new BitmapImage(new Uri("/antWriterFinalGreen.png", UriKind.Relative))
+                };
+                Logo.Child = img;
+            }
+            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreenRed.png")
+            {
+                Image img = new Image
+                {
+                    Source = new BitmapImage(new Uri("/antWriterFinalGreenRed.png", UriKind.Relative))
+                };
+                Logo.Child = img;
+            }
+            else
+            {
+                MessageBox.Show("No logo found.");
+            }
+        }
+
+        public void Name_Click(object sender, RoutedEventArgs e)
+        {
+            string name = Name.Text;
+            ConfigManager.Config.Editor.Username = name;
+            ConfigManager.Save();
+            Application.Current.Resources["Username"] = name;
+        }
+
+        public void Logo_Click(object sender, RoutedEventArgs e)
+        {
+            if ((bool)normal.IsChecked)
+            {
+                ConfigManager.Config.Editor.Logo = "/antWriterFinalGreen.png";
+                Application.Current.Resources["AppChosenLogo"] = "/antWriterFinalGreen.png";
+                Log.Information("Green logo selected.");
+                Log.Information((string)Application.Current.Resources["AppChosenLogo"]);
+            }
+            else if ((bool)edgy.IsChecked)
+            {
+                ConfigManager.Config.Editor.Logo = "/antWriterFinalGreenRed.png";
+                Application.Current.Resources["AppChosenLogo"] = "/antWriterFinalGreenRed.png";
+                Log.Information("Red logo selected.");
+                Log.Information((string)Application.Current.Resources["AppChosenLogo"]);
+            }
+            ConfigManager.Save();
+            
+        }
         public void FontSize_Click(object sender, RoutedEventArgs e)
         {
             if (fontSizeSelect.Value.HasValue)
@@ -43,8 +85,6 @@ namespace antWriter
                 Application.Current.Resources["JournalFont"] = selectedFont;
             }
         }
-
-        //Usage handlers
 
         public void Github_Click(object sender, RoutedEventArgs e)
         {

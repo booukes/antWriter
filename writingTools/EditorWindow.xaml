@@ -14,19 +14,10 @@
       Height="450" Width="800"
       Title="EditorWindow">
 
-    <mah:MetroWindow.LeftWindowCommands>
-        <mah:WindowCommands>
-            <Button Click="Github_Click" ToolTip="Open up the GitHub site">
-                <iconPacks:PackIconModern Width="22"
-                              Height="22"
-                              Kind="SocialGithubOctocat" />
-            </Button>
-        </mah:WindowCommands>
-    </mah:MetroWindow.LeftWindowCommands>
-
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
+            <RowDefinition Height="0.6*"/>
             <RowDefinition Height="12*"/>
         </Grid.RowDefinitions>
 
@@ -37,7 +28,7 @@
 
         <!-- Navbar -->
 
-        <Border BorderBrush="Black" BorderThickness="0,0,0,3" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource AppCompliementaryBrush}" />
+        <Border BorderBrush="Black" BorderThickness="0,0,0,3" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource AppMenuBrush}" />
         <Grid Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
@@ -49,57 +40,53 @@
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
-            <Image Source="/antWriterFinal.png" Grid.Column="8" HorizontalAlignment="Right"/>
-            <Button Name="Exit" Click="Exit_Click" Grid.Row="0" Grid.Column="0" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+            <Viewbox x:Name="Logo" Grid.Column="8"/>
+
+            <Button x:Name="Exit" Click="Exit_Click" Grid.Row="0" Grid.Column="0" Background="Transparent" Margin="0 5 0 5" Foreground="{StaticResource AppFontColor}" BorderBrush="{StaticResource AppFontColor}" BorderThickness="0 0 1 0">
                 <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock Text="Main menu" Margin="2"
-                        FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                    <TextBlock Text="main menu" Margin="2"
+                        FontFamily="{StaticResource AppMenusFont}"
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Viewbox>
             </Button>
-            <Button Name="Save" Click="Save_Click" Grid.Row="0" Grid.Column="1" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+            <Button x:Name="Save" Foreground="{StaticResource AppFontColor}" BorderBrush="{StaticResource AppFontColor}" Click="Save_Click" Grid.Row="0" Grid.Column="1" Background="Transparent" Margin="0 5 0 5" BorderThickness="0 0 1 0">
                 <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock Text="Save" Margin="2"
-                        FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                    <TextBlock Text="save" Margin="2"
+                        FontFamily="{StaticResource AppMenusFont}"
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Viewbox>
             </Button>
-            <Button Name="Load" Click="Load_Click" Grid.Row="0" Grid.Column="3" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+            <Button x:Name="Load" Click="Load_Click" Grid.Row="0" Grid.Column="3" Background="Transparent" Margin="0 5 0 5" Foreground="{StaticResource AppFontColor}" BorderBrush="{StaticResource AppFontColor}" BorderThickness="0 0 1 0">
                 <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock Text="Load" Margin="2"
-                        FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                    <TextBlock Text="load" Margin="2"
+                        FontFamily="{StaticResource AppMenusFont}"
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Viewbox>
             </Button>
-            <Button Name="SaveAs" Click="SaveAs_Click" Grid.Row="0" Grid.Column="2" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+            <Button x:Name="SaveAs" Click="SaveAs_Click" Grid.Row="0" Grid.Column="2" Background="Transparent" Margin="0 5 0 5" Foreground="{StaticResource AppFontColor}" BorderBrush="{StaticResource AppFontColor}" BorderThickness="0 0 1 0">
                 <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock Text="Save As" Margin="2"
-                        FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                    <TextBlock Text="save as" Margin="2"
+                        FontFamily="{StaticResource AppMenusFont}"
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Viewbox>
             </Button>
-            <Button Name="New" Click="CreateNewFile_Click" Grid.Row="0" Grid.Column="4" Background="Transparent" Margin="0 5 0 5" BorderBrush="Black" BorderThickness="0 0 1 0">
+            <Button x:Name="New" Click="CreateNewFile_Click" Grid.Row="0" Grid.Column="4" Background="Transparent" Margin="0 5 0 5" Foreground="{StaticResource AppFontColor}" BorderBrush="{StaticResource AppFontColor}" BorderThickness="0 0 1 0">
                 <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                    <TextBlock Text="New File" Margin="2"
-            FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
-            HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="new file" Margin="2"
+                        FontFamily="{StaticResource AppMenusFont}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Viewbox>
             </Button>
         </Grid>
         <!-- File view -->
-        <Border x:Name="BorderFiles" BorderBrush="Black" BorderThickness="0,0,3,0" Grid.Row="1" Grid.Column="0" Background="{DynamicResource AppBackgroundBrush}" />
-        <StackPanel x:Name="RecentFiles" Grid.Row="1" Grid.Column="0"/>
+        <Border x:Name="BorderFiles" BorderBrush="{StaticResource AppHoverButtonBrush}" BorderThickness="0,0,1,0" Grid.Row="2" Grid.Column="0" Background="{DynamicResource AppBackgroundBrush}" />
+        <StackPanel x:Name="RecentFiles" Grid.Row="2" Grid.Column="0"/>
         <!-- Editor -->
-        <Grid Grid.Row="1" Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="25*"/>
-            </Grid.RowDefinitions>
-            <Border BorderBrush="Black" Grid.Row="0" Grid.Column="1" Background="{DynamicResource AppCompliementaryBrush}" />
-            <Viewbox x:Name="fileNameHeader" Stretch="Uniform" Grid.Row="0" HorizontalAlignment="Left" VerticalAlignment="Stretch">
-            </Viewbox>
-            <Border BorderBrush="Black" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
-            <TextBox x:Name="EditingBoard" BorderThickness="0" FontSize="{DynamicResource FontSize}" FontFamily="{DynamicResource JournalFont}">
+        <Border BorderBrush="{StaticResource AppHoverButtonBrush}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="{DynamicResource AppCompliementaryBrush}" BorderThickness="0 1 0 1"/>
+        <Viewbox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" x:Name="fileNameHeader" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+        <Grid Grid.Row="2" Grid.Column="1">
+            <Border BorderBrush="{StaticResource AppHoverButtonBrush}" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
+            <TextBox x:Name="EditingBoard" BorderThickness="0" Foreground="{StaticResource AppFontColor}" FontSize="{DynamicResource FontSize}" FontFamily="{DynamicResource AppEditorFont}">
                 <Grid.Row>1</Grid.Row>
                 <Grid.Column>1</Grid.Column>
                 <TextBox.Background>Transparent</TextBox.Background>

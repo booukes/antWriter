@@ -13,16 +13,6 @@
         WindowStartupLocation="CenterScreen"
         Title="MenuWindow" Height="450" Width="800">
 
-    <mah:MetroWindow.LeftWindowCommands>
-        <mah:WindowCommands>
-            <Button Click="Github_Click" ToolTip="Open up the GitHub site">
-                <iconPacks:PackIconModern Width="22"
-                                  Height="22"
-                                  Kind="SocialGithubOctocat" />
-            </Button>
-        </mah:WindowCommands>
-    </mah:MetroWindow.LeftWindowCommands>
-
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*"/>
@@ -41,41 +31,84 @@
         </Grid.RowDefinitions>
         <!-- Header -->
         <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5 0 0 0">
-            <TextBlock Text="Settings" 
-                FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+            <TextBlock Foreground="{StaticResource AppFontColor}" Text="Settings" 
+                FontFamily="{StaticResource AppMenusFont}"
                 HorizontalAlignment="Center" VerticalAlignment="Center" Width="119"/>
         </Viewbox>
-        <Image Grid.Column="2" Grid.Row="0" Margin="5 0 5 0" HorizontalAlignment="Right" Source="/antWriterFinal.png" />
+        <Viewbox x:Name="Logo" Grid.Column="2"/>
         <!-- Main Settings Page -->
-        <Grid Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
-                <TextBlock Margin="8" FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light">Font size</TextBlock>
-            </Viewbox>
-            <mah:NumericUpDown Width="100" Height="30" SwitchUpDownButtons="True" HorizontalAlignment="Left" Minimum="6" Maximum="60" x:Name="fontSizeSelect" ValueChanged="FontSize_Click" HideUpDownButtons="False" Background="AliceBlue" Grid.Column="1" NumericInputMode="Numbers"></mah:NumericUpDown>
-        </Grid>
+
+        <!--  COLUMN 1 -->
         <Grid Grid.Column="0" Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <TextBlock Margin="8" Text="Font Family"
-                     FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                <TextBlock Foreground="{StaticResource AppFontColor}" Margin="8" Text="Font Family"
+                     FontFamily="{StaticResource AppMenusFont}"
                      HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Viewbox>
             <ComboBox HorizontalAlignment="Left" Grid.Column="1" x:Name="FontBox" SelectionChanged="FontFamily_Click" Grid.Row="1" Width="100" Height="30"/>
         </Grid>
-        <!-- Footer -->
-        <Button Background="#BAC095" Margin="30 10 30 10" HorizontalAlignment="Right" Click="Exit_Click" MaxHeight="50" MaxWidth="400" Grid.Column="2" Grid.Row="7">
+        <Grid Grid.Row="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
+                <TextBlock Foreground="{StaticResource AppFontColor}" Margin="8" FontFamily="{StaticResource AppMenusFont}">Font size</TextBlock>
+            </Viewbox>
+            <mah:NumericUpDown Width="100" Height="30" SwitchUpDownButtons="True" HorizontalAlignment="Left" Minimum="6" Maximum="60" x:Name="fontSizeSelect" ValueChanged="FontSize_Click" HideUpDownButtons="False" Background="AliceBlue" Grid.Column="1" NumericInputMode="Numbers"></mah:NumericUpDown>
+        </Grid>
+        
+        <!--  COLUMN 2 -->
+
+        <Grid Grid.Column="1" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
             <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <TextBlock Text="Save &amp; Exit"
-                    FontFamily="./fonts/Montserrat-Light.ttf#Montserrat Light"
+                <TextBlock Foreground="{StaticResource AppFontColor}" Margin="8" Text="Logo style"
+                    FontFamily="{StaticResource AppMenusFont}"
                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Viewbox>
-        </Button>
+            <Grid Grid.Column="1" Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition/>
+                    <RowDefinition/>
+                </Grid.RowDefinitions>
+
+                <RadioButton x:Name="normal" Click="Logo_Click" VerticalAlignment="Bottom" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="0" GroupName="logo" Content="Normal"></RadioButton>
+                <RadioButton x:Name="edgy" Click="Logo_Click" VerticalAlignment="Top" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="1" GroupName="logo" Content="Edgy"></RadioButton>
+            </Grid>
+        </Grid>
+
+        <!--  COLUMN 3 -->
+        <Grid Grid.Column="2" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Viewbox Grid.Column="0" Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                <TextBlock Foreground="{StaticResource AppFontColor}" Margin="8" Text="Usernname"
+                    FontFamily="{StaticResource AppMenusFont}"
+                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Viewbox>
+            <TextBox 
+                x:Name="Name"
+                Grid.Column="1"
+                Grid.Row="0"
+                Height="30" 
+                FontSize="14" 
+                Margin="0 0 15 0"
+                Padding="6"
+                Background="White"
+                LostFocus="Name_Click"
+                 />
+        </Grid>
+        <!-- Footer -->
+        <Button Click="Exit_Click" Grid.Column="2" Grid.Row="7" Style="{StaticResource FlatMenuButton}" Content="Back to menu"/>
     </Grid>
 </mah:MetroWindow>

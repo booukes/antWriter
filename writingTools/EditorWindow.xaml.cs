@@ -1,20 +1,10 @@
 ﻿using MahApps.Metro.Controls;
 using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace antWriter
 {
@@ -22,10 +12,48 @@ namespace antWriter
     {
         List<string> recentFiles = new List<string>();
         private protected string currentFile;
+        TextBlock noRecentFiles = new TextBlock
+        {
+            Text = "no recently used files to be shown here...",
+            FontSize = 20,
+            TextWrapping = TextWrapping.Wrap,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(5),
+            Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"],
+            FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "{StaticResource AppMenusFont}")
+        };
         public EditorWindow()
         {
             InitializeComponent();
             ShowFileName();
+            RecentFiles.Children.Add(noRecentFiles);
+            New.IsHitTestVisible = false;
+            Generate_Logo();
+        }
+
+        public void Generate_Logo()
+        {
+            if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png")
+            {
+                Image img = new Image
+                {
+                    Source = new BitmapImage(new Uri("/antWriterFinalGreen.png", UriKind.Relative))
+                };
+                Logo.Child = img;
+            }
+            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreenRed.png")
+            {
+                Image img = new Image
+                {
+                    Source = new BitmapImage(new Uri("/antWriterFinalGreenRed.png", UriKind.Relative))
+                };
+                Logo.Child = img;
+            }
+            else
+            {
+                MessageBox.Show("No logo found.");
+            }
         }
 
         public void Github_Click(object sender, RoutedEventArgs e)
@@ -43,7 +71,7 @@ namespace antWriter
 
                     if (btnPath != null && btnPath == currentFile)
                     {
-                        btn.Background = (Brush)new BrushConverter().ConvertFromString("#BAC095");;
+                        btn.Background = (SolidColorBrush)Application.Current.Resources["AppCompliementaryBrush"];
                         btn.IsHitTestVisible = false;
                     }
                     else
@@ -70,9 +98,13 @@ namespace antWriter
                 Button btn = new Button
                 {
                     Content = System.IO.Path.GetFileName(file),
+                    FontFamily = (FontFamily)Application.Current.Resources["AppMenusFont"],
+                    FontSize = 30,
+                    Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"],
                     Margin = new Thickness(0, -1, 0, -1),
                     Background = Brushes.Transparent,
                     BorderBrush = Brushes.Black,
+                    Height = 60,
                     BorderThickness = new Thickness(0, 1, 0, 1),
                     Tag = file
                 };
@@ -88,15 +120,17 @@ namespace antWriter
 
             if (currentFile == null)
             {
-                tb.Text = "Working in volatile state. Use 'Save As' to persist changes.";
+                tb.Text = "working in volatile state. use 'save as' to persist changes.";
+                tb.FontFamily = (FontFamily)Application.Current.Resources["AppMenusItalicFont"];
             }
             else
             {
                 tb.Text = currentFile;
+                tb.FontFamily = (FontFamily)Application.Current.Resources["AppMenusFont"];
             }
                 tb.Margin = new Thickness(2);
-
-            tb.FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "./fonts/Montserrat-Light.ttf#Montserrat Light");
+            
+            tb.Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"];
 
             tb.HorizontalAlignment = HorizontalAlignment.Left;
             tb.VerticalAlignment = VerticalAlignment.Center;
@@ -157,6 +191,7 @@ namespace antWriter
 
         private void SaveAs_Click(object sender, RoutedEventArgs e)
         {
+            New.IsHitTestVisible = true;
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Title = "Save As";
             saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
@@ -185,6 +220,7 @@ namespace antWriter
         }
         public void InternalSave(string filePath)
         {
+            New.IsHitTestVisible = true;
             if (!File.Exists(filePath))
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();

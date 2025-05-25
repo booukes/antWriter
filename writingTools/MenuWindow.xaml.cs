@@ -1,28 +1,44 @@
 ﻿using MahApps.Metro.Controls;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace antWriter
 {
     public partial class MenuWindow : MetroWindow
     {   
         private EditorWindow editorWindow;
+
+        public string Username { get; set; } = (string)Application.Current.Resources["Username"];
         public MenuWindow()
         {
             InitializeComponent();
-            editorWindow = new EditorWindow();
+            this.DataContext = this;
+            Generate_Logo();
+            
+        }
+        public void Generate_Logo()
+        {
+            if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png")
+            {
+                Image img = new Image
+                {
+                    Source = new BitmapImage(new Uri("/antWriterFinalGreen.png", UriKind.Relative))
+                };
+                Logo.Child = img;
+            }
+            else if((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreenRed.png")
+            {
+                Image img = new Image
+                {
+                    Source = new BitmapImage(new Uri("/antWriterFinalGreenRed.png", UriKind.Relative))
+                };
+                Logo.Child = img;
+            }
+            else
+            {
+                MessageBox.Show("No logo found.");
+            }
         }
         public void Github_Click(object sender, RoutedEventArgs e)
         {
@@ -30,13 +46,14 @@ namespace antWriter
         }
         public void EditorWindow_Click(object sender, RoutedEventArgs e)
         {
+            EditorWindow editorWindow = new EditorWindow();
             editorWindow.Show();
             this.Close();
         }
 
         public void SettingsWindow_Click(object sender, RoutedEventArgs e)
         {
-            SettingsWindow settingsWindow = new SettingsWindow(editorWindow);
+            SettingsWindow settingsWindow = new SettingsWindow();
             settingsWindow.Show();
             this.Close();
         }

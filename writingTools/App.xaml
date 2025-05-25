@@ -3,11 +3,56 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:antWriter"
              xmlns:System="clr-namespace:System;assembly=mscorlib"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
              StartupUri="MenuWindow.xaml">
     <Application.Resources>
-        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#636b2f"/>
-        <SolidColorBrush x:Key="AppCompliementaryBrush" Color="#432818"/>
-        <FontFamily x:Key="JournalFont">Courier New</FontFamily>
-        <System:Double x:Key="FontSize">14</System:Double>
+        <SolidColorBrush x:Key="AppBackgroundBrush" Color="#1E1E1E"/>
+        <SolidColorBrush x:Key="AppCompliementaryBrush" Color="#4CAF50"/>
+        <SolidColorBrush x:Key="AppButtonBrush" Color="#3A3A3A"/>
+        <SolidColorBrush x:Key="AppMenuBrush" Color="#2C2C2C"/>
+        <SolidColorBrush x:Key="AppHoverButtonBrush" Color="#505050"/>
+        <SolidColorBrush x:Key="AppPressedButtonBrush" Color="#2A2A2A"/>
+        <SolidColorBrush x:Key="AppFontColor" Color="#FFFFFF"/>
+        <sys:String x:Key="AppChosenLogo" >/antWriterFinalGreen.png</sys:String>
+        <FontFamily x:Key="AppMenusFont">fonts/Montserrat-Thin.ttf#Montserrat Thin</FontFamily>
+        <FontFamily x:Key="AppEditorFont">Courier New</FontFamily>
+        <FontFamily x:Key="AppMenusItalicFont">fonts/Montserrat-ThinItalic.ttf#Montserrat Thin Italic</FontFamily>
+        <System:Double x:Key="AppFontSize">14</System:Double>
+        <System:String x:Key="Username">Please set your username in settings!</System:String>
+
+        <!--ButtonAnim-->
+        <Style x:Key="FlatMenuButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource AppButtonBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource AppFontColor}"/>
+            <Setter Property="BorderBrush" Value="{StaticResource AppButtonBrush}"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="15,10"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="fonts/Montserrat-ExtraLight.ttf#Montserrat ExtraLight"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                            CornerRadius="15"
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AppHoverButtonBrush}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AppPressedButtonBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+        
+
     </Application.Resources>
 </Application>

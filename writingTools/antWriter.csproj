@@ -10,13 +10,11 @@
 
   <ItemGroup>
     <None Remove="antWriterFinal.png" />
+    <None Remove="antWriterFinalGreen.png" />
+    <None Remove="antWriterFinalGreenRed.png" />
     <None Remove="fonts\Montserrat-Light.ttf" />
     <None Remove="fonts\Montserrat-VariableFont_wght.ttf" />
     <None Remove="icon.ico" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Content Include="icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -28,10 +26,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="fonts\Montserrat-Light.ttf" />
-    <Resource Include="fonts\Montserrat-VariableFont_wght.ttf" />
+    <Resource Include="fonts\*" />
     <Resource Include="antWriterFinal.png" />
-    <Resource Include="icon.ico" />
+    <Resource Include="antWriterFinalGreen.png" />
+    <Resource Include="antWriterFinalGreenRed.png" />
+    <Resource Include="icon.ico">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Resource>
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +43,12 @@
 
   <ItemGroup>
     <Folder Include="logs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="jsonReader.cs">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Compile>
   </ItemGroup>
 
 </Project>

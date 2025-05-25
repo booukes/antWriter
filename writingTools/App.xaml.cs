@@ -1,12 +1,11 @@
 ﻿using Serilog;
 using Serilog.Sinks.SystemConsole.Themes;
-using System;
-using System.Configuration;
-using System.Data;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media.Imaging;
 
 namespace antWriter
 {
@@ -35,6 +34,16 @@ namespace antWriter
                 .WriteTo.File(logFileName, rollingInterval: RollingInterval.Day, outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
             AllocConsole();
+            ConfigManager.Load();
+            Resources["AppChosenLogo"] = ConfigManager.Config.Editor.Logo;
+            Resources["AppFontSize"] = (double)ConfigManager.Config.Font.Size;
+            Resources["AppEditorFont"] = new System.Windows.Media.FontFamily(ConfigManager.Config.Font.Family);
+            Resources["Username"] = ConfigManager.Config.Editor.Username;
+            Log.Debug($"Font Family: {ConfigManager.Config.Font.Family}");
+            Log.Debug($"Font Size: {ConfigManager.Config.Font.Size}");
+            Log.Debug($"Logo: {ConfigManager.Config.Editor.Logo}");
+            Log.Debug("Logo:" + Application.Current.Resources["AppChosenLogo"]);
+            Log.Debug($"Username: {ConfigManager.Config.Editor.Username}");
             Log.Information("Console attached. Debugging started.");
             Log.Information("Current Directory: {Directory}", Environment.CurrentDirectory);
             Log.Information("Executable Path: {ExePath}", AppContext.BaseDirectory);
@@ -61,11 +70,6 @@ namespace antWriter
 
 
             base.OnStartup(e);
-            ConfigManager.Load();
-            Resources["FontSize"] = (double)ConfigManager.Config.Font.Size;
-            Resources["JournalFont"] = new System.Windows.Media.FontFamily(ConfigManager.Config.Font.Family);
-            Log.Debug($"Font Family: {ConfigManager.Config.Font.Family}");
-            Log.Debug($"Font Size: {ConfigManager.Config.Font.Size}");
         }
     }
 }
