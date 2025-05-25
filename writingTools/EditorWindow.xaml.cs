@@ -1,4 +1,5 @@
-﻿using Microsoft.Win32;
+﻿using MahApps.Metro.Controls;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -17,7 +18,7 @@ using System.Windows.Shapes;
 
 namespace antWriter
 {
-    public partial class EditorWindow : Window
+    public partial class EditorWindow : MetroWindow
     {
         List<string> recentFiles = new List<string>();
         private protected string currentFile;
@@ -25,6 +26,11 @@ namespace antWriter
         {
             InitializeComponent();
             ShowFileName();
+        }
+
+        public void Github_Click(object sender, RoutedEventArgs e)
+        {
+            ((App)Application.Current).Github_Event();
         }
 
         void HighlightActiveFileButton()
@@ -43,7 +49,7 @@ namespace antWriter
                     else
                     {
                         btn.Background = Brushes.Transparent;
-                        btn.IsHitTestVisible = true;// Reset others
+                        btn.IsHitTestVisible = true;
                     }
                 }
             }

@@ -1,0 +1,16 @@
+{
+  "Font": {
+    "Family": "Comic Sans MS",
+    "Size": 50
+  },
+  "Editor": {
+    "AutoSave": true,
+    "AutoSaveInterval": 60,
+    "SpellCheck": false,
+    "Theme": "Light"
+  },
+  "App": {
+    "WindowTitle": "Kaszepad",
+    "StartMaximized": true
+  }
+}

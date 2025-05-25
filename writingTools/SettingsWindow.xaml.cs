@@ -11,60 +11,50 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using MahApps.Metro;
+using MahApps.Metro.Controls;
 
 namespace antWriter
 {
-    public partial class SettingsWindow : Window
+    public partial class SettingsWindow : MetroWindow
     {
-        private readonly EditorWindow _editorWindow;
-
         public SettingsWindow(EditorWindow editorWindow)
         {
             InitializeComponent();
-            _editorWindow = editorWindow;
             FontBox.ItemsSource = Fonts.SystemFontFamilies;
         }
         
-        public void SaveFont_Click(object sender, RoutedEventArgs e)
+        public void FontSize_Click(object sender, RoutedEventArgs e)
         {
-            double fontSize = Convert.ToDouble(fontsize.Text);
-            Application.Current.Resources["FontSize"] = fontSize;
+            if (fontSizeSelect.Value.HasValue)
+            {
+                double fontSize = (double)fontSizeSelect.Value;
+                ConfigManager.Config.Font.Size = fontSize;
+                ConfigManager.Save();
+                Application.Current.Resources["FontSize"] = fontSize;
+            }
+        }
+        public void FontFamily_Click(object sender, SelectionChangedEventArgs e)
+        {
+            if (FontBox.SelectedItem is FontFamily selectedFont)
+            {
+                ConfigManager.Config.Font.Family = Convert.ToString(selectedFont);
+                ConfigManager.Save();
+                Application.Current.Resources["JournalFont"] = selectedFont;
+            }
+        }
+
+        //Usage handlers
+
+        public void Github_Click(object sender, RoutedEventArgs e)
+        {
+            ((App)Application.Current).Github_Event();
         }
         public void Exit_Click(object sender, RoutedEventArgs e)
         {
             MenuWindow menuWindow = new MenuWindow();
             menuWindow.Show();
             this.Close();
-        }
-        public void ButtonSettings(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button flag)
-            {
-                switch (flag.Name)
-                {
-                    case "Test_Settings":
-                        MessageBox.Show("Debug Test Settings");
-                        break;
-                    case "color":
-                        Application.Current.Resources["AppBackgroundBrush"]= new SolidColorBrush((Color)ColorConverter.ConvertFromString("#CF9FFF"));
-                        break;
-                    default:
-                        MessageBox.Show("Debug Default Settings");
-                        break;
-                }
-            }
-        }
-        public void ChangeFont(object sender, SelectionChangedEventArgs e)
-        {
-            if (FontBox.SelectedItem is FontFamily selectedFont)
-            {
-                Application.Current.Resources["JournalFont"] = selectedFont;
-            }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
