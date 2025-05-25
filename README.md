@@ -22,6 +22,9 @@
 - Enabled button interaction disabling using `IsHitTestVisible = false` to retain visual style while blocking input.
 - Added hex color parsing support for button backgrounds via `BrushConverter`.
 
+#### 0.4.3-pre-alpha, 0.4.4-pre-alpha [25-05-2025]
+- Minor fixes, build script optimizations.
+
 #### 0.4.2-pre-alpha [24-05-2025]
 - Added new file function.
 - App is now warning the user, he is writing in a volatile memory-fed state.
@@ -71,6 +74,9 @@ This update made the editor fully functional for the first time, adding essentia
 - Buttons that shouldn’t be clickable are now disabled but keep their normal appearance—no more confusing grayed-out buttons.
 - You can customize button colors using HEX color codes, giving you a nicer and more flexible look.
 - Under the hood, the code was cleaned up and organized to make future improvements easier and keep everything neat.
+
+#### 0.4.3-pre-alpha, 0.4.4-pre-alpha [25-05-2025]
+- Minor code fixes, optimized the script that builds the app.
 
 #### 0.4.2-pre-alpha [24-05-2025]
 - You can now create new files directly from the app.
@@ -126,6 +132,9 @@ W tej wersji edytor stał się w pełni funkcjonalny i gotowy do codziennego uż
 - Przyciski, które nie powinny być klikane, są teraz wyłączone, ale zachowują swój normalny wygląd — bez klasycznego efektu „wyszarzenia”.
 - Dodano wsparcie dla kolorów przycisków definiowanych w formacie HEX, co daje większą swobodę w personalizacji wyglądu interfejsu.
 - Dodatkowo, w tle uporządkowałem i uprościłem kod, aby jego dalsza rozbudowa była łatwiejsza i bardziej przejrzysta.
+
+#### 0.4.3-pre-alpha, 0.4.4-pre-alpha [25-05-2025]
+- Bugfixy, optymalizacja skryptu budującego program.
 
 #### 0.4.2-pre-alpha [24-05-2025]
 - Dodana funkcja tworzenia nowych plików bezpośrednio w aplikacji.
