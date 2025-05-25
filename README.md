@@ -7,7 +7,17 @@
 
 ---
 
-## <a id="changelog"></a>Technical Changelog (Current version: **0.4.1-pre-alpha**)
+## <a id="changelog"></a>Technical Changelog (Current version: **0.5.0-alpha**)
+
+## 0.5.0-alpha [25-05-2025]
+- Migrated WPF Framework to MahApps.Metro, migrating the main window to MetroWindow to leverage modern theming, extended controls, and a unified UX.  
+- Integrated MahApps.Metro.IconPacks providing scalable GitHub icons linked to interactive buttons.  
+- Implemented MahApps.Controls into settings.
+- Implemented a JSON-Based ConfigManager for persisting user settings automatically (font size, font family) on startup and exit.  
+- Integrated Serilog with console and rolling file sinks, including a customized output template for timestamped, leveled, and exception-aware logging.  
+- Allocated a debug console dynamically via kernel32.dll’s AllocConsole for enhanced runtime diagnostics.  
+- Extended startup diagnostics to capture .NET runtime version and memory usage metrics.  
+- Refactored startup logic in App.xaml.cs to improve modularity and clarity of application initialization.
 
 ## 0.4.0-pre-alpha [24-05-2025]
 - Implemented core file operations (`Save`, `Load`, `Save As`) in `EditorWindow` using standard WPF file dialogs.
@@ -62,7 +72,19 @@
 
 ---
 
-# <a id="ETRlog"></a>ETR Log (Current version: **0.4.1-pre-alpha**)
+# <a id="ETRlog"></a>ETR Log (Current version: **0.5.0-pre-alpha**)
+
+## 0.5.0-alpha [25-05-2025]
+
+- Switched the app’s core framework to MahApps.Metro, giving it a modern look and smoother, more consistent design.  
+- Added new icons (including GitHub) that look sharp and work well with buttons.  
+- Improved settings controls for easier and better user interaction.  
+- Created a system that automatically saves and loads your preferences (like font size and style) every time you open or close the app.  
+- Set up advanced logging to keep track of app activity and errors, helping with troubleshooting.  
+- Opened a special debug window to show real-time technical info during development.  
+- Added extra checks at startup to record important system info like .NET version and memory use.  
+- Cleaned up and organized the app’s startup code to make it easier to manage and update in the future.  
+
 
 ## 0.4.0-pre-alpha [24-05-2025]
 This update made the editor fully functional for the first time, adding essential features to manage your files easily and safely!
@@ -120,7 +142,19 @@ Got the foundation ready with initial UI and reusable pieces:
 
 ---
 
-## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.4.1-pre-alpha**)
+## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.5.0-alpha**)
+
+## 0.5.0-alpha [25-05-2025]
+
+- Przełączyliśmy główny framework aplikacji na MahApps.Metro, dzięki czemu wygląda nowocześnie i ma spójny, płynny design.  
+- Dodaliśmy nowe ikony (w tym GitHub), które są wyraźne i dobrze działają z przyciskami.  
+- Ulepszyliśmy elementy sterujące w ustawieniach, aby korzystanie z nich było prostsze i wygodniejsze.  
+- Stworzyliśmy system, który automatycznie zapisuje i wczytuje Twoje preferencje (np. rozmiar i styl czcionki) przy uruchamianiu i zamykaniu aplikacji.  
+- Wdrożyliśmy zaawansowane logowanie, które śledzi działanie aplikacji i błędy, co pomaga w rozwiązywaniu problemów.  
+- Otwieramy specjalne okno debugowania pokazujące techniczne informacje na żywo podczas pracy nad aplikacją.  
+- Dodaliśmy dodatkowe kontrole przy starcie aplikacji, które rejestrują ważne dane systemowe, takie jak wersja .NET i zużycie pamięci.  
+- Posprzątaliśmy i uporządkowaliśmy kod odpowiedzialny za uruchamianie aplikacji, żeby łatwiej było go zarządzać i rozwijać.  
+
 
 ## 0.4.0-pre-alpha [24-05-2025]
 W tej wersji edytor stał się w pełni funkcjonalny i gotowy do codziennego użytku. Dodałem wiele istotnych funkcji, które znacząco ułatwiają i zabezpieczają pracę z plikami:
