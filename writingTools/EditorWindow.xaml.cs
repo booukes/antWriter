@@ -176,6 +176,12 @@ namespace antWriter
         public void Load_Click(object sender, RoutedEventArgs e)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects");
+            if (Directory.Exists(path))
+            {
+                openFileDialog.InitialDirectory = path;
+            }
+            Console.WriteLine(openFileDialog.InitialDirectory);
             openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
             {
