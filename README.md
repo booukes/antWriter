@@ -7,7 +7,7 @@
 
 ---
 
-## <a id="changelog"></a>Technical Changelog (Current version: **0.6.0-beta**)
+## <a id="changelog"></a>Technical Changelog (Current version: **0.6.1-beta**)
 
 ## 0.6.0-beta[26-05-2025]
 - Designed and implemented a robust global resource architecture using a hybrid of dynamic and static `App.xaml` resources, with all UI variables (colors, spacing, font sizes, etc.) sourced from a centralized JSON configuration at runtime.
