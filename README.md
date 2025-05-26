@@ -23,6 +23,8 @@
 - Removed redundant constructor arguments from `SettingsWindow`, reducing unnecessary overhead and improving clarity.
 - Addressed various minor bugs and inconsistencies across the UI and data logic layers.
 
+#0.6.1-beta[26-05-2025]
+- Fixed some resources not persisting after clean start
 
 ## 0.5.0-alpha [25-05-2025]
 - Migrated WPF Framework to `MahApps.Metro`, migrating the main window to `MetroWindow` to leverage modern theming, preparing for ui overhaul, extended controls, and a unified UX.  
