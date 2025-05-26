@@ -7,7 +7,7 @@
 
 ---
 
-## <a id="changelog"></a>Technical Changelog (Current version: **0.6.0-beta**)
+## <a id="changelog"></a>Technical Changelog (Current version: **0.6.1-beta**)
 
 ## 0.6.0-beta[26-05-2025]
 - Designed and implemented a robust global resource architecture using a hybrid of dynamic and static `App.xaml` resources, with all UI variables (colors, spacing, font sizes, etc.) sourced from a centralized JSON configuration at runtime.
@@ -23,6 +23,8 @@
 - Removed redundant constructor arguments from `SettingsWindow`, reducing unnecessary overhead and improving clarity.
 - Addressed various minor bugs and inconsistencies across the UI and data logic layers.
 
+#0.6.1-beta[26-05-2025]
+- Fixed some resources not persisting after clean start
 
 ## 0.5.0-alpha [25-05-2025]
 - Migrated WPF Framework to `MahApps.Metro`, migrating the main window to `MetroWindow` to leverage modern theming, preparing for ui overhaul, extended controls, and a unified UX.  
