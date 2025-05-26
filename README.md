@@ -7,17 +7,32 @@
 
 ---
 
-## <a id="changelog"></a>Technical Changelog (Current version: **0.5.0-alpha**)
+## <a id="changelog"></a>Technical Changelog (Current version: **0.6.0-beta**)
+
+## 0.6.0-beta[26-05-2025]
+- Designed and implemented a robust global resource architecture using a hybrid of dynamic and static `App.xaml` resources, with all UI variables (colors, spacing, font sizes, etc.) sourced from a centralized JSON configuration at runtime.
+- Performed a full UI/UX overhaul including layout restructuring, refined color theming, and improved responsiveness via grid-based adaptive containers and uniform resource bindings.
+- Added support for dual logos with an in-app toggle, including a dynamically generated logo system to bypass WPF bitmap limitations.
+- Converted all eligible UI components to consume shared static resources, eliminating redundancy and ensuring visual consistency across views.
+- Integrated additional system fonts into the application’s resource context for internal use and improved platform styling fidelity.
+- Removed deprecated GitHub titlebar link to streamline interface and reduce non-functional distractions.
+- Developed a “No Recent Files” detection system to inform users when the recent documents list is empty.
+- Fixed a critical bug in the New File logic that caused infinite duplication when triggered without an active document.
+- Enhanced application startup with personalized greeting using the current Windows username.
+- Simplified and refactored menu code to reduce event handler complexity and improve maintainability.
+- Removed redundant constructor arguments from `SettingsWindow`, reducing unnecessary overhead and improving clarity.
+- Addressed various minor bugs and inconsistencies across the UI and data logic layers.
+
 
 ## 0.5.0-alpha [25-05-2025]
-- Migrated WPF Framework to MahApps.Metro, migrating the main window to MetroWindow to leverage modern theming, extended controls, and a unified UX.  
-- Integrated MahApps.Metro.IconPacks providing scalable GitHub icons linked to interactive buttons.  
-- Implemented MahApps.Controls into settings.
-- Implemented a JSON-Based ConfigManager for persisting user settings automatically (font size, font family) on startup and exit.  
+- Migrated WPF Framework to `MahApps.Metro`, migrating the main window to `MetroWindow` to leverage modern theming, preparing for ui overhaul, extended controls, and a unified UX.  
+- Integrated` MahApps.Metro.IconPacks` providing scalable GitHub icons linked to interactive buttons.  
+- Implemented `MahApps.Controls` into settings.
+- Implemented a `JSON`-Based ConfigManager for persisting user settings automatically (font size, font family) on startup and exit.  
 - Integrated Serilog with console and rolling file sinks, including a customized output template for timestamped, leveled, and exception-aware logging.  
-- Allocated a debug console dynamically via kernel32.dll’s AllocConsole for enhanced runtime diagnostics.  
-- Extended startup diagnostics to capture .NET runtime version and memory usage metrics.  
-- Refactored startup logic in App.xaml.cs to improve modularity and clarity of application initialization.
+- Allocated a debug console dynamically via `kernel32.dll` AllocConsole for enhanced runtime diagnostics.  
+- Extended startup diagnostics to capture `.NET` runtime version and memory usage metrics.  
+- Refactored startup logic in `App.xaml.cs` to improve modularity and clarity of application initialization.
 
 ## 0.4.0-pre-alpha [24-05-2025]
 - Implemented core file operations (`Save`, `Load`, `Save As`) in `EditorWindow` using standard WPF file dialogs.
@@ -72,7 +87,23 @@
 
 ---
 
-# <a id="ETRlog"></a>ETR Log (Current version: **0.5.0-pre-alpha**)
+# <a id="ETRlog"></a>ETR Log (Current version: **0.6.0-beta**)
+
+## 0.6.0-alpha [26-05-2025]
+
+- Built a powerful new resource system that loads design settings (like colors, spacing, and fonts) from a JSON file, giving the app more flexibility and easier theming.  
+- Gave the entire interface a visual refresh with better layout, cleaner colors, and improved responsiveness for different screen sizes.  
+- Added support for two logos — including a dynamically generated one — and let users switch between them in real time.  
+- Standardized the app’s look by making nearly all elements use shared styles and static resources.  
+- Included more system fonts in the app for improved internal styling and compatibility.  
+- Removed the GitHub titlebar link to reduce clutter and keep the interface clean.  
+- Let users know when there are no recent files with a friendly message instead of an empty list.  
+- Fixed a major issue where creating a new file with no current document would cause infinite duplicates.  
+- The app now greets you by name using your Windows username at startup.  
+- Simplified and cleaned up menu logic to make it easier to update and maintain.  
+- Removed extra code from SettingsWindow that wasn’t needed anymore.  
+- Fixed several minor bugs and polished up various parts of the app.
+
 
 ## 0.5.0-alpha [25-05-2025]
 
@@ -142,7 +173,23 @@ Got the foundation ready with initial UI and reusable pieces:
 
 ---
 
-## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.5.0-alpha**)
+## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.6.0-beta**)
+
+## 0.6.0-beta [25-05-2025]
+
+- Zbudowano zaawansowany system zasobów, który ładuje ustawienia wyglądu (kolory, odstępy, czcionki itp.) z pliku JSON, co umożliwia łatwiejsze dostosowywanie aplikacji.  
+- Odświeżono cały interfejs: poprawiono układ, kolory i responsywność na różnych rozdzielczościach ekranu.  
+- Dodano obsługę dwóch logo — w tym jedno generowane dynamicznie — oraz możliwość przełączania się między nimi w czasie rzeczywistym.  
+- Ujednolicono wygląd aplikacji, sprawiając, że niemal wszystkie elementy korzystają ze wspólnych stylów i zasobów statycznych.  
+- Dodano więcej czcionek systemowych do wewnętrznego użytku aplikacji, co poprawia kompatybilność i spójność stylistyczną.  
+- Usunięto link do GitHuba z paska tytułu, by uprościć interfejs i zmniejszyć wizualny bałagan.  
+- Dodano informację o braku ostatnich plików, dzięki czemu użytkownik nie widzi pustej listy bez kontekstu.  
+- Naprawiono poważny błąd, w którym kliknięcie przycisku „Nowy plik” bez aktywnego dokumentu powodowało nieskończone duplikowanie.  
+- Aplikacja teraz wita użytkownika, wyświetlając jego nazwę z systemu Windows przy uruchomieniu.  
+- Uproszczono logikę menu, co ułatwia dalszy rozwój i konserwację.  
+- Usunięto zbędne argumenty z konstruktora `SettingsWindow`, co poprawia czytelność i zmniejsza nadmiarowy kod.  
+- Naprawiono szereg drobnych błędów oraz przeprowadzono ogólne poprawki i optymalizacje.
+
 
 ## 0.5.0-alpha [25-05-2025]
 
