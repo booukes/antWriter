@@ -1,14 +1,14 @@
 {
   "Font": {
-    "Family": "Gadugi",
-    "Size": 39
+    "Family": "Courier New",
+    "Size": 30
   },
   "Editor": {
     "AutoSave": true,
     "AutoSaveInterval": 60,
     "SpellCheck": false,
     "Theme": "Light",
-    "Username": "its me niga",
+    "Username": "input username in settings",
     "Logo": "/antWriterFinalGreen.png"
   },
   "App": {

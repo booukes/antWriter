@@ -36,7 +36,7 @@ namespace antWriter
             AllocConsole();
             ConfigManager.Load();
             Resources["AppChosenLogo"] = ConfigManager.Config.Editor.Logo;
-            Resources["AppFontSize"] = (double)ConfigManager.Config.Font.Size;
+            Resources["FontSize"] = (double)ConfigManager.Config.Font.Size;
             Resources["AppEditorFont"] = new System.Windows.Media.FontFamily(ConfigManager.Config.Font.Family);
             Resources["Username"] = ConfigManager.Config.Editor.Username;
             Log.Debug($"Font Family: {ConfigManager.Config.Font.Family}");

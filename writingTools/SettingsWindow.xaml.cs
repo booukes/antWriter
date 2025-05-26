@@ -82,7 +82,7 @@ namespace antWriter
             {
                 ConfigManager.Config.Font.Family = Convert.ToString(selectedFont);
                 ConfigManager.Save();
-                Application.Current.Resources["JournalFont"] = selectedFont;
+                Application.Current.Resources["AppEditorFont"] = selectedFont;
             }
         }
 
