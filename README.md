@@ -7,7 +7,7 @@
 
 ---
 
-## <a id="changelog"></a>Technical Changelog (Current version: **0.6.2-beta**)
+## <a id="changelog"></a>Technical Changelog (Current version: **0.6.3-beta**)
 
 ## 0.6.0-beta[26-05-2025]
 - Designed and implemented a robust global resource architecture using a hybrid of dynamic and static `App.xaml` resources, with all UI variables (colors, spacing, font sizes, etc.) sourced from a centralized JSON configuration at runtime.
@@ -27,7 +27,8 @@
 - Fixed some resources not persisting after clean start
 #### 0.6.2-beta[26-05-2025]
 - Added projects folder, which the app defaults to when loading files. Also little easter egg in the files:)
-
+#### 0.6.3-beta[27-05-2025]
+- Fixed file saving logic route.
 ## 0.5.0-alpha [25-05-2025]
 - Migrated WPF Framework to `MahApps.Metro`, migrating the main window to `MetroWindow` to leverage modern theming, preparing for ui overhaul, extended controls, and a unified UX.  
 - Integrated` MahApps.Metro.IconPacks` providing scalable GitHub icons linked to interactive buttons.  
