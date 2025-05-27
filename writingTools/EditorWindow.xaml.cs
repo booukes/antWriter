@@ -148,6 +148,7 @@ namespace antWriter
                 {
                     try
                     {
+                        New.IsHitTestVisible = true;
                         string content = File.ReadAllText(filePath);
                         InternalSave(currentFile);
                         EditingBoard.Text = content;
@@ -169,9 +170,11 @@ namespace antWriter
         private void CreateNewFile_Click(object sender, RoutedEventArgs e)
         {
             InternalSave(currentFile);
+            New.IsHitTestVisible = false;
             EditingBoard.Text = "";
             currentFile = null;
             ShowFileName();
+            
         }
         public void Load_Click(object sender, RoutedEventArgs e)
         {
@@ -185,13 +188,17 @@ namespace antWriter
             openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
             if (openFileDialog.ShowDialog() == true)
             {
-                InternalSave(currentFile);
+                if (recentFiles.Count > 0)
+                {
+                    InternalSave(currentFile);
+                }
                 currentFile = openFileDialog.FileName;
                 AddRecentFile(currentFile);
                 recentFiles.Add(currentFile);
                 EditingBoard.Text = File.ReadAllText(currentFile);
                 ShowFileName();
                 HighlightActiveFileButton();
+                New.IsHitTestVisible = true;
             }
         }
 
@@ -217,6 +224,7 @@ namespace antWriter
             if (currentFile != null)
             {
                 string text = EditingBoard.Text;
+                New.IsHitTestVisible = true;
                 File.WriteAllText(currentFile, text);
             }
             else 
