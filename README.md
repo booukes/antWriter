@@ -7,7 +7,22 @@
 
 ---
 
-## <a id="changelog"></a>Technical Changelog (Current version: **0.6.3-beta**)
+## <a id="changelog"></a>Technical Changelog (Current version: **0.7.0-rc**)
+
+## 0.7.0-rc [28-05-2025]
+- Completely rewrote all of the `EditorWindow` code and most of the C# codebase.
+- Completely changed file input/output operations to use asynchronous programming with `async` and `await`, leveraging methods like `File.ReadAllTextAsync` and `File.WriteAllTextAsync` to prevent UI freezing during disk access. This ensures large file loads and saves do not block the main thread, significantly improving user experience.
+- Introduced async-based architecture across the app, paving the way for more complex features and performance improvements in future updates.
+- While the async implementation added a lot more complexity to the codebase, the overall restructuring of it has made the project significantly more maintainable and scalable. Without the new structure, async would have been a nightmare to manage—now it's just barely tolerable.
+- Implemented an autosave mechanism using a `DispatcherTimer` that triggers asynchronous save operations at regular intervals. This ensures data is backed up in the background without interrupting user interaction or degrading UI responsiveness.
+- Significantly improved logging reliability by restructuring the log creation logic, ensuring that exceptions do not prevent critical logs from being recorded.
+- Reworked the character counting logic to operate asynchronously in parallel with file I/O. This enables accurate, real-time updates of text statistics even for large documents, without affecting UI performance.
+- Fixed issues with `StaticResources` not applying correctly, restoring consistent styling across UI components.
+- Added new warnings and UX prompts, such as "Please use Save As first!" and file load confirmations to improve usability and reduce user error.
+- Resolved conflicts between UI rendering and background data operations introduced, of course by async logic, ensuring smoother interaction and reduced visual glitches.
+
+
+
 
 ## 0.6.0-beta[26-05-2025]
 - Designed and implemented a robust global resource architecture using a hybrid of dynamic and static `App.xaml` resources, with all UI variables (colors, spacing, font sizes, etc.) sourced from a centralized JSON configuration at runtime.
@@ -93,6 +108,19 @@
 ---
 
 # <a id="ETRlog"></a>ETR Log (Current version: **0.6.0-beta**)
+
+## 0.7.0-rc [28-05-2025]
+- The editor was almost entirely rebuilt from the ground up to make it cleaner, faster, and easier to improve in the future.
+- Opening and saving files is now handled asynchronously. This means those actions happen in the background while you continue working, so the app doesn’t freeze even with large documents.
+- The app’s internal structure has been updated to support more asynchronous features in future updates. These changes make it more reliable and better prepared for upcoming improvements.
+- One of the only things left without asynchronous operation is the logging system, as asynchronous programming can produce very unexpected behaviour, and the logging system the last thing we want to do unexpected things.
+- Your work now autosaves at regular intervals using asynchronous saving. This protects your progress without interrupting your work or slowing the app down.
+- The app’s logging system was largely improved to better handle errors and ensure important activity is always recorded—even when something goes wrong.
+- The character count now runs asynchronously too. That means it updates smoothly and instantly, no matter how large your document is, without affecting performance.
+- Several new features, with more to come were added thanks to asynchronous operations: file loading, file saving, autosaving, and live character counting all now run in the background to improve speed and responsiveness.
+- Fixed some issues with how the app’s styling was applied, so the user interface now looks more consistent and polished across different screens.
+- Added new messages to guide users, like reminders to "Save As" and confirmations when loading files, making the app easier and clearer to use.
+- "Asynchronous" (or "async") means the app can do multiple things at the same time—like saving a file or counting characters—without making you wait. Under the hood, this works by letting the app start a task (like reading a file) and then move on to other work instead of waiting for that task to finish. When the task is done, the app gets notified (via something called a callback, promise, or event), and it continues processing the result. This helps keep everything fast and smooth, even when handling big or time-consuming tasks.
 
 ## 0.6.0-alpha [26-05-2025]
 
@@ -180,6 +208,21 @@ Got the foundation ready with initial UI and reusable pieces:
 
 ## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.6.0-beta**)
 
+## 0.7.0-rc [28-05-2025]  
+- Edytor został niemal całkowicie przebudowany od podstaw, aby był czystszy, szybszy i łatwiejszy do dalszego rozwoju.  
+- Otwieranie i zapisywanie plików odbywa się teraz asynchronicznie. Oznacza to, że te operacje działają w tle, podczas gdy Ty możesz kontynuować pracę, dzięki czemu aplikacja nie zawiesza się nawet przy dużych dokumentach.  
+- Struktura wewnętrzna aplikacji została zaktualizowana, aby obsługiwać więcej funkcji asynchronicznych w przyszłych aktualizacjach. Zmiany te zwiększają niezawodność i przygotowują aplikację na kolejne ulepszenia.  
+- Jednym z nielicznych elementów, który nadal działa synchronicznie, jest system logowania — ponieważ programowanie asynchroniczne może powodować bardzo nieoczekiwane zachowania, a system logów to ostatnie miejsce, gdzie chcemy takich niespodzianek.  
+- Twoja praca jest teraz automatycznie zapisywana w regularnych odstępach czasu dzięki asynchronicznemu zapisywaniu. Chroni to postępy bez przerywania pracy i spowalniania aplikacji.  
+- System logowania aplikacji został znacznie ulepszony, aby lepiej obsługiwać błędy i zapewniać zapisywanie ważnych informacji — nawet jeśli coś pójdzie nie tak.  
+- Liczenie znaków również działa teraz asynchronicznie. Oznacza to, że wynik aktualizuje się płynnie i natychmiastowo, niezależnie od wielkości dokumentu, bez wpływu na wydajność.  
+- Dodano kilka nowych funkcji, z których wiele możliwe było właśnie dzięki operacjom asynchronicznym: ładowanie plików, zapisywanie, autosave i liczenie znaków na żywo działają teraz w tle, zwiększając szybkość i responsywność aplikacji.  
+- Naprawiono kilka problemów związanych z wyglądem aplikacji — interfejs użytkownika wygląda teraz bardziej spójnie i estetycznie na różnych ekranach.  
+- Dodano nowe komunikaty ułatwiające korzystanie z aplikacji, takie jak przypomnienia o użyciu „Zapisz jako” i potwierdzenia podczas ładowania plików. Dzięki temu obsługa aplikacji jest prostsza i bardziej przejrzysta.
+- Implementacja struktur związanych z asynchronicznością wprowadziło szereg nowych problemów, i utrudniło pracę z kodem, co wyrównałem znaczną poprawą struktury kodu oraz znaczną próbą uproszczenia go. Niestety programowanie asynchroniczne jest tak niemiłym stworem, że pracowanie nad programem jest teraz ledwo znośne. Gdyby nie było popraw struktury, program zapewne by umarł bardzo prędko.
+- **„Asynchroniczność” (lub „async”)** oznacza, że aplikacja może wykonywać wiele rzeczy jednocześnie — na przykład zapisywać plik lub liczyć znaki — bez konieczności czekania. **Od strony technicznej wygląda to tak, że aplikacja uruchamia dane zadanie (np. odczyt pliku), a następnie kontynuuje inne operacje, zamiast czekać na jego zakończenie. Gdy zadanie się zakończy, aplikacja zostaje o tym powiadomiona (np. poprzez tzw. callback, promisy lub zdarzenia) i wtedy przetwarza wynik.** Dzięki temu wszystko działa szybko i płynnie, nawet w przypadku dużych lub czasochłonnych zadań.
+
+
 ## 0.6.0-beta [25-05-2025]
 
 - Zbudowano zaawansowany system zasobów, który ładuje ustawienia wyglądu (kolory, odstępy, czcionki itp.) z pliku JSON, co umożliwia łatwiejsze dostosowywanie aplikacji.  
@@ -219,20 +262,7 @@ W tej wersji edytor stał się w pełni funkcjonalny i gotowy do codziennego uż
 - Dodano wsparcie dla kolorów przycisków definiowanych w formacie HEX, co daje większą swobodę w personalizacji wyglądu interfejsu.
 - Dodatkowo, w tle uporządkowałem i uprościłem kod, aby jego dalsza rozbudowa była łatwiejsza i bardziej przejrzysta.
 
-#### 0.4.3-pre-alpha, 0.4.4-pre-alpha [25-05-2025]
-- Bugfixy, optymalizacja skryptu budującego program.
-
-#### 0.4.2-pre-alpha [24-05-2025]
-- Dodana funkcja tworzenia nowych plików bezpośrednio w aplikacji.
-- Aplikacja teraz ostrzega użytkownika, że jego praca nie jest zapisywana w pliku.
-- Dodano panel informujący o obecnym pliku.
-
-#### 0.4.1-pre-alpha [24-05-2025]
-- Udoskonaliłem mechanizm autosave, aby działał jeszcze bardziej stabilnie i płynnie.
-
 ## 0.3.0-pre-alpha [24-05-2025]
-W tym wydaniu skupiłem się na zbudowaniu solidnych fundamentów aplikacji:
-
 - Nawigacja i przełączanie między różnymi częściami programu działają już płynnie i bez błędów.
 - Poprawiłem sposób zarządzania oknami, aby uniknąć problemów przy ich otwieraniu i zamykaniu.
 - Dodałem w pełni funkcjonalne, modułowe okno Ustawień, gdzie możesz dostosować różne opcje.
@@ -240,8 +270,6 @@ W tym wydaniu skupiłem się na zbudowaniu solidnych fundamentów aplikacji:
 - Naprawiłem problemy z dopasowaniem interfejsu do różnych rozmiarów ekranu.
 - Przygotowałem pasek nawigacji edytora pod przyszłe rozszerzenia funkcjonalności.
 
-#### 0.3.1-pre-alpha [24-05-2025]
-- Dodano skrypt do budowania projektu w PowerShell z możliwością zapisywania logów procesu.
 
 ## 0.2.0-pre-pre-alpha [23-05-2025]
 - Znacząco uprościłem strukturę kodu, żeby praca nad projektem była szybsza.
