@@ -83,7 +83,18 @@
         <StackPanel x:Name="RecentFiles" Grid.Row="2" Grid.Column="0"/>
         <!-- Editor -->
         <Border BorderBrush="{StaticResource AppHoverButtonBrush}" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Background="{DynamicResource AppCompliementaryBrush}" BorderThickness="0 1 0 1"/>
-        <Viewbox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" x:Name="fileNameHeader" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+        <Grid Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition  Width="3*"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Viewbox Grid.Column="0" x:Name="fileNameHeader" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
+            <Viewbox Grid.Column="1" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Stretch">
+                <TextBlock x:Name="charCounter" Margin="2"
+                        FontFamily="{StaticResource AppMenusFont}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Viewbox>
+        </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
             <Border BorderBrush="{StaticResource AppHoverButtonBrush}" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
             <TextBox x:Name="EditingBoard" BorderThickness="0" Foreground="{StaticResource AppFontColor}" FontSize="{DynamicResource FontSize}" FontFamily="{DynamicResource AppEditorFont}">

@@ -35,7 +35,7 @@ namespace antWriter
             }
             else
             {
-                MessageBox.Show("No logo found.");
+                Log.Warning("No logo found.");
             }
         }
 

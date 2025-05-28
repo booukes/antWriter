@@ -1,17 +1,27 @@
 ﻿using MahApps.Metro.Controls;
 using Microsoft.Win32;
+using Serilog;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace antWriter
 {
     public partial class EditorWindow : MetroWindow
     {
-        List<string> recentFiles = new List<string>();
-        private protected string currentFile;
+        #region init
+        // --- Fields ---
+        private bool ASEvent = false;             // Flag to control asynchronous file IO flow
+        private readonly DispatcherTimer timer;   // Timer to trigger periodic autosave
+        private bool _hasUnsavedChanges = false;  // Track if document is unsaved
+        private List<string> recentFiles = new List<string>(); // Recent file list
+        private string currentFile = null;         // Currently loaded file path
+        private bool _isLoading = false;           // Loading state flag to prevent re-entry
+
+        // UI elements for no recent files and loading prompt
         TextBlock noRecentFiles = new TextBlock
         {
             Text = "no recently used files to be shown here...",
@@ -21,32 +31,70 @@ namespace antWriter
             VerticalAlignment = VerticalAlignment.Center,
             Margin = new Thickness(5),
             Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"],
-            FontFamily = new FontFamily(new Uri("pack://application:,,,/"), "{StaticResource AppMenusFont}")
+            FontFamily = (FontFamily)Application.Current.Resources["AppMenusItalicFont"]
         };
+
+        TextBlock useSaveAs = new TextBlock
+        {
+            Text = "use save as first...",
+            FontSize = 20,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(5),
+            Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"],
+            FontFamily = (FontFamily)Application.Current.Resources["AppMenusItalicFont"]
+        };
+
+        TextBlock loadingPrompt = new TextBlock
+        {
+            Text = "loading...",
+            FontSize = 20,
+            HorizontalAlignment = HorizontalAlignment.Left,
+            VerticalAlignment = VerticalAlignment.Center,
+            Margin = new Thickness(5),
+            Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"],
+            FontFamily = (FontFamily)Application.Current.Resources["AppMenusItalicFont"]
+        };
+
         public EditorWindow()
         {
             InitializeComponent();
-            ShowFileName();
-            RecentFiles.Children.Add(noRecentFiles);
-            New.IsHitTestVisible = false;
-            Generate_Logo();
-        }
 
+            // Initialize UI components
+            ShowFileName();
+            Generate_Logo();
+
+            // Setup recent files panel with placeholder
+            RecentFiles.Children.Clear();
+            RecentFiles.Children.Add(noRecentFiles);
+
+            // Disable New button initially
+            New.IsHitTestVisible = false;
+
+            // Register TextChanged event on editing board to detect unsaved changes
+            EditingBoard.TextChanged += EditingBoard_Trigger;
+
+            // Initialize and start autosave timer (ticks every second)
+            timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(1) };
+            timer.Tick += AsyncServiceTick;
+            timer.Start();
+
+            Log.Information("Async worker thread started at:" + DateTime.Now);
+        }
+        #endregion
+        #region UISetup
+
+        /// <summary>
+        /// Loads and sets the logo image from application resources.
+        /// </summary>
         public void Generate_Logo()
         {
-            if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png")
+            string logoPath = (string)Application.Current.Resources["AppChosenLogo"];
+            if (!string.IsNullOrEmpty(logoPath))
             {
                 Image img = new Image
                 {
-                    Source = new BitmapImage(new Uri("/antWriterFinalGreen.png", UriKind.Relative))
-                };
-                Logo.Child = img;
-            }
-            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreenRed.png")
-            {
-                Image img = new Image
-                {
-                    Source = new BitmapImage(new Uri("/antWriterFinalGreenRed.png", UriKind.Relative))
+                    Source = new BitmapImage(new Uri(logoPath, UriKind.Relative))
                 };
                 Logo.Child = img;
             }
@@ -56,11 +104,343 @@ namespace antWriter
             }
         }
 
-        public void Github_Click(object sender, RoutedEventArgs e)
+        #endregion
+        #region ASServices
+        #region ASServicesIO
+        #region ASServicesIOLoading
+        /// <summary>
+        /// Loads a recent file from the recent files list asynchronously.
+        /// </summary>
+        private async void LoadRecent_Click(object sender, RoutedEventArgs e)
         {
-            ((App)Application.Current).Github_Event();
+            if (_isLoading) return;
+
+            if (sender is Button clickedBtn)
+            {
+                string filePath = clickedBtn.Tag as string;
+
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        _isLoading = true;
+                        SetLoadingUIEnabled(false);
+
+                        if (currentFile != null)
+                            await InternalSaveAsync(currentFile);
+
+                        string content = await File.ReadAllTextAsync(filePath);
+                        EditingBoard.Text = content;
+                        currentFile = filePath;
+
+                        ShowFileName();
+                        HighlightActiveFileButton();
+                        _hasUnsavedChanges = false;
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error reading file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        _isLoading = false;
+                        SetLoadingUIEnabled(true);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show($"File not found:\n{filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+            }
         }
 
+
+        /// <summary>
+        /// Opens a file dialog and loads the selected file asynchronously.
+        /// </summary>
+        /// 
+        public async void Load_Click(object sender, RoutedEventArgs e)
+        {
+            if (_isLoading) return;
+
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects");
+            if (Directory.Exists(path))
+                openFileDialog.InitialDirectory = path;
+
+            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
+
+            if (openFileDialog.ShowDialog() == true)
+            {
+                try
+                {
+                    _isLoading = true;
+                    SetLoadingUIEnabled(false);
+
+                    // Save current file before loading new one
+                    if (recentFiles.Count > 0 && currentFile != null)
+                        await InternalSaveAsync(currentFile);
+
+                    currentFile = openFileDialog.FileName;
+                    AddRecentFile(currentFile);
+
+                    // Show loading prompt UI
+                    fileNameHeader.Child = loadingPrompt;
+
+                    // Load file content asynchronously
+                    string content = await File.ReadAllTextAsync(currentFile);
+                    EditingBoard.Text = content;
+
+                    ShowFileName();
+                    HighlightActiveFileButton();
+
+                    New.IsHitTestVisible = true;
+                    _hasUnsavedChanges = false;
+                }
+                catch (Exception ex)
+                {
+                    Log.Error($"Error loading file:\n{ex.Message}");
+                    MessageBox.Show($"Error loading file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                finally
+                {
+                    _isLoading = false;
+                    SetLoadingUIEnabled(true);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Enables or disables UI controls during loading/saving operations.
+        /// </summary>
+        private void SetLoadingUIEnabled(bool enabled)
+        {
+            Load.IsHitTestVisible = enabled;
+            New.IsHitTestVisible = enabled;
+            Save.IsHitTestVisible = enabled;
+            SaveAs.IsHitTestVisible = enabled;
+
+            foreach (var child in RecentFiles.Children)
+            {
+                if (child is Button btn)
+                    btn.IsHitTestVisible = enabled;
+            }
+        }
+        #endregion
+        #region ASServicesIOSave
+        /// <summary>
+        /// Save the current text as a new file selected by user.
+        /// </summary>
+        private async void SaveAs_Click(object sender, RoutedEventArgs e)
+        {
+            New.IsHitTestVisible = true;
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                Title = "Save As",
+                Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string filePath = saveFileDialog.FileName;
+                await File.WriteAllTextAsync(filePath, EditingBoard.Text);
+                currentFile = filePath;
+                AddRecentFile(currentFile);
+                ShowFileName();
+                _hasUnsavedChanges = false;
+            }
+        }
+
+        /// <summary>
+        /// Save the current document, if a file path is known.
+        /// </summary>
+        private async void Save_Click(object sender, RoutedEventArgs e)
+        {
+            if (currentFile != null)
+            {
+                New.IsHitTestVisible = true;
+                await File.WriteAllTextAsync(currentFile, EditingBoard.Text);
+                _hasUnsavedChanges = false;
+            }
+            else
+            {
+                fileNameHeader.Child = useSaveAs;
+            }
+        }
+
+        /// <summary>
+        /// Internal save method used by autosave and manual saves.
+        /// Will prompt Save As if needed.
+        /// </summary>
+        private async Task InternalSaveAsync(string filePath)
+        {
+            New.IsHitTestVisible = true;
+
+            // If no path or empty text, skip saving
+            if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrEmpty(EditingBoard.Text))
+            {
+                Log.Warning("Autosave attempted with null or empty filePath. Skipping.");
+                return;
+            }
+
+            if (!File.Exists(filePath) && !ASEvent)
+            {
+                // Prompt Save As dialog if file doesn't exist and not autosave event
+                SaveFileDialog saveFileDialog = new SaveFileDialog
+                {
+                    Title = "Save As",
+                    Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*"
+                };
+
+                if (saveFileDialog.ShowDialog() == true)
+                {
+                    filePath = saveFileDialog.FileName;
+                    await File.WriteAllTextAsync(filePath, EditingBoard.Text);
+                    currentFile = filePath;
+                    AddRecentFile(currentFile);
+                    ShowFileName();
+                }
+            }
+            else if (File.Exists(filePath))
+            {
+                // Normal save to existing file
+                await File.WriteAllTextAsync(filePath, EditingBoard.Text);
+            }
+            else
+            {
+                Log.Information("Skipping... AS Event was true");
+            }
+
+            ASEvent = false;
+            _hasUnsavedChanges = false;
+        }
+        #endregion
+        #region ASServicesIOMisc
+
+        /// <summary>
+        /// Handles the creation of a new file.
+        /// If there are unsaved changes and a current file is set, performs an asynchronous autosave before clearing the editor.
+        /// Resets editor state, disables the "New" button, clears the text content, and updates the displayed file name.
+        /// </summary>
+        private async void CreateNewFile_Click(object sender, RoutedEventArgs e)
+        {
+            if (_hasUnsavedChanges && currentFile != null)
+            {
+                await Task.Run(() => Dispatcher.Invoke(() =>  InternalSaveAsync(currentFile)));
+                _hasUnsavedChanges = false;
+            }
+
+            New.IsHitTestVisible = false;
+            EditingBoard.Text = "";
+            currentFile = null;
+            _hasUnsavedChanges = false;  // Reset flag since it's a fresh new document
+            ShowFileName();
+        }
+
+
+        #endregion
+        #endregion
+        #region ASServicesTriggers
+
+        /// <summary>
+        /// Periodic timer tick to autosave if there are unsaved changes.
+        /// Runs asynchronously.
+        /// </summary>
+        private async void AsyncServiceTick(object sender, EventArgs e)
+        {
+            if (this.IsVisible && _hasUnsavedChanges)
+            {
+                ASEvent = true;
+                await InternalSaveAsync(currentFile);
+                _hasUnsavedChanges = false;
+                Log.Information("Autosaved at " + DateTime.Now);
+            }
+        }
+
+        /// <summary>
+        /// Triggered when user modifies the text in the editor.
+        /// Marks document as dirty and updates character count.
+        /// </summary>
+        private void EditingBoard_Trigger(object sender, TextChangedEventArgs e)
+        {
+            _hasUnsavedChanges = true;
+            charCounter.Text = $"characters: {EditingBoard.Text.Length}";
+        }
+
+        #endregion
+        #endregion
+        #region UIServices
+
+        /// <summary>
+        /// Updates the file name display label.
+        /// </summary>
+        private void ShowFileName()
+        {
+            TextBlock tb = new TextBlock();
+
+            if (string.IsNullOrEmpty(currentFile))
+            {
+                tb.Text = "working in volatile state. use 'save as' to persist changes.";
+                tb.FontFamily = (FontFamily)Application.Current.Resources["AppMenusItalicFont"];
+            }
+            else
+            {
+                tb.Text = currentFile;
+                tb.FontFamily = (FontFamily)Application.Current.Resources["AppMenusFont"];
+            }
+
+            tb.Margin = new Thickness(2);
+            tb.Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"];
+            tb.HorizontalAlignment = HorizontalAlignment.Left;
+            tb.VerticalAlignment = VerticalAlignment.Center;
+
+            fileNameHeader.Child = tb;
+        }
+
+        /// <summary>
+        /// Updates the recent files UI buttons with the current list.
+        /// </summary>
+        void AddRecentFile(string filePath)
+        {
+            filePath = Path.GetFullPath(filePath);
+            recentFiles.Insert(0, filePath);
+
+            // Remove duplicates and keep max 5 recent files
+            recentFiles = recentFiles.Distinct().Take(5).ToList();
+
+            RecentFiles.Children.Clear();
+
+            if (recentFiles.Count == 0)
+            {
+                RecentFiles.Children.Add(noRecentFiles);
+                return;
+            }
+
+            foreach (string file in recentFiles)
+            {
+                Button btn = new Button
+                {
+                    Content = Path.GetFileName(file),
+                    FontFamily = (FontFamily)Application.Current.Resources["AppMenusFont"],
+                    FontSize = 30,
+                    Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"],
+                    Margin = new Thickness(0, -1, 0, -1),
+                    Background = Brushes.Transparent,
+                    BorderBrush = Brushes.Black,
+                    Height = 60,
+                    BorderThickness = new Thickness(0, 1, 0, 1),
+                    Tag = file
+                };
+
+                btn.Click += LoadRecent_Click;
+                RecentFiles.Children.Add(btn);
+            }
+        }
+
+
+        /// <summary>
+        /// Highlights the button corresponding to the currently active file.
+        /// </summary>
         void HighlightActiveFileButton()
         {
             foreach (var child in RecentFiles.Children)
@@ -83,184 +463,14 @@ namespace antWriter
             }
         }
 
-        void AddRecentFile(string filePath)
-        {
-            filePath = System.IO.Path.GetFullPath(filePath);
-
-            recentFiles.Insert(0, filePath);
-
-            recentFiles = recentFiles.Distinct().Take(5).ToList();
-
-            RecentFiles.Children.Clear();
-
-            foreach (string file in recentFiles)
-            {
-                Button btn = new Button
-                {
-                    Content = System.IO.Path.GetFileName(file),
-                    FontFamily = (FontFamily)Application.Current.Resources["AppMenusFont"],
-                    FontSize = 30,
-                    Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"],
-                    Margin = new Thickness(0, -1, 0, -1),
-                    Background = Brushes.Transparent,
-                    BorderBrush = Brushes.Black,
-                    Height = 60,
-                    BorderThickness = new Thickness(0, 1, 0, 1),
-                    Tag = file
-                };
-
-                btn.Click += LoadRecent_Click;
-
-                RecentFiles.Children.Add(btn);
-            }
-        }
-        private void ShowFileName()
-        {
-            TextBlock tb = new TextBlock();
-
-            if (currentFile == null)
-            {
-                tb.Text = "working in volatile state. use 'save as' to persist changes.";
-                tb.FontFamily = (FontFamily)Application.Current.Resources["AppMenusItalicFont"];
-            }
-            else
-            {
-                tb.Text = currentFile;
-                tb.FontFamily = (FontFamily)Application.Current.Resources["AppMenusFont"];
-            }
-                tb.Margin = new Thickness(2);
-            
-            tb.Foreground = (SolidColorBrush)Application.Current.Resources["AppFontColor"];
-
-            tb.HorizontalAlignment = HorizontalAlignment.Left;
-            tb.VerticalAlignment = VerticalAlignment.Center;
-
-            fileNameHeader.Child = tb;
-        }
-
-        private void LoadRecent_Click(object sender, RoutedEventArgs e)
-        {
-            if (sender is Button clickedBtn)
-            {
-                string filePath = clickedBtn.Tag as string;
-
-                if (File.Exists(filePath))
-                {
-                    try
-                    {
-                        New.IsHitTestVisible = true;
-                        string content = File.ReadAllText(filePath);
-                        InternalSave(currentFile);
-                        EditingBoard.Text = content;
-                        currentFile = filePath;
-                        ShowFileName();
-                        HighlightActiveFileButton();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show($"Error reading file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show($"File not found:\n{filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-            }
-        }
-        private void CreateNewFile_Click(object sender, RoutedEventArgs e)
-        {
-            InternalSave(currentFile);
-            New.IsHitTestVisible = false;
-            EditingBoard.Text = "";
-            currentFile = null;
-            ShowFileName();
-            
-        }
-        public void Load_Click(object sender, RoutedEventArgs e)
-        {
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-            string path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "projects");
-            if (Directory.Exists(path))
-            {
-                openFileDialog.InitialDirectory = path;
-            }
-            Console.WriteLine(openFileDialog.InitialDirectory);
-            openFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-            if (openFileDialog.ShowDialog() == true)
-            {
-                if (recentFiles.Count > 0)
-                {
-                    InternalSave(currentFile);
-                }
-                currentFile = openFileDialog.FileName;
-                AddRecentFile(currentFile);
-                recentFiles.Add(currentFile);
-                EditingBoard.Text = File.ReadAllText(currentFile);
-                ShowFileName();
-                HighlightActiveFileButton();
-                New.IsHitTestVisible = true;
-            }
-        }
-
-        private void SaveAs_Click(object sender, RoutedEventArgs e)
-        {
-            New.IsHitTestVisible = true;
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
-            saveFileDialog.Title = "Save As";
-            saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-
-            if (saveFileDialog.ShowDialog() == true)
-            {
-                string filePath = saveFileDialog.FileName;
-                File.WriteAllText(filePath, EditingBoard.Text);
-                currentFile = filePath;
-                AddRecentFile(currentFile);
-                ShowFileName();
-            }
-        }
-
-        public void Save_Click(object sender, RoutedEventArgs e)
-        {
-            if (currentFile != null)
-            {
-                string text = EditingBoard.Text;
-                New.IsHitTestVisible = true;
-                File.WriteAllText(currentFile, text);
-            }
-            else 
-            {
-                MessageBox.Show("Please use Save As first!");
-            }
-        }
-        public void InternalSave(string filePath)
-        {
-            New.IsHitTestVisible = true;
-            if (!File.Exists(filePath))
-            {
-                SaveFileDialog saveFileDialog = new SaveFileDialog();
-                saveFileDialog.Title = "Save As";
-                saveFileDialog.Filter = "Text files (*.txt)|*.txt|All files (*.*)|*.*";
-
-                if (saveFileDialog.ShowDialog() == true)
-                {
-                    filePath = saveFileDialog.FileName;
-                    File.WriteAllText(filePath, EditingBoard.Text);
-                    currentFile = filePath;
-                    AddRecentFile(currentFile);
-                    ShowFileName();
-                }
-            }
-            else
-            {
-                File.WriteAllText(filePath, EditingBoard.Text);
-            }
-        }
-
         public void Exit_Click(object sender, RoutedEventArgs e)
         {
             MenuWindow menuWindow = new MenuWindow();
             menuWindow.Show();
             this.Close();
         }
+
+        #endregion
     }
 }
+    
