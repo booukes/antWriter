@@ -40,10 +40,6 @@ namespace antWriter
                 MessageBox.Show("No logo found.");
             }
         }
-        public void Github_Click(object sender, RoutedEventArgs e)
-        {
-            ((App)Application.Current).Github_Event();
-        }
         public void EditorWindow_Click(object sender, RoutedEventArgs e)
         {
             EditorWindow editorWindow = new EditorWindow();

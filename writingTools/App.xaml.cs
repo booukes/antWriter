@@ -1,4 +1,5 @@
 ﻿using Serilog;
+using Serilog.Enrichers.WithCaller;
 using Serilog.Sinks.SystemConsole.Themes;
 using System.Diagnostics;
 using System.IO;
@@ -9,65 +10,79 @@ namespace antWriter
 {
     public partial class App : Application
     {
+        Stopwatch sw = new Stopwatch();
+        Stopwatch swDLL = new Stopwatch();
         [DllImport("kernel32.dll")]
         public static extern bool AllocConsole();
-        Process currentProcess = Process.GetCurrentProcess();
+        private readonly Lazy<Process> _currentProcess = new Lazy<Process>(() => Process.GetCurrentProcess());
+        public Process CurrentProcess => _currentProcess.Value;
 
-        public void Github_Event()
+        private static Lazy<AppConfig> _config = new Lazy<AppConfig>(() =>
         {
-            var psi = new ProcessStartInfo
-            {
-                FileName = "https://github.com/booukes/antWriter",
-                UseShellExecute = true
-            };
-            Process.Start(psi);
-        }
+            ConfigManager.Load();
+            return ConfigManager.Config;
+        });
 
-        protected override void OnStartup(StartupEventArgs e)
+        public static AppConfig Config => _config.Value;
+
+
+        protected override async void OnStartup(StartupEventArgs e)
         {
+            sw.Start();
             string logFileName = $"logs\\app-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.log";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .WriteTo.Console(outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}", theme: SystemConsoleTheme.Colored)
-                .WriteTo.File(logFileName, rollingInterval: RollingInterval.Day, outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] {Message:lj}{NewLine}{Exception}")
+                .Enrich.WithCaller()
+                .WriteTo.Console(
+                    outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] [{Caller}] {Message:lj}{NewLine}{Exception}",
+                    restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
+                    theme: SystemConsoleTheme.Colored)
+                .WriteTo.File(
+                    logFileName,
+                    rollingInterval: RollingInterval.Day,
+                    restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose,
+                    outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] [{Caller}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
+            swDLL.Start();
             AllocConsole();
-            ConfigManager.Load();
-            Resources["AppChosenLogo"] = ConfigManager.Config.Editor.Logo;
-            Resources["FontSize"] = (double)ConfigManager.Config.Font.Size;
-            Resources["AppEditorFont"] = new System.Windows.Media.FontFamily(ConfigManager.Config.Font.Family);
-            Resources["Username"] = ConfigManager.Config.Editor.Username;
-            Log.Debug($"Font Family: {ConfigManager.Config.Font.Family}");
-            Log.Debug($"Font Size: {ConfigManager.Config.Font.Size}");
-            Log.Debug($"Logo: {ConfigManager.Config.Editor.Logo}");
+            swDLL.Stop();
+            Log.Information($"Init sequence started. Console allocation took: {swDLL.ElapsedMilliseconds}ms.");
+            Resources["AppChosenLogo"] = App.Config.Editor.Logo;
+            Resources["FontSize"] = (double)App.Config.Font.Size;
+            Resources["AppEditorFont"] = new System.Windows.Media.FontFamily(App.Config.Font.Family);
+            Resources["Username"] = App.Config.Editor.Username;
+            Log.Debug($"Font Family: {App.Config.Font.Family}");
+            Log.Debug($"Font Size: {App.Config.Font.Size}");
+            Log.Debug($"Logo: {App.Config.Editor.Logo}");
             Log.Debug("Logo:" + Application.Current.Resources["AppChosenLogo"]);
-            Log.Debug($"Username: {ConfigManager.Config.Editor.Username}");
-            Log.Information("Console attached. Debugging started.");
-            Log.Information("Current Directory: {Directory}", Environment.CurrentDirectory);
-            Log.Information("Executable Path: {ExePath}", AppContext.BaseDirectory);
-            Log.Information("Config File Path: {ConfigPath}", Path.GetFullPath("config.json"));
-            Log.Information("Machine Name: {MachineName}", Environment.MachineName);
-            Log.Information("User Name: {UserName}", Environment.UserName);
-            Log.Information("OS Version: {OSVersion}", Environment.OSVersion);
-            Log.Information(".NET Version: {DotNetVersion}", Environment.Version);
-            Log.Information("64-bit OS: {Is64BitOS}", Environment.Is64BitOperatingSystem);
-            Log.Information("64-bit Process: {Is64BitProcess}", Environment.Is64BitProcess);
-            Log.Information("CPU Cores: {ProcessorCount}", Environment.ProcessorCount);
-            Log.Information("System Uptime (s): {Uptime}", Environment.TickCount64 / 1000);
+            Log.Debug($"Username: {App.Config.Editor.Username}");
+            Log.Verbose("Console attached. Debugging started.");
+            Log.Verbose("Current Directory: {Directory}", Environment.CurrentDirectory);
+            Log.Verbose("Executable Path: {ExePath}", AppContext.BaseDirectory);
+            Log.Verbose("Config File Path: {ConfigPath}", Path.GetFullPath("config.json"));
+            Log.Verbose("Machine Name: {MachineName}", Environment.MachineName);
+            Log.Verbose("User Name: {UserName}", Environment.UserName);
+            Log.Verbose("OS Version: {OSVersion}", Environment.OSVersion);
+            Log.Verbose(".NET Version: {DotNetVersion}", Environment.Version);
+            Log.Verbose("64-bit OS: {Is64BitOS}", Environment.Is64BitOperatingSystem);
+            Log.Verbose("64-bit Process: {Is64BitProcess}", Environment.Is64BitProcess);
+            Log.Verbose("CPU Cores: {ProcessorCount}", Environment.ProcessorCount);
+            Log.Verbose("System Uptime (s): {Uptime}", Environment.TickCount64 / 1000);
             Log.Information("=== Resource Usage ===");
             Log.Information("Physical Memory Usage: {0} MB",
-                Math.Round(currentProcess.WorkingSet64 / 1024.0 / 1024.0, 2));
+                Math.Round(CurrentProcess.WorkingSet64 / 1024.0 / 1024.0, 2));
             Log.Information("Private Memory Size: {0} MB",
-                Math.Round(currentProcess.PrivateMemorySize64 / 1024.0 / 1024.0, 2));
+                Math.Round(CurrentProcess.PrivateMemorySize64 / 1024.0 / 1024.0, 2));
             Log.Information("Virtual Memory Size: {0} MB",
-                Math.Round(currentProcess.VirtualMemorySize64 / 1024.0 / 1024.0, 2));
+                Math.Round(CurrentProcess.VirtualMemorySize64 / 1024.0 / 1024.0, 2));
             Log.Information("Paged System Memory Size: {0} MB",
-                Math.Round(currentProcess.PagedSystemMemorySize64 / 1024.0 / 1024.0, 2));
+                Math.Round(CurrentProcess.PagedSystemMemorySize64 / 1024.0 / 1024.0, 2));
             Log.Information("CPU Time (User + Kernel): {0} ms",
-                (currentProcess.UserProcessorTime + currentProcess.PrivilegedProcessorTime).TotalMilliseconds);
-
+                (CurrentProcess.UserProcessorTime + CurrentProcess.PrivilegedProcessorTime).TotalMilliseconds);
 
             base.OnStartup(e);
+            sw.Stop();
+            Log.Information($"SysInit took: {sw.ElapsedMilliseconds}ms");
         }
     }
 }

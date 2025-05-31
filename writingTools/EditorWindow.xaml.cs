@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using Serilog;
+using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,7 +21,6 @@ namespace antWriter
         private List<string> recentFiles = new List<string>(); // Recent file list
         private string currentFile = null;         // Currently loaded file path
         private bool _isLoading = false;           // Loading state flag to prevent re-entry
-
         // UI elements for no recent files and loading prompt
         TextBlock noRecentFiles = new TextBlock
         {
@@ -111,6 +111,12 @@ namespace antWriter
         /// <summary>
         /// Loads a recent file from the recent files list asynchronously.
         /// </summary>
+        /// 
+
+        private void RemoveRecentFile(string currentFile)
+        {
+
+        }
         private async void LoadRecent_Click(object sender, RoutedEventArgs e)
         {
             if (_isLoading) return;
@@ -139,7 +145,8 @@ namespace antWriter
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show($"Error reading file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show("An unknown error has occured. See console or logs for full information.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                        Log.Warning("An unknown error has occured. File removed from panel, error info logged.", ex);
                     }
                     finally
                     {
@@ -149,7 +156,10 @@ namespace antWriter
                 }
                 else
                 {
-                    MessageBox.Show($"File not found:\n{filePath}", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    MessageBox.Show("An unknown error has occured. See console or logs for full information.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Log.Warning("An unknown error has occured.");
+                    Log.Error("Error info could not be written.");
+                    Log.Information("Core recovered with no issues.");
                 }
             }
         }
@@ -182,6 +192,11 @@ namespace antWriter
                         await InternalSaveAsync(currentFile);
 
                     currentFile = openFileDialog.FileName;
+
+                    FileInfo fileInfo = new FileInfo(currentFile);
+                    if (fileInfo.Length > 1048576) { Log.Warning($"File is too large: {fileInfo.Length}b (>1mb!)"); return; }//1mb
+                    else { Log.Information($"File is loading... Size: {fileInfo.Length}b"); }
+
                     AddRecentFile(currentFile);
 
                     // Show loading prompt UI
@@ -190,7 +205,6 @@ namespace antWriter
                     // Load file content asynchronously
                     string content = await File.ReadAllTextAsync(currentFile);
                     EditingBoard.Text = content;
-
                     ShowFileName();
                     HighlightActiveFileButton();
 
@@ -199,13 +213,15 @@ namespace antWriter
                 }
                 catch (Exception ex)
                 {
-                    Log.Error($"Error loading file:\n{ex.Message}");
-                    MessageBox.Show($"Error loading file:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Log.Error($"Error loading file:\n{ex}");
+                    this.Hide();
+                    MessageBox.Show($"FATAL ERROR:\n{ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 finally
                 {
                     _isLoading = false;
                     SetLoadingUIEnabled(true);
+                    Log.Verbose($"Loading finished! Thread work halted.");
                 }
             }
         }

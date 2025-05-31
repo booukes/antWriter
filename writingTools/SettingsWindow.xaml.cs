@@ -85,11 +85,6 @@ namespace antWriter
                 Application.Current.Resources["AppEditorFont"] = selectedFont;
             }
         }
-
-        public void Github_Click(object sender, RoutedEventArgs e)
-        {
-            ((App)Application.Current).Github_Event();
-        }
         public void Exit_Click(object sender, RoutedEventArgs e)
         {
             MenuWindow menuWindow = new MenuWindow();

@@ -57,11 +57,14 @@ public static class ConfigManager
         }
     }
 
+
+
     public static void Save()
     {
         try
         {
-            string json = JsonSerializer.Serialize(Config, new JsonSerializerOptions { WriteIndented = true });
+            var options = new JsonSerializerOptions { WriteIndented = true };
+            string json = JsonSerializer.Serialize(Config, options);
             File.WriteAllText(ConfigFile, json);
             Console.WriteLine($"Config saved successfully to {Path.GetFullPath(ConfigFile)}");
         }
@@ -82,4 +85,5 @@ public static class ConfigManager
             Console.WriteLine("Unexpected error while saving config file: " + ex.Message);
         }
     }
+
 }
