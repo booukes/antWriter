@@ -1,13 +1,11 @@
 # Index
-- [Technical Changelog](#changelog)
+- [Full Changelog](#changelog)
 - [ETR Log](#ETRlog)
 - [ETR Log PL](#ETRPLlog)
-- [Todo](#todo)
-- [antWriter](#antwriter)
 
 ---
 
-## <a id="changelog"></a>Technical Changelog (Current version: **0.7.0-rc**)
+## <a id="changelog"></a>Full Changelog (Current version: **0.7.1-rc**)
 
 ## 0.7.0-rc [28-05-2025]
 - Completely rewrote all of the `EditorWindow` code and most of the C# codebase.
@@ -21,8 +19,12 @@
 - Added new warnings and UX prompts, such as "Please use Save As first!" and file load confirmations to improve usability and reduce user error.
 - Resolved conflicts between UI rendering and background data operations introduced, of course by async logic, ensuring smoother interaction and reduced visual glitches.
 
-
-
+#### 0.7.1-rc2[31-05-2025]
+- Optimized the codebase using `Lazy` variables and set up lazy-loading config file which improved the boot time from 650-200ms in prod.
+- Enriched log output with caller and added more logging events.
+- Started preparing for public release, works have started on logs refactoring with separate sink parameters.
+- Added 1mb file size limit, will be removed later in development after the addition of serial file loading.
+- Removed legacy github link code.
 
 ## 0.6.0-beta[26-05-2025]
 - Designed and implemented a robust global resource architecture using a hybrid of dynamic and static `App.xaml` resources, with all UI variables (colors, spacing, font sizes, etc.) sourced from a centralized JSON configuration at runtime.
@@ -107,7 +109,7 @@
 
 ---
 
-# <a id="ETRlog"></a>ETR Log (Current version: **0.6.0-beta**)
+# <a id="ETRlog"></a>ETR Log (Current version: **0.7.0-rc**)
 
 ## 0.7.0-rc [28-05-2025]
 - The editor was almost entirely rebuilt from the ground up to make it cleaner, faster, and easier to improve in the future.
@@ -160,17 +162,11 @@ This update made the editor fully functional for the first time, adding essentia
 - Buttons that shouldn’t be clickable are now disabled but keep their normal appearance—no more confusing grayed-out buttons.
 - You can customize button colors using HEX color codes, giving you a nicer and more flexible look.
 - Under the hood, the code was cleaned up and organized to make future improvements easier and keep everything neat.
-
-#### 0.4.3-pre-alpha, 0.4.4-pre-alpha [25-05-2025]
 - Minor code fixes, optimized the script that builds the app.
-
-#### 0.4.2-pre-alpha [24-05-2025]
 - You can now create new files directly from the app.
 - The app will warn you if you are NOT writing to a file, and your work is unsafe.
 - There is now a panel which displays the current file.
 
-#### 0.4.1-pre-alpha [24-05-2025]
-- Improved autosave function to be more reliable and smoother.
 
 ## 0.3.0-pre-alpha [24-05-2025]
 This update focused on getting the app’s core structure in place:
@@ -181,8 +177,6 @@ This update focused on getting the app’s core structure in place:
 - Fonts and colors got a big upgrade with a new system that makes customizing easier.
 - I fixed how the program adjusts to different screen sizes so everything looks right.
 - The editor’s navigation bar is set up and ready for future features.
-
-#### 0.3.1-pre-alpha [24-05-2025]
 - Added PowerShell build script with build logging functionality.
 
 ## 0.2.0-pre-pre-alpha [23-05-2025]
@@ -198,15 +192,13 @@ Got the foundation ready with initial UI and reusable pieces:
 - Added a basic menu, though it’s not working fully yet.
 - Created modular components designed to be reused later on.
 - Made improvements to the build process to make it smoother and more reliable.
-
-#### 0.1.1-pre-pre-alpha [22-05-2025]
 - Added comments throughout the code to make it easier to understand and edit in the future.
 
-*Last updated: 24-05-2025*
+*Last updated: 31-05-2025*
 
 ---
 
-## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.6.0-beta**)
+## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.7.0-rc**)
 
 ## 0.7.0-rc [28-05-2025]  
 - Edytor został niemal całkowicie przebudowany od podstaw, aby był czystszy, szybszy i łatwiejszy do dalszego rozwoju.  
@@ -280,66 +272,6 @@ W tej wersji edytor stał się w pełni funkcjonalny i gotowy do codziennego uż
 - Dodano prostą wersję menu, która jeszcze nie działa.
 - Stworzyłem pierwsze modułowe komponenty do dalszego wykorzystania.
 - Ulepszyłem proces budowania aplikacji, żeby był bardziej niezawodny.
-
-#### 0.1.1-pre-pre-alpha [22-05-2025]
 - Dodałem komentarze w kodzie, co znacznie ułatwia jego zrozumienie i przyszłą pracę nad projektem.
 
-*Ostatnia aktualizacja: 24-05-2025*
-
-
----
-# TODO<a id="todo"></a>
-
-### A collection of future ideas and features for development.
-
-## ✍️ Editor Features
-- [ ] Undo / Redo functionality
-- [ ] Real-time autosave indicator (e.g., "Saved ✓" / "Saving…")
-- [ ] Multi-tab document support
-- [ ] Word / character / line counter
-- [ ] "Rename file" functionality
-- [ ] Document title detection from first line
-- [ ] Highlight unsaved file button in recent list
-- [ ] Custom font picker dialog
-- [ ] Theme switcher (light/dark/custom)
-- [ ] Markdown preview panel
-
-## 📁 File Management
-- [ ] File version history (local backups)
-- [ ] Export as PDF or HTML
-- [ ] "Open Folder" for workspace-wide editing
-- [ ] Drag-and-drop file support
-- [ ] File recovery after crash
-
-## ⚙️ Settings
-- [ ] Per-file editor settings (font, theme)
-- [ ] Auto-indent and tab width configuration
-- [ ] Custom keybindings support
-- [ ] Reset settings to default button
-
-## 🛠️ Utility & Features
-- [ ] Command palette (Ctrl+P-like fuzzy actions)
-- [ ] Typing sound effects toggle (distraction-free writing)
-- [ ] Daily writing goal tracker
-- [ ] Pomodoro timer integration
-- [ ] Plugin system or scripting support
-
-## ☁️ Cloud & Sharing (Experimental)
-- [ ] Cloud sync with Google Drive / OneDrive
-- [ ] Share document as link (via temp host or cloud)
-- [ ] Live collaboration (multi-user editing)
-
-## 🧪 Fun / Extras
-- [ ] Hidden “typewriter” theme mode
-- [ ] Ambient sound background feature
-- [ ] "Zen mode" full-screen writing with no UI
-
----
-
-> Add, revise, and cut freely as the project evolves.
-
-
----
-
-## <a id="antwriter"></a>antWriter
-### The poet's assistant.
+*Ostatnia aktualizacja: 31-05-2025*
