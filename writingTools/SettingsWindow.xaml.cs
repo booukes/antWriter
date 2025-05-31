@@ -15,27 +15,25 @@ namespace antWriter
             FontBox.ItemsSource = Fonts.SystemFontFamilies;
             Generate_Logo();
         }
+
         public void Generate_Logo()
         {
-            if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png")
+            string flag = (string)Application.Current.Resources["AppChosenLogo"];
+            Image img = null;
+            switch (flag)
             {
-                Image img = new Image
-                {
-                    Source = new BitmapImage(new Uri("/antWriterFinalGreen.png", UriKind.Relative))
-                };
-                Logo.Child = img;
-            }
-            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreenRed.png")
-            {
-                Image img = new Image
-                {
-                    Source = new BitmapImage(new Uri("/antWriterFinalGreenRed.png", UriKind.Relative))
-                };
-                Logo.Child = img;
-            }
-            else
-            {
-                Log.Warning("No logo found.");
+                case "/antWriterFinalGreen.png":
+                    img = new Image
+                    {
+                        Source = new BitmapImage(new Uri("/antWriterFinalGreen.png", UriKind.Relative))
+                    };  break;
+                case "/antWriterFinalGreenRed.png":
+                    img = new Image
+                    {
+                        Source = new BitmapImage(new Uri("/antWriterFinalGreenRed.png", UriKind.Relative))
+                    };  break;
+                default:
+                    Log.Warning("No logo found.");break;
             }
         }
 

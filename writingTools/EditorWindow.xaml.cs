@@ -108,15 +108,11 @@ namespace antWriter
         #region ASServices
         #region ASServicesIO
         #region ASServicesIOLoading
+
         /// <summary>
         /// Loads a recent file from the recent files list asynchronously.
         /// </summary>
         /// 
-
-        private void RemoveRecentFile(string currentFile)
-        {
-
-        }
         private async void LoadRecent_Click(object sender, RoutedEventArgs e)
         {
             if (_isLoading) return;
@@ -124,7 +120,6 @@ namespace antWriter
             if (sender is Button clickedBtn)
             {
                 string filePath = clickedBtn.Tag as string;
-
                 if (File.Exists(filePath))
                 {
                     try
@@ -138,7 +133,6 @@ namespace antWriter
                         string content = await File.ReadAllTextAsync(filePath);
                         EditingBoard.Text = content;
                         currentFile = filePath;
-
                         ShowFileName();
                         HighlightActiveFileButton();
                         _hasUnsavedChanges = false;
@@ -229,6 +223,7 @@ namespace antWriter
         /// <summary>
         /// Enables or disables UI controls during loading/saving operations.
         /// </summary>
+        /// 
         private void SetLoadingUIEnabled(bool enabled)
         {
             Load.IsHitTestVisible = enabled;
@@ -244,9 +239,11 @@ namespace antWriter
         }
         #endregion
         #region ASServicesIOSave
+
         /// <summary>
         /// Save the current text as a new file selected by user.
         /// </summary>
+        /// 
         private async void SaveAs_Click(object sender, RoutedEventArgs e)
         {
             New.IsHitTestVisible = true;
@@ -270,6 +267,7 @@ namespace antWriter
         /// <summary>
         /// Save the current document, if a file path is known.
         /// </summary>
+        /// 
         private async void Save_Click(object sender, RoutedEventArgs e)
         {
             if (currentFile != null)
@@ -338,6 +336,7 @@ namespace antWriter
         /// If there are unsaved changes and a current file is set, performs an asynchronous autosave before clearing the editor.
         /// Resets editor state, disables the "New" button, clears the text content, and updates the displayed file name.
         /// </summary>
+        /// 
         private async void CreateNewFile_Click(object sender, RoutedEventArgs e)
         {
             if (_hasUnsavedChanges && currentFile != null)
@@ -362,6 +361,7 @@ namespace antWriter
         /// Periodic timer tick to autosave if there are unsaved changes.
         /// Runs asynchronously.
         /// </summary>
+        /// 
         private async void AsyncServiceTick(object sender, EventArgs e)
         {
             if (this.IsVisible && _hasUnsavedChanges)
@@ -377,6 +377,7 @@ namespace antWriter
         /// Triggered when user modifies the text in the editor.
         /// Marks document as dirty and updates character count.
         /// </summary>
+        /// 
         private void EditingBoard_Trigger(object sender, TextChangedEventArgs e)
         {
             _hasUnsavedChanges = true;
@@ -386,6 +387,12 @@ namespace antWriter
         #endregion
         #endregion
         #region UIServices
+
+        private void AI_Click(object sender, RoutedEventArgs e)
+        {
+            AIWindow aiWindow = new AIWindow();
+            aiWindow.Show();
+        }
 
         /// <summary>
         /// Updates the file name display label.

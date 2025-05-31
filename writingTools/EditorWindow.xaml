@@ -77,6 +77,13 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Viewbox>
             </Button>
+            <Button x:Name="ai" Click="AI_Click" Grid.Row="0" Grid.Column="5" Background="Transparent" Margin="0 5 0 5" Foreground="{StaticResource AppFontColor}" BorderBrush="{StaticResource AppFontColor}" BorderThickness="0 0 1 0">
+                <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                    <TextBlock Text="AI" Margin="2"
+                        FontFamily="{StaticResource AppMenusFont}"
+                        HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Viewbox>
+            </Button>
         </Grid>
         <!-- File view -->
         <Border x:Name="BorderFiles" BorderBrush="{StaticResource AppHoverButtonBrush}" BorderThickness="0,0,1,0" Grid.Row="2" Grid.Column="0" Background="{DynamicResource AppBackgroundBrush}" />
