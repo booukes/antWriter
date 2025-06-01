@@ -1,7 +1,6 @@
 ﻿using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using Serilog;
-using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,20 +8,20 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
-
 namespace antWriter
 {
     public partial class EditorWindow : MetroWindow
     {
-        #region init
         // --- Fields ---
         private bool ASEvent = false;             // Flag to control asynchronous file IO flow
         private readonly DispatcherTimer timer;   // Timer to trigger periodic autosave
         private bool _hasUnsavedChanges = false;  // Track if document is unsaved
-        private List<string> recentFiles = new List<string>(); // Recent file list
         private string currentFile = null;         // Currently loaded file path
         private bool _isLoading = false;           // Loading state flag to prevent re-entry
-        // UI elements for no recent files and loading prompt
+
+        private List<string> recentFiles = new List<string>(); // Recent file list
+
+
         TextBlock noRecentFiles = new TextBlock
         {
             Text = "no recently used files to be shown here...",
@@ -82,8 +81,6 @@ namespace antWriter
 
             Log.Information("Async worker thread started at:" + DateTime.Now);
         }
-        #endregion
-        #region UISetup
 
         /// <summary>
         /// Loads and sets the logo image from application resources.
@@ -105,19 +102,12 @@ namespace antWriter
             }
         }
 
-        #endregion
-        #region ASServices
-        #region ASServicesIO
-        #region ASServicesIOLoading
+        //-----------------------------ASYNC LOADING----------------------------------//
+
         /// <summary>
         /// Loads a recent file from the recent files list asynchronously.
         /// </summary>
         /// 
-
-        private void RemoveRecentFile(string currentFile)
-        {
-
-        }
         private async void LoadRecent_Click(object sender, RoutedEventArgs e)
         {
             if (_isLoading) return;
@@ -243,8 +233,9 @@ namespace antWriter
                     btn.IsHitTestVisible = enabled;
             }
         }
-        #endregion
-        #region ASServicesIOSave
+
+        //------------------------------------ASYNC SAVING------------------------------------//
+
         /// <summary>
         /// Save the current text as a new file selected by user.
         /// </summary>
@@ -331,8 +322,6 @@ namespace antWriter
             ASEvent = false;
             _hasUnsavedChanges = false;
         }
-        #endregion
-        #region ASServicesIOMisc
 
         /// <summary>
         /// Handles the creation of a new file.
@@ -354,10 +343,7 @@ namespace antWriter
             ShowFileName();
         }
 
-
-        #endregion
-        #endregion
-        #region ASServicesTriggers
+        //----------------------------------ASYNC TRIGGERS------------------------------------//
 
         /// <summary>
         /// Periodic timer tick to autosave if there are unsaved changes.
@@ -383,13 +369,14 @@ namespace antWriter
             _hasUnsavedChanges = true;
             charCounter.Text = $"characters: {EditingBoard.Text.Length}";
         }
-
-        #endregion
-        #endregion
-        #region UIServices
         private bool _isDistractionFree = false; // Track distraction-free mode state
 
 
+        //---------------------------------UI SERVICES--------------------------------------//
+
+        /// <summary>
+        /// Toggles ZenMode, a mode of distraction-free writing.
+        /// </summary>
         private void ZenMode_Click(object sender, RoutedEventArgs e)
         {
             _isDistractionFree = !_isDistractionFree;
@@ -399,19 +386,25 @@ namespace antWriter
 
             UIElement[] elements = new UIElement[]
             {
-            Logo, Exit, Save, SaveAs, Load, New,
-            BorderFiles, RecentFiles, fileNameHeader, charCounter
+        Logo, Exit, Save, SaveAs, Load, New, menuBorder,
+        BorderFiles, RecentFiles, fileNameHeader, charCounter, borderFileName
             };
 
             if (_isDistractionFree)
             {
-                // Fade out all elements first, then collapse and adjust layout
+                zenOff.Background = (SolidColorBrush)Application.Current.Resources["AppButtonBrush"];
                 var fadeOutStoryboard = new Storyboard();
 
                 foreach (var element in elements)
                 {
-                    // Animate Opacity from 1 to 0
-                    var fadeOut = new DoubleAnimation(1, 0, fadeOutDuration);
+                    var fadeOut = new DoubleAnimation
+                    {
+                        From = 1,
+                        To = 0,
+                        Duration = new Duration(fadeOutDuration),
+                        EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+                    };
+
                     Storyboard.SetTarget(fadeOut, element);
                     Storyboard.SetTargetProperty(fadeOut, new PropertyPath(UIElement.OpacityProperty));
                     fadeOutStoryboard.Children.Add(fadeOut);
@@ -419,38 +412,35 @@ namespace antWriter
 
                 fadeOutStoryboard.Completed += (s, _) =>
                 {
-                    // After fade out, collapse elements and change layout
                     foreach (var element in elements)
                     {
                         element.Visibility = Visibility.Collapsed;
-                        element.Opacity = 1; // reset opacity for later use
+                        element.Opacity = 1;
                     }
 
-                    // Adjust layout for full-editor experience
                     MainGrid.ColumnDefinitions[0].Width = new GridLength(0);
-                    MainGrid.RowDefinitions[0].Height = new GridLength(0); // Top menu
-                    MainGrid.RowDefinitions[1].Height = new GridLength(0); // Filename & counter
-                    MainGrid.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star); // Editor fills everything
+                    MainGrid.RowDefinitions[0].Height = new GridLength(0);
+                    MainGrid.RowDefinitions[1].Height = new GridLength(0);
+                    MainGrid.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star);
 
                     this.WindowStyle = WindowStyle.None;
                     this.WindowState = WindowState.Maximized;
                     this.ResizeMode = ResizeMode.NoResize;
                     this.Topmost = true;
-                    Application.Current.Resources["FontSize"] = (double)Application.Current.Resources["FontSize"] * 1.5; // Change font for distraction-free mode
+                    
+                    Application.Current.Resources["FontSize"] = (double)Application.Current.Resources["FontSize"] * 1.5;
                 };
 
                 fadeOutStoryboard.Begin();
             }
             else
             {
-                // Make elements visible, set opacity to 0, then fade them in
                 foreach (var element in elements)
                 {
                     element.Visibility = Visibility.Visible;
                     element.Opacity = 0;
                 }
 
-                // Restore layout first
                 MainGrid.ColumnDefinitions[0].Width = new GridLength(200);
                 MainGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
                 MainGrid.RowDefinitions[1].Height = new GridLength(0.6, GridUnitType.Star);
@@ -460,13 +450,21 @@ namespace antWriter
                 this.WindowState = WindowState.Maximized;
                 this.ResizeMode = ResizeMode.CanResize;
                 this.Topmost = false;
+                zenOff.Background = (SolidColorBrush)Application.Current.Resources["AppBackgroundBrush"];
                 Application.Current.Resources["FontSize"] = (double)Application.Current.Resources["FontSize"] / 1.5;
 
                 var fadeInStoryboard = new Storyboard();
 
                 foreach (var element in elements)
                 {
-                    var fadeIn = new DoubleAnimation(0, 1, fadeInDuration);
+                    var fadeIn = new DoubleAnimation
+                    {
+                        From = 0,
+                        To = 1,
+                        Duration = new Duration(fadeInDuration),
+                        EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseInOut }
+                    };
+
                     Storyboard.SetTarget(fadeIn, element);
                     Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
                     fadeInStoryboard.Children.Add(fadeIn);
@@ -479,10 +477,10 @@ namespace antWriter
 
 
 
-    /// <summary>
-    /// Updates the file name display label.
-    /// </summary>
-    private void ShowFileName()
+        /// <summary>
+        /// Updates the file name display label.
+        /// </summary>
+        private void ShowFileName()
         {
             TextBlock tb = new TextBlock();
 
@@ -577,8 +575,6 @@ namespace antWriter
             menuWindow.Show();
             this.Close();
         }
-
-        #endregion
     }
 }
     
