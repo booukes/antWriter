@@ -5,7 +5,7 @@
 
 ---
 
-## <a id="changelog"></a>Full Changelog (Current version: **0.7.1-rc**)
+## <a id="changelog"></a>Full Changelog (Current version: **0.7.2-rc3**)
 
 ## 0.7.0-rc [28-05-2025]
 - Completely rewrote all of the `EditorWindow` code and most of the C# codebase.
@@ -25,6 +25,9 @@
 - Started preparing for public release, works have started on logs refactoring with separate sink parameters.
 - Added 1mb file size limit, will be removed later in development after the addition of serial file loading.
 - Removed legacy github link code.
+
+#### 0.7.2-rc3[1-06-2025]
+- Added ZenMode functionality and cleaned up some resources.
 
 ## 0.6.0-beta[26-05-2025]
 - Designed and implemented a robust global resource architecture using a hybrid of dynamic and static `App.xaml` resources, with all UI variables (colors, spacing, font sizes, etc.) sourced from a centralized JSON configuration at runtime.
@@ -109,7 +112,7 @@
 
 ---
 
-# <a id="ETRlog"></a>ETR Log (Current version: **0.7.0-rc**)
+# <a id="ETRlog"></a>ETR Log (Current version: **0.7.2-rc3**)
 
 ## 0.7.0-rc [28-05-2025]
 - The editor was almost entirely rebuilt from the ground up to make it cleaner, faster, and easier to improve in the future.
@@ -120,6 +123,7 @@
 - The app’s logging system was largely improved to better handle errors and ensure important activity is always recorded—even when something goes wrong.
 - The character count now runs asynchronously too. That means it updates smoothly and instantly, no matter how large your document is, without affecting performance.
 - Several new features, with more to come were added thanks to asynchronous operations: file loading, file saving, autosaving, and live character counting all now run in the background to improve speed and responsiveness.
+- ZenMode was added allowing you to fully endulge in your writing tasks.
 - Fixed some issues with how the app’s styling was applied, so the user interface now looks more consistent and polished across different screens.
 - Added new messages to guide users, like reminders to "Save As" and confirmations when loading files, making the app easier and clearer to use.
 - "Asynchronous" (or "async") means the app can do multiple things at the same time—like saving a file or counting characters—without making you wait. Under the hood, this works by letting the app start a task (like reading a file) and then move on to other work instead of waiting for that task to finish. When the task is done, the app gets notified (via something called a callback, promise, or event), and it continues processing the result. This helps keep everything fast and smooth, even when handling big or time-consuming tasks.
@@ -198,7 +202,7 @@ Got the foundation ready with initial UI and reusable pieces:
 
 ---
 
-## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.7.0-rc**)
+## <a id="ETRPLlog"></a> Lista ETR (Obecna wersja: **0.7.2-rc3**)
 
 ## 0.7.0-rc [28-05-2025]  
 - Edytor został niemal całkowicie przebudowany od podstaw, aby był czystszy, szybszy i łatwiejszy do dalszego rozwoju.  
@@ -211,6 +215,7 @@ Got the foundation ready with initial UI and reusable pieces:
 - Dodano kilka nowych funkcji, z których wiele możliwe było właśnie dzięki operacjom asynchronicznym: ładowanie plików, zapisywanie, autosave i liczenie znaków na żywo działają teraz w tle, zwiększając szybkość i responsywność aplikacji.  
 - Naprawiono kilka problemów związanych z wyglądem aplikacji — interfejs użytkownika wygląda teraz bardziej spójnie i estetycznie na różnych ekranach.  
 - Dodano nowe komunikaty ułatwiające korzystanie z aplikacji, takie jak przypomnienia o użyciu „Zapisz jako” i potwierdzenia podczas ładowania plików. Dzięki temu obsługa aplikacji jest prostsza i bardziej przejrzysta.
+- ZenMode zostal dodany, dzieki czemu możesz się teraz lepiej skupić na pisaniu, bez zbędnych przeszkadzajek.
 - Implementacja struktur związanych z asynchronicznością wprowadziło szereg nowych problemów, i utrudniło pracę z kodem, co wyrównałem znaczną poprawą struktury kodu oraz znaczną próbą uproszczenia go. Niestety programowanie asynchroniczne jest tak niemiłym stworem, że pracowanie nad programem jest teraz ledwo znośne. Gdyby nie było popraw struktury, program zapewne by umarł bardzo prędko.
 - **„Asynchroniczność” (lub „async”)** oznacza, że aplikacja może wykonywać wiele rzeczy jednocześnie — na przykład zapisywać plik lub liczyć znaki — bez konieczności czekania. **Od strony technicznej wygląda to tak, że aplikacja uruchamia dane zadanie (np. odczyt pliku), a następnie kontynuuje inne operacje, zamiast czekać na jego zakończenie. Gdy zadanie się zakończy, aplikacja zostaje o tym powiadomiona (np. poprzez tzw. callback, promisy lub zdarzenia) i wtedy przetwarza wynik.** Dzięki temu wszystko działa szybko i płynnie, nawet w przypadku dużych lub czasochłonnych zadań.
 
