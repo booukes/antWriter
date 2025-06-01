@@ -17,7 +17,7 @@
         <FontFamily x:Key="AppMenusFont">fonts/Montserrat-Thin.ttf#Montserrat Thin</FontFamily>
         <FontFamily x:Key="AppEditorFont">Courier New</FontFamily>
         <FontFamily x:Key="AppMenusItalicFont">fonts/Montserrat-ThinItalic.ttf#Montserrat Thin Italic</FontFamily>
-        <System:Double x:Key="AppFontSize">14</System:Double>
+        <System:Double x:Key="FontSize">14</System:Double>
         <System:String x:Key="Username">Please set your username in settings!</System:String>
 
         <!--ButtonAnim-->
@@ -52,7 +52,39 @@
                 </Trigger>
             </Style.Triggers>
         </Style>
-        
+
+        <Style x:Key="ZenButton" TargetType="Button">
+            <Setter Property="Background" Value="{StaticResource AppBackgroundBrush}"/>
+            <Setter Property="Foreground" Value="{StaticResource AppFontColor}"/>
+            <Setter Property="BorderBrush" Value="Black"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="10,10"/>
+            <Setter Property="Margin" Value="15"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="fonts/Montserrat-ExtraLight.ttf#Montserrat ExtraLight"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" 
+                                CornerRadius="5"
+                                BorderBrush="{TemplateBinding BorderBrush}" 
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AppHoverButtonBrush}"/>
+                </Trigger>
+                <Trigger Property="IsPressed" Value="True">
+                    <Setter Property="Background" Value="{StaticResource AppPressedButtonBrush}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
 
     </Application.Resources>
 </Application>

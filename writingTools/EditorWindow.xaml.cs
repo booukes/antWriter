@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
@@ -386,11 +387,102 @@ namespace antWriter
         #endregion
         #endregion
         #region UIServices
+        private bool _isDistractionFree = false; // Track distraction-free mode state
 
-        /// <summary>
-        /// Updates the file name display label.
-        /// </summary>
-        private void ShowFileName()
+
+        private void ZenMode_Click(object sender, RoutedEventArgs e)
+        {
+            _isDistractionFree = !_isDistractionFree;
+
+            var fadeOutDuration = TimeSpan.FromMilliseconds(300);
+            var fadeInDuration = TimeSpan.FromMilliseconds(300);
+
+            UIElement[] elements = new UIElement[]
+            {
+            Logo, Exit, Save, SaveAs, Load, New,
+            BorderFiles, RecentFiles, fileNameHeader, charCounter
+            };
+
+            if (_isDistractionFree)
+            {
+                // Fade out all elements first, then collapse and adjust layout
+                var fadeOutStoryboard = new Storyboard();
+
+                foreach (var element in elements)
+                {
+                    // Animate Opacity from 1 to 0
+                    var fadeOut = new DoubleAnimation(1, 0, fadeOutDuration);
+                    Storyboard.SetTarget(fadeOut, element);
+                    Storyboard.SetTargetProperty(fadeOut, new PropertyPath(UIElement.OpacityProperty));
+                    fadeOutStoryboard.Children.Add(fadeOut);
+                }
+
+                fadeOutStoryboard.Completed += (s, _) =>
+                {
+                    // After fade out, collapse elements and change layout
+                    foreach (var element in elements)
+                    {
+                        element.Visibility = Visibility.Collapsed;
+                        element.Opacity = 1; // reset opacity for later use
+                    }
+
+                    // Adjust layout for full-editor experience
+                    MainGrid.ColumnDefinitions[0].Width = new GridLength(0);
+                    MainGrid.RowDefinitions[0].Height = new GridLength(0); // Top menu
+                    MainGrid.RowDefinitions[1].Height = new GridLength(0); // Filename & counter
+                    MainGrid.RowDefinitions[2].Height = new GridLength(1, GridUnitType.Star); // Editor fills everything
+
+                    this.WindowStyle = WindowStyle.None;
+                    this.WindowState = WindowState.Maximized;
+                    this.ResizeMode = ResizeMode.NoResize;
+                    this.Topmost = true;
+                    Application.Current.Resources["FontSize"] = (double)Application.Current.Resources["FontSize"] * 1.5; // Change font for distraction-free mode
+                };
+
+                fadeOutStoryboard.Begin();
+            }
+            else
+            {
+                // Make elements visible, set opacity to 0, then fade them in
+                foreach (var element in elements)
+                {
+                    element.Visibility = Visibility.Visible;
+                    element.Opacity = 0;
+                }
+
+                // Restore layout first
+                MainGrid.ColumnDefinitions[0].Width = new GridLength(200);
+                MainGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
+                MainGrid.RowDefinitions[1].Height = new GridLength(0.6, GridUnitType.Star);
+                MainGrid.RowDefinitions[2].Height = new GridLength(12, GridUnitType.Star);
+
+                this.WindowStyle = WindowStyle.SingleBorderWindow;
+                this.WindowState = WindowState.Maximized;
+                this.ResizeMode = ResizeMode.CanResize;
+                this.Topmost = false;
+                Application.Current.Resources["FontSize"] = (double)Application.Current.Resources["FontSize"] / 1.5;
+
+                var fadeInStoryboard = new Storyboard();
+
+                foreach (var element in elements)
+                {
+                    var fadeIn = new DoubleAnimation(0, 1, fadeInDuration);
+                    Storyboard.SetTarget(fadeIn, element);
+                    Storyboard.SetTargetProperty(fadeIn, new PropertyPath(UIElement.OpacityProperty));
+                    fadeInStoryboard.Children.Add(fadeIn);
+                }
+
+                fadeInStoryboard.Begin();
+            }
+        }
+
+
+
+
+    /// <summary>
+    /// Updates the file name display label.
+    /// </summary>
+    private void ShowFileName()
         {
             TextBlock tb = new TextBlock();
 

@@ -59,7 +59,7 @@
             <Viewbox HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Column="0">
                 <TextBlock Foreground="{StaticResource AppFontColor}" Margin="8" FontFamily="{StaticResource AppMenusFont}">Font size</TextBlock>
             </Viewbox>
-            <mah:NumericUpDown Width="100" Height="30" SwitchUpDownButtons="True" HorizontalAlignment="Left" Minimum="6" Maximum="60" x:Name="fontSizeSelect" ValueChanged="FontSize_Click" HideUpDownButtons="False" Background="AliceBlue" Grid.Column="1" NumericInputMode="Numbers"></mah:NumericUpDown>
+            <mah:NumericUpDown Width="100" Height="30" SwitchUpDownButtons="True" HorizontalAlignment="Left" Minimum="6" Maximum="120" x:Name="fontSizeSelect" ValueChanged="FontSize_Click" HideUpDownButtons="False" Background="AliceBlue" Grid.Column="1" NumericInputMode="Numbers"></mah:NumericUpDown>
         </Grid>
         
         <!--  COLUMN 2 -->

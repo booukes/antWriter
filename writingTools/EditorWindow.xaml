@@ -14,7 +14,7 @@
       Height="450" Width="800"
       Title="EditorWindow">
 
-    <Grid>
+    <Grid x:Name="MainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="0.6*"/>
@@ -77,6 +77,7 @@
                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </Viewbox>
             </Button>
+
         </Grid>
         <!-- File view -->
         <Border x:Name="BorderFiles" BorderBrush="{StaticResource AppHoverButtonBrush}" BorderThickness="0,0,1,0" Grid.Row="2" Grid.Column="0" Background="{DynamicResource AppBackgroundBrush}" />
@@ -97,14 +98,17 @@
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
             <Border BorderBrush="{StaticResource AppHoverButtonBrush}" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
-            <TextBox x:Name="EditingBoard" BorderThickness="0" Foreground="{StaticResource AppFontColor}" FontSize="{DynamicResource FontSize}" FontFamily="{DynamicResource AppEditorFont}">
-                <Grid.Row>1</Grid.Row>
-                <Grid.Column>1</Grid.Column>
-                <TextBox.Background>Transparent</TextBox.Background>
-                <TextBox.TextWrapping>Wrap</TextBox.TextWrapping>
-                <TextBox.AcceptsReturn>True</TextBox.AcceptsReturn>
-                <TextBox.VerticalScrollBarVisibility>Auto</TextBox.VerticalScrollBarVisibility>
-            </TextBox>
+            <TextBox x:Name="EditingBoard" 
+                Grid.Row="2" Grid.Column="1"
+                BorderThickness="0" Foreground="{StaticResource AppFontColor}" 
+                FontSize="{DynamicResource FontSize}" FontFamily="{DynamicResource AppEditorFont}"
+                Background="Transparent" TextWrapping="Wrap" AcceptsReturn="True"
+                VerticalScrollBarVisibility="Auto"/>
+
+            <Button x:Name="zenOff" Click="ZenMode_Click" Width="50" Height="30" HorizontalAlignment="Right" VerticalAlignment="Bottom" Style="{StaticResource ZenButton}">
+                <TextBlock Text="zen" Margin="2"
+                        FontFamily="{StaticResource AppMenusFont}"/>
+            </Button>
         </Grid>
     </Grid>
 </mah:MetroWindow>
