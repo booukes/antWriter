@@ -5,7 +5,7 @@
 
 ---
 
-## <a id="changelog"></a>Full Changelog (Current version: **0.7.2-rc3**)
+## <a id="changelog"></a>Full Changelog (Current version: **0.7.4-stable**)
 
 ## 0.7.0-rc [28-05-2025]
 - Completely rewrote all of the `EditorWindow` code and most of the C# codebase.
@@ -28,6 +28,14 @@
 
 #### 0.7.2-rc3[1-06-2025]
 - Added ZenMode functionality and cleaned up some resources.
+#### 0.7.3-rc4[1-06-2025]
+- Fixed a critical bug that sometimes occured when the async loading method tried to access a non-existant file.
+#### 0.7.4-stable[1-06-2025]
+- Prepared binary for release, source code has yet to be cleaned up.
+- The released binary is completely stable, no known bugs yet.
+- Added ZenThemes, to expand later.
+- ZenThemes looks for now very crankily, but it is fully stable.
+- Begun work on globalizing app messages
 
 ## 0.6.0-beta[26-05-2025]
 - Designed and implemented a robust global resource architecture using a hybrid of dynamic and static `App.xaml` resources, with all UI variables (colors, spacing, font sizes, etc.) sourced from a centralized JSON configuration at runtime.
