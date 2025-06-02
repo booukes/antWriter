@@ -1,7 +1,40 @@
 # Index
+- [Installation & Features](#install)
 - [Full Changelog](#changelog)
 - [ETR Log](#ETRlog)
 - [ETR Log PL](#ETRPLlog)
+
+---
+
+## <a id="install"></a> Install guide and app overview (Current version: **0.7.4-stable**)
+
+### What is antWriter?
+antWriter is a ***modern text editor*** made for poets and alike with Zen mode (distraction-free), autosave, multi-document support,  live character counter and a constantly expanding list of customization options.
+
+## 📦 Download
+
+> 👉 [Click here to download the latest version (.7z)](https://github.com/booukes/antWriter/releases)
+
+1. Download the `.7z` archive from the newest entry of the **Releases** section  
+2. Extract it to any folder you want (e.g. `C:\Programs\antWriter`)  
+3. Run `antWriter.exe`
+
+## 🧑‍💻 Prerequisites
+- 7z
+- Windows 10/11  
+- ~100 MB of free disk space
+- The app is self-contained, so no .NET required!
+
+## 🚀 Features
+Our **features list** is and will be rapidly growing through the updates!
+For now, the most important ones include:
+
+- ✍️ Simple, elegant user interface  
+- 🧘 Zen Mode – hides all GUI elements for a distraction-free experience  
+- 🎨 Custom themes & backgrounds (including **Kitty Zen** mode 🐱)  
+- 💾 Automatic file saving, even covering app crashes, so you will NEVER lose your work!  
+- 📂 Multi-document support
+- 🔢 Live character count
 
 ---
 
