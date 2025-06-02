@@ -51,11 +51,12 @@ namespace antWriter
             Resources["FontSize"] = (double)App.Config.Font.Size;
             Resources["AppEditorFont"] = new System.Windows.Media.FontFamily(App.Config.Font.Family);
             Resources["Username"] = App.Config.Editor.Username;
+            Resources["AppZenMode"] = App.Config.Editor.Zen;
             Log.Debug($"Font Family: {App.Config.Font.Family}");
             Log.Debug($"Font Size: {App.Config.Font.Size}");
             Log.Debug($"Logo: {App.Config.Editor.Logo}");
-            Log.Debug("Logo:" + Application.Current.Resources["AppChosenLogo"]);
             Log.Debug($"Username: {App.Config.Editor.Username}");
+            Log.Debug($"Zen: {App.Config.Editor.Username}");
             Log.Verbose("Console attached. Debugging started.");
             Log.Verbose("Current Directory: {Directory}", Environment.CurrentDirectory);
             Log.Verbose("Executable Path: {ExePath}", AppContext.BaseDirectory);

@@ -98,7 +98,7 @@
             </Viewbox>
         </Grid>
         <Grid Grid.Row="2" Grid.Column="1">
-            <Border BorderBrush="{StaticResource AppHoverButtonBrush}" Grid.Row="1" Grid.Column="1" Background="{DynamicResource AppBackgroundBrush}" />
+            <Border BorderBrush="{StaticResource AppHoverButtonBrush}" Grid.Row="1" Grid.Column="1" Background="{StaticResource AppBackgroundBrush}" />
             <TextBox x:Name="EditingBoard" 
                 Grid.Row="2" Grid.Column="1"
                 BorderThickness="0" Foreground="{StaticResource AppFontColor}" 

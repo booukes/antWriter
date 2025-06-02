@@ -15,12 +15,13 @@ public class EditorSettings
     public string Theme { get; set; } = "Light";
     public string Username { get; set; } = "Please set your username in settings!";
     public string Logo { get; set; } = "/antWriterFinalGreen.png";
+    public string Zen { get; set; } = "normal";
+
 }
 
 public class AppSettings
 {
-    public string WindowTitle { get; set; } = "Kaszepad";
-    public bool StartMaximized { get; set; } = true;
+    public bool FirstRun { get; set; } = true;
 }
 
 public class AppConfig

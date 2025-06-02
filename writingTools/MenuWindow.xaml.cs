@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using Serilog;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -37,7 +38,7 @@ namespace antWriter
             }
             else
             {
-                MessageBox.Show("No logo found.");
+                Log.Error("No logo found.");
             }
         }
         public void EditorWindow_Click(object sender, RoutedEventArgs e)

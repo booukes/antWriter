@@ -12,9 +12,14 @@
     <None Remove="antWriterFinal.png" />
     <None Remove="antWriterFinalGreen.png" />
     <None Remove="antWriterFinalGreenRed.png" />
+    <None Remove="Cat69.jpg" />
+    <None Remove="finally.jpg" />
+    <None Remove="finally22.jpg" />
     <None Remove="fonts\Montserrat-Light.ttf" />
     <None Remove="fonts\Montserrat-VariableFont_wght.ttf" />
     <None Remove="icon.ico" />
+    <None Remove="kitty.jpg" />
+    <None Remove="vecteezy_seamless-pattern-with-black-cat_48422283.jpg" />
   </ItemGroup>
 
   <ItemGroup>
@@ -31,9 +36,16 @@
     <Resource Include="antWriterFinal.png" />
     <Resource Include="antWriterFinalGreen.png" />
     <Resource Include="antWriterFinalGreenRed.png" />
+    <Resource Include="Cat69.jpg" />
+    <Resource Include="finally.jpg" />
+    <Resource Include="finally22.jpg" />
     <Resource Include="icon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="kitty.jpg">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="vecteezy_seamless-pattern-with-black-cat_48422283.jpg" />
   </ItemGroup>
 
   <ItemGroup>

@@ -14,11 +14,14 @@
         <SolidColorBrush x:Key="AppPressedButtonBrush" Color="#2A2A2A"/>
         <SolidColorBrush x:Key="AppFontColor" Color="#FFFFFF"/>
         <sys:String x:Key="AppChosenLogo" >/antWriterFinalGreen.png</sys:String>
+        <sys:String x:Key="AppZenMode"></sys:String>
         <FontFamily x:Key="AppMenusFont">fonts/Montserrat-Thin.ttf#Montserrat Thin</FontFamily>
         <FontFamily x:Key="AppEditorFont">Courier New</FontFamily>
         <FontFamily x:Key="AppMenusItalicFont">fonts/Montserrat-ThinItalic.ttf#Montserrat Thin Italic</FontFamily>
         <System:Double x:Key="FontSize">14</System:Double>
         <System:String x:Key="Username">Please set your username in settings!</System:String>
+        <System:Boolean x:Key="FirstRun">True</System:Boolean>
+        <ImageBrush x:Key="KittyBackgroundBrush" ImageSource="finally22.jpg" TileMode="Tile"  Viewport="0,0,0.25,0.25" ViewportUnits="RelativeToBoundingBox"/>
 
         <!--ButtonAnim-->
         <Style x:Key="FlatMenuButton" TargetType="Button">

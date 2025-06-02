@@ -36,7 +36,7 @@ namespace antWriter
 
         TextBlock useSaveAs = new TextBlock
         {
-            Text = "use save as first...",
+            Text = CONST.UI.NO_SAVE_FILE,
             FontSize = 20,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
@@ -47,7 +47,7 @@ namespace antWriter
 
         TextBlock loadingPrompt = new TextBlock
         {
-            Text = "loading...",
+            Text = CONST.UI.LOADING_FILE,
             FontSize = 20,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
@@ -98,7 +98,7 @@ namespace antWriter
             }
             else
             {
-                MessageBox.Show("No logo found.");
+                Log.Error(logoPath + " logo not found. Contact dev team.");
             }
         }
 
@@ -380,14 +380,14 @@ namespace antWriter
         private void ZenMode_Click(object sender, RoutedEventArgs e)
         {
             _isDistractionFree = !_isDistractionFree;
-
+            Log.Information(_isDistractionFree ? "Zen Mode: ON" : "Zen Mode: OFF");
             var fadeOutDuration = TimeSpan.FromMilliseconds(300);
             var fadeInDuration = TimeSpan.FromMilliseconds(300);
 
             UIElement[] elements = new UIElement[]
             {
-        Logo, Exit, Save, SaveAs, Load, New, menuBorder,
-        BorderFiles, RecentFiles, fileNameHeader, charCounter, borderFileName
+                Logo, Exit, Save, SaveAs, Load, New, menuBorder,
+                BorderFiles, RecentFiles, fileNameHeader, charCounter, borderFileName
             };
 
             if (_isDistractionFree)
@@ -418,6 +418,7 @@ namespace antWriter
                         element.Opacity = 1;
                     }
 
+                    EditingBoard.FontWeight = FontWeights.Bold;
                     MainGrid.ColumnDefinitions[0].Width = new GridLength(0);
                     MainGrid.RowDefinitions[0].Height = new GridLength(0);
                     MainGrid.RowDefinitions[1].Height = new GridLength(0);
@@ -429,6 +430,14 @@ namespace antWriter
                     this.Topmost = true;
                     
                     Application.Current.Resources["FontSize"] = (double)Application.Current.Resources["FontSize"] * 1.5;
+                    if ((string)Application.Current.Resources["AppZenMode"] == "kitty")
+                    {
+                        EditingBoard.Background = (ImageBrush)Application.Current.Resources["KittyBackgroundBrush"];
+                    }
+                    else
+                    {
+                        EditingBoard.Background = (SolidColorBrush)Application.Current.Resources["AppBackgroundBrush"];
+                    }
                 };
 
                 fadeOutStoryboard.Begin();
@@ -441,6 +450,8 @@ namespace antWriter
                     element.Opacity = 0;
                 }
 
+                EditingBoard.Background = (SolidColorBrush)Application.Current.Resources["AppBackgroundBrush"];
+                EditingBoard.FontWeight = FontWeights.Normal;
                 MainGrid.ColumnDefinitions[0].Width = new GridLength(200);
                 MainGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
                 MainGrid.RowDefinitions[1].Height = new GridLength(0.6, GridUnitType.Star);
@@ -474,9 +485,6 @@ namespace antWriter
             }
         }
 
-
-
-
         /// <summary>
         /// Updates the file name display label.
         /// </summary>
@@ -486,7 +494,7 @@ namespace antWriter
 
             if (string.IsNullOrEmpty(currentFile))
             {
-                tb.Text = "working in volatile state. use 'save as' to persist changes.";
+                tb.Text = CONST.UI.NO_FILE_LOADED;
                 tb.FontFamily = (FontFamily)Application.Current.Resources["AppMenusItalicFont"];
             }
             else

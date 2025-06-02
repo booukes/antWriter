@@ -9,10 +9,10 @@
     "SpellCheck": false,
     "Theme": "Light",
     "Username": "input username in settings",
-    "Logo": "/antWriterFinalGreen.png"
+    "Logo": "/antWriterFinalGreen.png",
+    "Zen": "normal"
   },
   "App": {
-    "WindowTitle": "Kaszepad",
-    "StartMaximized": true
+    "FirstRun": true
   }
 }

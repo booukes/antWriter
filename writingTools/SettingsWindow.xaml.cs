@@ -64,7 +64,25 @@ namespace antWriter
                 Log.Information((string)Application.Current.Resources["AppChosenLogo"]);
             }
             ConfigManager.Save();
-            
+        }
+
+        public void ZenClick(object sender, RoutedEventArgs e)
+        {
+            if ((bool)normalZen.IsChecked)
+            {
+                ConfigManager.Config.Editor.Zen = "normal";
+                Application.Current.Resources["AppZenMode"] = "normal";
+                Log.Information("Default zen mode.");
+                Log.Information((string)Application.Current.Resources["AppZenMode"]);
+            }
+            else if ((bool)kittyZen.IsChecked) 
+            {
+                ConfigManager.Config.Editor.Zen = "kitty";
+                Application.Current.Resources["AppZenMode"] = "kitty";
+                Log.Information("Kitty mode!");
+                Log.Information((string)Application.Current.Resources["AppZenMode"]);
+            }
+            ConfigManager.Save();
         }
         public void FontSize_Click(object sender, RoutedEventArgs e)
         {
