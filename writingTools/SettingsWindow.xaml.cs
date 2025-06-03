@@ -13,8 +13,18 @@ namespace antWriter
         {
             InitializeComponent();
             FontBox.ItemsSource = Fonts.SystemFontFamilies;
+            InputDefaulter();
             Generate_Logo();
         }
+
+        private void InputDefaulter() 
+        {
+            ((string)Application.Current.Resources["AppZenMode"] == "kitty" ? kittyZen : normalZen).IsChecked = true;
+            ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png" ? normal : edgy).IsChecked = true;
+            Name.Text = ((string)Application.Current.Resources["Username"]);
+            FontBox.Text = (Application.Current.Resources["FontSize"].ToString());
+        }
+
         public void Generate_Logo()
         {
             if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png")

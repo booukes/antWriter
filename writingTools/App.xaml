@@ -14,7 +14,7 @@
         <SolidColorBrush x:Key="AppPressedButtonBrush" Color="#2A2A2A"/>
         <SolidColorBrush x:Key="AppFontColor" Color="#FFFFFF"/>
         <sys:String x:Key="AppChosenLogo" >/antWriterFinalGreen.png</sys:String>
-        <sys:String x:Key="AppZenMode"></sys:String>
+        <sys:String x:Key="AppZenMode">normal</sys:String>
         <FontFamily x:Key="AppMenusFont">fonts/Montserrat-Thin.ttf#Montserrat Thin</FontFamily>
         <FontFamily x:Key="AppEditorFont">Courier New</FontFamily>
         <FontFamily x:Key="AppMenusItalicFont">fonts/Montserrat-ThinItalic.ttf#Montserrat Thin Italic</FontFamily>

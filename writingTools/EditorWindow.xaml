@@ -92,7 +92,7 @@
             </Grid.ColumnDefinitions>
             <Viewbox Grid.Column="0" x:Name="fileNameHeader" Stretch="Uniform" HorizontalAlignment="Left" VerticalAlignment="Stretch"/>
             <Viewbox Grid.Column="1" Stretch="Uniform" HorizontalAlignment="Right" VerticalAlignment="Stretch">
-                <TextBlock x:Name="charCounter" Margin="2"
+                <TextBlock x:Name="charCounter" Margin="2" Foreground="white"
                             FontFamily="{StaticResource AppMenusFont}"
                             HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Viewbox>
