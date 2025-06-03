@@ -10,7 +10,7 @@
     "Theme": "Light",
     "Username": "input username in settings",
     "Logo": "/antWriterFinalGreen.png",
-    "Zen": "normal"
+    "Nav": "normal"
   },
   "App": {
     "FirstRun": true

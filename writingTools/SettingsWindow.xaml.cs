@@ -21,8 +21,9 @@ namespace antWriter
         {
             ((string)Application.Current.Resources["AppZenMode"] == "kitty" ? kittyZen : normalZen).IsChecked = true;
             ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png" ? normal : edgy).IsChecked = true;
-            Name.Text = ((string)Application.Current.Resources["Username"]);
-            FontBox.Text = (Application.Current.Resources["FontSize"].ToString());
+            Name.Text = (string)Application.Current.Resources["Username"];
+            fontSizeSelect.Value = (double)Application.Current.Resources["FontSize"];
+            FontBox.SelectedItem = (FontFamily)Application.Current.Resources["AppEditorFont"];
         }
 
         public void Generate_Logo()
@@ -80,17 +81,17 @@ namespace antWriter
         {
             if ((bool)normalZen.IsChecked)
             {
-                ConfigManager.Config.Editor.Zen = "normal";
-                Application.Current.Resources["AppZenMode"] = "normal";
-                Log.Information("Default zen mode.");
-                Log.Information((string)Application.Current.Resources["AppZenMode"]);
+                ConfigManager.Config.Editor.Navbar = "normal";
+                Application.Current.Resources["AppNavbarTheme"] = "normal";
+                Log.Information("Default AppNavbarTheme mode.");
+                Log.Information((string)Application.Current.Resources["AppNavbarTheme"]);
             }
             else if ((bool)kittyZen.IsChecked) 
             {
-                ConfigManager.Config.Editor.Zen = "kitty";
-                Application.Current.Resources["AppZenMode"] = "kitty";
+                ConfigManager.Config.Editor.Navbar = "kitty";
+                Application.Current.Resources["AppNavbarTheme"] = "kitty";
                 Log.Information("Kitty mode!");
-                Log.Information((string)Application.Current.Resources["AppZenMode"]);
+                Log.Information((string)Application.Current.Resources["AppNavbarTheme"]);
             }
             ConfigManager.Save();
         }

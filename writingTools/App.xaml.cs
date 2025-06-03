@@ -51,7 +51,7 @@ namespace antWriter
             Resources["FontSize"] = (double)App.Config.Font.Size;
             Resources["AppEditorFont"] = new System.Windows.Media.FontFamily(App.Config.Font.Family);
             Resources["Username"] = App.Config.Editor.Username;
-            Resources["AppZenMode"] = App.Config.Editor.Zen;
+            Resources["AppNavbarTheme"] = App.Config.Editor.Navbar;
             Log.Debug($"Font Family: {App.Config.Font.Family}");
             Log.Debug($"Font Size: {App.Config.Font.Size}");
             Log.Debug($"Logo: {App.Config.Editor.Logo}");

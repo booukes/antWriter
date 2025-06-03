@@ -29,7 +29,7 @@
 
         <!-- Navbar -->
 
-        <Border Name="menuBorder" BorderBrush="Black" BorderThickness="0,0,0,3" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource AppMenuBrush}" />
+        <Border x:Name="menuBorder" BorderBrush="Black" BorderThickness="0,0,0,3" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource AppMenuBrush}" />
         <Grid Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>

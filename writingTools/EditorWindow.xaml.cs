@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using Serilog;
 using System.IO;
+using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -12,6 +13,13 @@ namespace antWriter
 {
     public partial class EditorWindow : MetroWindow
     {
+        public enum Caller
+        {
+            None,
+            Load_Click,
+            InitializeComponent,
+            ShowFileName
+        }
         // --- Fields ---
         private bool ASEvent = false;             // Flag to control asynchronous file IO flow
         private readonly DispatcherTimer timer;   // Timer to trigger periodic autosave
@@ -61,7 +69,7 @@ namespace antWriter
             InitializeComponent();
 
             // Initialize UI components
-            ShowFileName();
+            InfoService(Caller.InitializeComponent);
             Generate_Logo();
 
             // Setup recent files panel with placeholder
@@ -79,9 +87,21 @@ namespace antWriter
             timer.Tick += AsyncServiceTick;
             timer.Start();
 
+            SetNavbarBg();
+
             Log.Information("Async worker thread started at:" + DateTime.Now);
         }
 
+        private void SetNavbarBg()
+        {
+            if ((string)Application.Current.Resources["AppNavbarTheme"] == "kitty")
+            {
+                menuBorder.Background = (string)Application.Current.Resources["AppNavbarTheme"] == "kitty" ? 
+                    (ImageBrush)Application.Current.Resources["KittyBackgroundBrush"] : 
+                    (SolidColorBrush)Application.Current.Resources["AppMenuBrush"];
+            }
+        }
+        
         /// <summary>
         /// Loads and sets the logo image from application resources.
         /// </summary>
@@ -130,7 +150,7 @@ namespace antWriter
                         EditingBoard.Text = content;
                         currentFile = filePath;
 
-                        ShowFileName();
+                        InfoService(Caller.None);
                         HighlightActiveFileButton();
                         _hasUnsavedChanges = false;
                     }
@@ -149,8 +169,8 @@ namespace antWriter
                 {
                     MessageBox.Show("An unknown error has occured. See console or logs for full information.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     Log.Warning("An unknown error has occured.");
-                    Log.Error("Error info could not be written.");
-                    Log.Information("Core recovered with no issues.");
+                    Log.Error("Not An Exception (NaE)");
+                    Log.Information("Recovered with no issues.");
                 }
             }
         }
@@ -185,7 +205,7 @@ namespace antWriter
                     currentFile = openFileDialog.FileName;
 
                     FileInfo fileInfo = new FileInfo(currentFile);
-                    if (fileInfo.Length > 1048576) { Log.Warning($"File is too large: {fileInfo.Length}b (>1mb!)"); return; }//1mb
+                    if (fileInfo.Length > 1048576) { Log.Warning($"File is too large: {fileInfo.Length}b (>1mb!)"); InfoService(Caller.Load_Click); ; }//1mb
                     else { Log.Information($"File is loading... Size: {fileInfo.Length}b"); }
 
                     AddRecentFile(currentFile);
@@ -196,7 +216,7 @@ namespace antWriter
                     // Load file content asynchronously
                     string content = await File.ReadAllTextAsync(currentFile);
                     EditingBoard.Text = content;
-                    ShowFileName();
+                    InfoService(Caller.None);
                     HighlightActiveFileButton();
 
                     New.IsHitTestVisible = true;
@@ -254,7 +274,7 @@ namespace antWriter
                 await File.WriteAllTextAsync(filePath, EditingBoard.Text);
                 currentFile = filePath;
                 AddRecentFile(currentFile);
-                ShowFileName();
+                InfoService(Caller.None);
                 _hasUnsavedChanges = false;
             }
         }
@@ -306,7 +326,7 @@ namespace antWriter
                     await File.WriteAllTextAsync(filePath, EditingBoard.Text);
                     currentFile = filePath;
                     AddRecentFile(currentFile);
-                    ShowFileName();
+                    InfoService(Caller.None);
                 }
             }
             else if (File.Exists(filePath))
@@ -340,7 +360,7 @@ namespace antWriter
             EditingBoard.Text = "";
             currentFile = null;
             _hasUnsavedChanges = false;  // Reset flag since it's a fresh new document
-            ShowFileName();
+            InfoService(Caller.None);
         }
 
         //----------------------------------ASYNC TRIGGERS------------------------------------//
@@ -430,14 +450,6 @@ namespace antWriter
                     this.Topmost = true;
                     
                     Application.Current.Resources["FontSize"] = (double)Application.Current.Resources["FontSize"] * 1.5;
-                    if ((string)Application.Current.Resources["AppZenMode"] == "kitty")
-                    {
-                        EditingBoard.Background = (ImageBrush)Application.Current.Resources["KittyBackgroundBrush"];
-                    }
-                    else
-                    {
-                        EditingBoard.Background = (SolidColorBrush)Application.Current.Resources["AppBackgroundBrush"];
-                    }
                 };
 
                 fadeOutStoryboard.Begin();
@@ -450,7 +462,6 @@ namespace antWriter
                     element.Opacity = 0;
                 }
 
-                EditingBoard.Background = (SolidColorBrush)Application.Current.Resources["AppBackgroundBrush"];
                 EditingBoard.FontWeight = FontWeights.Normal;
                 MainGrid.ColumnDefinitions[0].Width = new GridLength(200);
                 MainGrid.RowDefinitions[0].Height = new GridLength(1, GridUnitType.Star);
@@ -488,7 +499,7 @@ namespace antWriter
         /// <summary>
         /// Updates the file name display label.
         /// </summary>
-        private void ShowFileName()
+        private void InfoService(Caller caller)
         {
             TextBlock tb = new TextBlock();
 
@@ -499,7 +510,7 @@ namespace antWriter
             }
             else
             {
-                tb.Text = currentFile;
+                tb.Text = caller == Caller.Load_Click ? "The file is over the 1MB threshold, please choose another one." : currentFile;
                 tb.FontFamily = (FontFamily)Application.Current.Resources["AppMenusFont"];
             }
 

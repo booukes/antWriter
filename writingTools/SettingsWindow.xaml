@@ -91,7 +91,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <TextBlock Foreground="{StaticResource AppFontColor}" Margin="8" Text="Zen style"
+                <TextBlock Foreground="{StaticResource AppFontColor}" Margin="8" Text="Navbar style"
                     FontFamily="{StaticResource AppMenusFont}"
                     HorizontalAlignment="Center" VerticalAlignment="Center"/>
             </Viewbox>
