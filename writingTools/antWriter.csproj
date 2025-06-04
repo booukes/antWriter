@@ -19,6 +19,7 @@
     <None Remove="fonts\Montserrat-VariableFont_wght.ttf" />
     <None Remove="icon.ico" />
     <None Remove="kitty.jpg" />
+    <None Remove="pig.png" />
     <None Remove="vecteezy_seamless-pattern-with-black-cat_48422283.jpg" />
   </ItemGroup>
 
@@ -45,6 +46,7 @@
     <Resource Include="kitty.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="pig.png" />
     <Resource Include="vecteezy_seamless-pattern-with-black-cat_48422283.jpg" />
   </ItemGroup>
 

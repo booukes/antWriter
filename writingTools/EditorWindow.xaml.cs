@@ -2,7 +2,6 @@
 using Microsoft.Win32;
 using Serilog;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -68,9 +67,15 @@ namespace antWriter
         {
             InitializeComponent();
 
+            RecentFiles.AllowDrop = true;
+
+            // Register drag-and-drop events
+            RecentFiles.PreviewDragOver += RecentFiles_PreviewDragOver;
+            RecentFiles.Drop += RecentFiles_Drop;
+
             // Initialize UI components
             InfoService(Caller.InitializeComponent);
-            Generate_Logo();
+            Generate_Logo(null);
 
             // Setup recent files panel with placeholder
             RecentFiles.Children.Clear();
@@ -92,21 +97,105 @@ namespace antWriter
             Log.Information("Async worker thread started at:" + DateTime.Now);
         }
 
-        private void SetNavbarBg()
+     private void RecentFiles_PreviewDragOver(object sender, DragEventArgs e)
+     {
+         // Check if the dragged data contains file paths
+         if (e.Data.GetDataPresent(DataFormats.FileDrop))
+         {
+             e.Effects = DragDropEffects.Copy;
+         }
+         else
+         {
+             e.Effects = DragDropEffects.None;
+         }
+
+         e.Handled = true;
+     }
+
+    /// <summary>
+    /// Handles the Drop event to add the dropped file to RecentFiles.
+    /// </summary>
+    private async void RecentFiles_Drop(object sender, DragEventArgs e)
+    {
+        if (e.Data.GetDataPresent(DataFormats.FileDrop))
         {
-            if ((string)Application.Current.Resources["AppNavbarTheme"] == "kitty")
+            string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+
+            if (files.Length > 0)
             {
-                menuBorder.Background = (string)Application.Current.Resources["AppNavbarTheme"] == "kitty" ? 
-                    (ImageBrush)Application.Current.Resources["KittyBackgroundBrush"] : 
-                    (SolidColorBrush)Application.Current.Resources["AppMenuBrush"];
+                string filePath = files[0];
+
+                if (File.Exists(filePath))
+                {
+                    try
+                    {
+                        _isLoading = true;
+                        SetLoadingUIEnabled(false);
+
+                        // Save current file before loading new one
+                        if (recentFiles.Count > 0 && currentFile != null)
+                            await InternalSaveAsync(currentFile);
+
+                        currentFile = filePath;
+
+                        string fileContent = await File.ReadAllTextAsync(filePath);
+                        EditingBoard.Text = fileContent;
+
+                        AddRecentFile(filePath);
+                        HighlightActiveFileButton();
+                    }
+                    catch (Exception ex)
+                    {
+                        Log.Error($"Error loading file: {ex.Message}");
+                        MessageBox.Show("Failed to load the file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    finally
+                    {
+                        _isLoading = false;
+                        SetLoadingUIEnabled(true);
+                    }
+                }
             }
         }
-        
+    }
+
+    public void SetNavbarBg()
+        {
+            string theme = (string)Application.Current.Resources["AppNavbarTheme"];
+            menuBorder.Background = theme switch
+            {
+                "kitty" => (Brush)Application.Current.Resources["KittyBackgroundBrush"],
+                "seamless" => (Brush)Application.Current.Resources["AppBackgroundBrush"],
+                "pig" => (Brush)Application.Current.Resources["PigBackgroundBrush"],
+                "normal" => (Brush)Application.Current.Resources["AppMenuBrush"],
+                _ => (Brush)Application.Current.Resources["AppMenuBrush"]
+            };
+            if (menuBorder.Background == (Brush)Application.Current.Resources["PigBackgroundBrush"]){
+                Generate_Logo(true);
+                foreach (UIElement child in options.Children)
+                {
+                    if (child is Button btn)
+                    {
+                        
+                        btn.Foreground = new SolidColorBrush(Colors.Black);
+                    }
+                }
+            }
+
+        }
+
+
         /// <summary>
         /// Loads and sets the logo image from application resources.
         /// </summary>
-        public void Generate_Logo()
+        public void Generate_Logo(bool? overrideTempVal)
         {
+            bool overrideFinalVal = overrideTempVal ?? false;
+            if (overrideFinalVal)
+            {
+                Logo.Child = new Image { Source = new BitmapImage(new Uri("/antWriterFinal.png", UriKind.Relative)) };
+                return;
+            }
             string logoPath = (string)Application.Current.Resources["AppChosenLogo"];
             if (!string.IsNullOrEmpty(logoPath))
             {

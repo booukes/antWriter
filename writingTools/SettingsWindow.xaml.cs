@@ -19,7 +19,13 @@ namespace antWriter
 
         private void InputDefaulter() 
         {
-            ((string)Application.Current.Resources["AppZenMode"] == "kitty" ? kittyZen : normalZen).IsChecked = true;
+            switch ((string)Application.Current.Resources["AppNavbarTheme"])
+            {
+                case "kitty": kittyNav.IsChecked = true; break;
+                case "seamless": seamlessNav.IsChecked = true; break;
+                case "pig": pigNav.IsChecked = true; break;
+                case "normal": normalNav.IsChecked = true; break;
+            }
             ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png" ? normal : edgy).IsChecked = true;
             Name.Text = (string)Application.Current.Resources["Username"];
             fontSizeSelect.Value = (double)Application.Current.Resources["FontSize"];
@@ -77,20 +83,34 @@ namespace antWriter
             ConfigManager.Save();
         }
 
-        public void ZenClick(object sender, RoutedEventArgs e)
+        public void NavClick(object sender, RoutedEventArgs e)
         {
-            if ((bool)normalZen.IsChecked)
-            {
-                ConfigManager.Config.Editor.Navbar = "normal";
-                Application.Current.Resources["AppNavbarTheme"] = "normal";
-                Log.Information("Default AppNavbarTheme mode.");
-                Log.Information((string)Application.Current.Resources["AppNavbarTheme"]);
-            }
-            else if ((bool)kittyZen.IsChecked) 
+            if ((bool)kittyNav.IsChecked)
             {
                 ConfigManager.Config.Editor.Navbar = "kitty";
                 Application.Current.Resources["AppNavbarTheme"] = "kitty";
-                Log.Information("Kitty mode!");
+                Log.Information("kitty mode!");
+                Log.Information((string)Application.Current.Resources["AppNavbarTheme"]);
+            }
+            else if ((bool)seamlessNav.IsChecked) 
+            {
+                ConfigManager.Config.Editor.Navbar = "seamless";
+                Application.Current.Resources["AppNavbarTheme"] = "seamless";
+                Log.Information("seamless mode!");
+                Log.Information((string)Application.Current.Resources["AppNavbarTheme"]);
+            }
+            else if ((bool)pigNav.IsChecked)
+            {
+                ConfigManager.Config.Editor.Navbar = "pig";
+                Application.Current.Resources["AppNavbarTheme"] = "pig";
+                Log.Information("pig mode!");
+                Log.Information((string)Application.Current.Resources["AppNavbarTheme"]);
+            }
+            else if ((bool)normalNav.IsChecked)
+            {
+                ConfigManager.Config.Editor.Navbar = "normal";
+                Application.Current.Resources["AppNavbarTheme"] = "normal";
+                Log.Information("normal mode!");
                 Log.Information((string)Application.Current.Resources["AppNavbarTheme"]);
             }
             ConfigManager.Save();

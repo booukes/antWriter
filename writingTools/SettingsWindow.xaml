@@ -100,8 +100,14 @@
                     <RowDefinition/>
                     <RowDefinition/>
                 </Grid.RowDefinitions>
-                <RadioButton x:Name="normalZen" Click="ZenClick" VerticalAlignment="Bottom" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="0" GroupName="zen" Content="Normal"></RadioButton>
-                <RadioButton x:Name="kittyZen" Click="ZenClick" VerticalAlignment="Top" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="1" GroupName="zen" Content="Kitty"></RadioButton>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition/>
+                    <ColumnDefinition/>
+                </Grid.ColumnDefinitions>
+                <RadioButton x:Name="normalNav" Click="NavClick" VerticalAlignment="Bottom" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="0" Grid.Column="0" GroupName="nav" Content="Normal" HorizontalAlignment="Stretch"></RadioButton>
+                <RadioButton x:Name="kittyNav" Click="NavClick" VerticalAlignment="Bottom" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="0" Grid.Column="1" GroupName="nav" Content="Kitty" HorizontalAlignment="Stretch"></RadioButton>
+                <RadioButton x:Name="pigNav" Click="NavClick" VerticalAlignment="Top" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="1" Grid.Column="0" GroupName="nav" Content="Piggy" HorizontalAlignment="Stretch"></RadioButton>
+                <RadioButton x:Name="seamlessNav" Click="NavClick" VerticalAlignment="Top" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="1" Grid.Column="1" GroupName="nav" Content="Seamless" HorizontalAlignment="Stretch"></RadioButton>
             </Grid>
         </Grid>
 

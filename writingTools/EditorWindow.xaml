@@ -30,7 +30,7 @@
         <!-- Navbar -->
 
         <Border x:Name="menuBorder" BorderBrush="Black" BorderThickness="0,0,0,3" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="{DynamicResource AppMenuBrush}" />
-        <Grid Grid.ColumnSpan="2">
+        <Grid x:Name="options" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition/>
                 <ColumnDefinition/>
@@ -42,7 +42,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Viewbox x:Name="Logo" Grid.Column="8"/>
-
+            
             <Button x:Name="Exit" Click="Exit_Click" Grid.Row="0" Grid.Column="0" Background="Transparent" Margin="0 5 0 5" Foreground="{StaticResource AppFontColor}" BorderBrush="{StaticResource AppFontColor}" BorderThickness="0 0 1 0">
                 <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                     <TextBlock Text="main menu" Margin="2"
