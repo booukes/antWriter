@@ -26,26 +26,26 @@ namespace antWriter
         public static AppConfig Config => _config.Value;
 
 
-        protected override async void OnStartup(StartupEventArgs e)
+        protected override void OnStartup(StartupEventArgs e)
         {
             sw.Start();
             string logFileName = $"logs\\app-{DateTime.Now:yyyy-MM-dd_HH-mm-ss}.log";
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
                 .Enrich.WithCaller()
-                /*.WriteTo.Console(
+                .WriteTo.Console(
                     outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] [{Caller}] {Message:lj}{NewLine}{Exception}",
                     restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Information,
-                    theme: SystemConsoleTheme.Colored)*/
+                    theme: SystemConsoleTheme.Colored)
                 .WriteTo.File(
                     logFileName,
                     rollingInterval: RollingInterval.Day,
                     restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Verbose,
                     outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss} {Level:u3}] [{Caller}] {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
-            /*swDLL.Start();
+            swDLL.Start();
             AllocConsole();
-            swDLL.Stop();*/
+            swDLL.Stop();
             Log.Information($"Init sequence started. Console allocation took: {swDLL.ElapsedMilliseconds}ms.");
             Resources["AppChosenLogo"] = App.Config.Editor.Logo;
             Resources["FontSize"] = (double)App.Config.Font.Size;

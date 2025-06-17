@@ -13,7 +13,7 @@
         <SolidColorBrush x:Key="AppHoverButtonBrush" Color="#505050"/>
         <SolidColorBrush x:Key="AppPressedButtonBrush" Color="#2A2A2A"/>
         <SolidColorBrush x:Key="AppFontColor" Color="#FFFFFF"/>
-        <sys:String x:Key="AppChosenLogo" >/antWriterFinalGreen.png</sys:String>
+        <sys:String x:Key="AppChosenLogo" >/greenLogo.png</sys:String>
         <sys:String x:Key="AppNavbarTheme">normal</sys:String>
         <FontFamily x:Key="AppMenusFont">fonts/Montserrat-Thin.ttf#Montserrat Thin</FontFamily>
         <FontFamily x:Key="AppEditorFont">Courier New</FontFamily>
@@ -23,7 +23,7 @@
         <System:String x:Key="Username">Please set your username in settings!</System:String>
         <System:Boolean x:Key="FirstRun">True</System:Boolean>
         <ImageBrush x:Key="PigBackgroundBrush"
-            ImageSource="pig.png"
+            ImageSource="piggyNav.png"
             TileMode="Tile"
             Viewport="0,0,457,258"
             ViewportUnits="Absolute"
@@ -31,7 +31,7 @@
             AlignmentX="Left"
             AlignmentY="Top" />
         <ImageBrush x:Key="KittyBackgroundBrush"
-             ImageSource="finally22.jpg"
+             ImageSource="kittyNav.jpg"
              TileMode="Tile"
              Viewport="0,0,150,150"
              ViewportUnits="Absolute"
@@ -51,7 +51,7 @@
             <Setter Property="Margin" Value="15"/>
             <Setter Property="Cursor" Value="Hand"/>
             <Setter Property="FontSize" Value="20"/>
-            <Setter Property="FontFamily" Value="fonts/Montserrat-ExtraLight.ttf#Montserrat ExtraLight"/>
+            <Setter Property="FontFamily" Value="fonts/Montserrat-Thin.ttf#Montserrat Thin"/>
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="Button">

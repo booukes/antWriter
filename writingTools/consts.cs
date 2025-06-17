@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace antWriter
 {
-    public class CONST
+    public class consts
     {
         public class UI
         {

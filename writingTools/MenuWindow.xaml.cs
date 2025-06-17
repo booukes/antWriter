@@ -20,19 +20,19 @@ namespace antWriter
         }
         public void Generate_Logo()
         {
-            if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png")
+            if ((string)Application.Current.Resources["AppChosenLogo"] == "/greenLogo.png")
             {
                 Image img = new Image
                 {
-                    Source = new BitmapImage(new Uri("/antWriterFinalGreen.png", UriKind.Relative))
+                    Source = new BitmapImage(new Uri("/greenLogo.png", UriKind.Relative))
                 };
                 Logo.Child = img;
             }
-            else if((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreenRed.png")
+            else if((string)Application.Current.Resources["AppChosenLogo"] == "/fallbackLogo.png")
             {
                 Image img = new Image
                 {
-                    Source = new BitmapImage(new Uri("/antWriterFinalGreenRed.png", UriKind.Relative))
+                    Source = new BitmapImage(new Uri("/fallbackLogo.png", UriKind.Relative))
                 };
                 Logo.Child = img;
             }

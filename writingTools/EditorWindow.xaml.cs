@@ -2,11 +2,13 @@
 using Microsoft.Win32;
 using Serilog;
 using System.IO;
+using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 using System.Windows.Threading;
 namespace antWriter
 {
@@ -22,6 +24,7 @@ namespace antWriter
         // --- Fields ---
         private bool ASEvent = false;             // Flag to control asynchronous file IO flow
         private readonly DispatcherTimer timer;   // Timer to trigger periodic autosave
+        private bool isEscape = false;
         private bool _hasUnsavedChanges = false;  // Track if document is unsaved
         private string currentFile = null;         // Currently loaded file path
         private bool _isLoading = false;           // Loading state flag to prevent re-entry
@@ -43,7 +46,7 @@ namespace antWriter
 
         TextBlock useSaveAs = new TextBlock
         {
-            Text = CONST.UI.NO_SAVE_FILE,
+            Text = consts.UI.NO_SAVE_FILE,
             FontSize = 20,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
@@ -54,7 +57,7 @@ namespace antWriter
 
         TextBlock loadingPrompt = new TextBlock
         {
-            Text = CONST.UI.LOADING_FILE,
+            Text = consts.UI.LOADING_FILE,
             FontSize = 20,
             HorizontalAlignment = HorizontalAlignment.Left,
             VerticalAlignment = VerticalAlignment.Center,
@@ -112,52 +115,61 @@ namespace antWriter
          e.Handled = true;
      }
 
-    /// <summary>
-    /// Handles the Drop event to add the dropped file to RecentFiles.
-    /// </summary>
-    private async void RecentFiles_Drop(object sender, DragEventArgs e)
-    {
-        if (e.Data.GetDataPresent(DataFormats.FileDrop))
+        /// <summary>
+        /// Handles the Drop event to add the dropped file to RecentFiles.
+        /// </summary>
+        private async void RecentFiles_Drop(object sender, DragEventArgs e)
         {
+            if (!e.Data.GetDataPresent(DataFormats.FileDrop)) 
+            { 
+                Log.Error("Data Not Present"); 
+                return; 
+            }
+
             string[] files = (string[])e.Data.GetData(DataFormats.FileDrop);
+            string filePath = String.Empty;
 
-            if (files.Length > 0)
+            filePath = files.Length > 0 ? files[0] : String.Empty;
+            if (!File.Exists(filePath)) return;
+
+            try
             {
-                string filePath = files[0];
+                _isLoading = true;
+                SetLoadingUIEnabled(false);
 
-                if (File.Exists(filePath))
+                // Save current file before loading new one
+                if (recentFiles.Count > 0 && currentFile != null)
+                    await InternalSaveAsync(currentFile);
+
+                currentFile = filePath;
+
+                FileInfo fileInfo = new FileInfo(currentFile);
+                if (fileInfo.Length > 1048576)
                 {
-                    try
-                    {
-                        _isLoading = true;
-                        SetLoadingUIEnabled(false);
-
-                        // Save current file before loading new one
-                        if (recentFiles.Count > 0 && currentFile != null)
-                            await InternalSaveAsync(currentFile);
-
-                        currentFile = filePath;
-
-                        string fileContent = await File.ReadAllTextAsync(filePath);
-                        EditingBoard.Text = fileContent;
-
-                        AddRecentFile(filePath);
-                        HighlightActiveFileButton();
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error($"Error loading file: {ex.Message}");
-                        MessageBox.Show("Failed to load the file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    finally
-                    {
-                        _isLoading = false;
-                        SetLoadingUIEnabled(true);
-                    }
+                    Log.Warning($"File is too large: {fileInfo.Length}b (>1mb!)");
+                    InfoService(Caller.Load_Click);
+                    CreateNewFile_Click(null, null);
+                    return;
                 }
+                else { Log.Information($"File is loading... Size: {fileInfo.Length}b"); }
+
+                string fileContent = await File.ReadAllTextAsync(filePath);
+                EditingBoard.Text = fileContent;
+
+                AddRecentFile(filePath);
+                HighlightActiveFileButton();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"Error loading file: {ex.Message}");
+                MessageBox.Show("Failed to load the file.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+            finally
+            {
+                _isLoading = false;
+                SetLoadingUIEnabled(true);
             }
         }
-    }
 
     public void SetNavbarBg()
         {
@@ -193,21 +205,28 @@ namespace antWriter
             bool overrideFinalVal = overrideTempVal ?? false;
             if (overrideFinalVal)
             {
-                Logo.Child = new Image { Source = new BitmapImage(new Uri("/antWriterFinal.png", UriKind.Relative)) };
+                Logo.Child = new Image { Source = new BitmapImage(new Uri("/blackLogo.png", UriKind.Relative)) };
                 return;
             }
-            string logoPath = (string)Application.Current.Resources["AppChosenLogo"];
-            if (!string.IsNullOrEmpty(logoPath))
+            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/greenLogo.png")
             {
                 Image img = new Image
                 {
-                    Source = new BitmapImage(new Uri(logoPath, UriKind.Relative))
+                    Source = new BitmapImage(new Uri("/greenLogo.png", UriKind.Relative))
+                };
+                Logo.Child = img;
+            }
+            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/fallbackLogo.png")
+            {
+                Image img = new Image
+                {
+                    Source = new BitmapImage(new Uri("/fallbackLogo.png", UriKind.Relative))
                 };
                 Logo.Child = img;
             }
             else
             {
-                Log.Error(logoPath + " logo not found. Contact dev team.");
+                Log.Warning("No logo found.");
             }
         }
 
@@ -294,7 +313,15 @@ namespace antWriter
                     currentFile = openFileDialog.FileName;
 
                     FileInfo fileInfo = new FileInfo(currentFile);
-                    if (fileInfo.Length > 1048576) { Log.Warning($"File is too large: {fileInfo.Length}b (>1mb!)"); InfoService(Caller.Load_Click); ; }//1mb
+                    if (fileInfo.Length > 1048576)
+                    {
+                        Log.Warning($"File is too large: {fileInfo.Length}b (>1mb!)");
+                        InfoService(Caller.Load_Click);
+                        isEscape = true;
+                        CreateNewFile_Click(null, null);
+                        isEscape = false;
+                        return;
+                    }
                     else { Log.Information($"File is loading... Size: {fileInfo.Length}b"); }
 
                     AddRecentFile(currentFile);
@@ -396,11 +423,9 @@ namespace antWriter
             // If no path or empty text, skip saving
             if (string.IsNullOrWhiteSpace(filePath) || string.IsNullOrEmpty(EditingBoard.Text))
             {
-                Log.Warning("Autosave attempted with null or empty filePath. Skipping.");
-                return;
+                Log.Warning("Autosave attempted with null or empty filePath. Skipping...");
             }
-
-            if (!File.Exists(filePath) && !ASEvent)
+            else if (!File.Exists(filePath) && !ASEvent)
             {
                 // Prompt Save As dialog if file doesn't exist and not autosave event
                 SaveFileDialog saveFileDialog = new SaveFileDialog
@@ -422,10 +447,11 @@ namespace antWriter
             {
                 // Normal save to existing file
                 await File.WriteAllTextAsync(filePath, EditingBoard.Text);
+                Log.Information("Autosaved " + currentFile);
             }
             else
             {
-                Log.Information("Skipping... AS Event was true");
+                Log.Information("AS Event... Skipping ");
             }
 
             ASEvent = false;
@@ -445,11 +471,16 @@ namespace antWriter
                 _hasUnsavedChanges = false;
             }
 
+            if(!isEscape)
+            {
+                InfoService(Caller.None);
+            }
+
             New.IsHitTestVisible = false;
             EditingBoard.Text = "";
             currentFile = null;
+            HighlightActiveFileButton();
             _hasUnsavedChanges = false;  // Reset flag since it's a fresh new document
-            InfoService(Caller.None);
         }
 
         //----------------------------------ASYNC TRIGGERS------------------------------------//
@@ -465,10 +496,9 @@ namespace antWriter
                 ASEvent = true;
                 await InternalSaveAsync(currentFile);
                 _hasUnsavedChanges = false;
-                Log.Information("Autosaved at " + DateTime.Now);
             }
         }
-
+            
         /// <summary>
         /// Triggered when user modifies the text in the editor.
         /// Marks document as dirty and updates character count.
@@ -594,7 +624,7 @@ namespace antWriter
 
             if (string.IsNullOrEmpty(currentFile))
             {
-                tb.Text = CONST.UI.NO_FILE_LOADED;
+                tb.Text = consts.UI.NO_FILE_LOADED;
                 tb.FontFamily = (FontFamily)Application.Current.Resources["AppMenusItalicFont"];
             }
             else

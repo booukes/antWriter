@@ -70,27 +70,6 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <TextBlock Foreground="{StaticResource AppFontColor}" Margin="8" Text="Logo style"
-                    FontFamily="{StaticResource AppMenusFont}"
-                    HorizontalAlignment="Center" VerticalAlignment="Center"/>
-            </Viewbox>
-            <Grid Grid.Column="1" Grid.Row="0">
-                <Grid.RowDefinitions>
-                    <RowDefinition/>
-                    <RowDefinition/>
-                </Grid.RowDefinitions>
-
-                <RadioButton x:Name="normal" Click="Logo_Click" VerticalAlignment="Bottom" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="0" GroupName="logo" Content="Normal"></RadioButton>
-                <RadioButton x:Name="edgy" Click="Logo_Click" VerticalAlignment="Top" FontFamily="{StaticResource AppMenusFont}" Foreground="{StaticResource AppFontColor}" Grid.Row="1" GroupName="logo" Content="Edgy"></RadioButton>
-            </Grid>
-        </Grid>
-
-        <Grid Grid.Column="1" Grid.Row="2">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition/>
-                <ColumnDefinition/>
-            </Grid.ColumnDefinitions>
-            <Viewbox Stretch="Uniform" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
                 <TextBlock Foreground="{StaticResource AppFontColor}" Margin="8" Text="Navbar style"
                     FontFamily="{StaticResource AppMenusFont}"
                     HorizontalAlignment="Center" VerticalAlignment="Center"/>

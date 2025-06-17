@@ -26,7 +26,6 @@ namespace antWriter
                 case "pig": pigNav.IsChecked = true; break;
                 case "normal": normalNav.IsChecked = true; break;
             }
-            ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png" ? normal : edgy).IsChecked = true;
             Name.Text = (string)Application.Current.Resources["Username"];
             fontSizeSelect.Value = (double)Application.Current.Resources["FontSize"];
             FontBox.SelectedItem = (FontFamily)Application.Current.Resources["AppEditorFont"];
@@ -34,19 +33,19 @@ namespace antWriter
 
         public void Generate_Logo()
         {
-            if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreen.png")
+            if ((string)Application.Current.Resources["AppChosenLogo"] == "/greenLogo.png")
             {
                 Image img = new Image
                 {
-                    Source = new BitmapImage(new Uri("/antWriterFinalGreen.png", UriKind.Relative))
+                    Source = new BitmapImage(new Uri("/greenLogo.png", UriKind.Relative))
                 };
                 Logo.Child = img;
             }
-            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/antWriterFinalGreenRed.png")
+            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/fallbackLogo.png")
             {
                 Image img = new Image
                 {
-                    Source = new BitmapImage(new Uri("/antWriterFinalGreenRed.png", UriKind.Relative))
+                    Source = new BitmapImage(new Uri("/fallbackLogo.png", UriKind.Relative))
                 };
                 Logo.Child = img;
             }
@@ -62,25 +61,6 @@ namespace antWriter
             ConfigManager.Config.Editor.Username = name;
             ConfigManager.Save();
             Application.Current.Resources["Username"] = name;
-        }
-
-        public void Logo_Click(object sender, RoutedEventArgs e)
-        {
-            if ((bool)normal.IsChecked)
-            {
-                ConfigManager.Config.Editor.Logo = "/antWriterFinalGreen.png";
-                Application.Current.Resources["AppChosenLogo"] = "/antWriterFinalGreen.png";
-                Log.Information("Green logo selected.");
-                Log.Information((string)Application.Current.Resources["AppChosenLogo"]);
-            }
-            else if ((bool)edgy.IsChecked)
-            {
-                ConfigManager.Config.Editor.Logo = "/antWriterFinalGreenRed.png";
-                Application.Current.Resources["AppChosenLogo"] = "/antWriterFinalGreenRed.png";
-                Log.Information("Red logo selected.");
-                Log.Information((string)Application.Current.Resources["AppChosenLogo"]);
-            }
-            ConfigManager.Save();
         }
 
         public void NavClick(object sender, RoutedEventArgs e)

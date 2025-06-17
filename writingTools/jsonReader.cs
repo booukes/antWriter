@@ -14,7 +14,7 @@ public class EditorSettings
     public bool SpellCheck { get; set; } = false;
     public string Theme { get; set; } = "Light";
     public string Username { get; set; } = "Please set your username in settings!";
-    public string Logo { get; set; } = "/antWriterFinalGreen.png";
+    public string Logo { get; set; } = "/greenLogo.png";
     public string Navbar { get; set; } = "normal";
 
 }
