@@ -7,14 +7,13 @@ using System.Windows.Media.Imaging;
 
 namespace antWriter
 {
-    public partial class SettingsWindow : MetroWindow
+    public partial class SettingsWindow : Window
     {
         public SettingsWindow()
         {
             InitializeComponent();
             FontBox.ItemsSource = Fonts.SystemFontFamilies;
             InputDefaulter();
-            Generate_Logo();
         }
 
         private void InputDefaulter() 
@@ -29,30 +28,6 @@ namespace antWriter
             Name.Text = (string)Application.Current.Resources["Username"];
             fontSizeSelect.Value = (double)Application.Current.Resources["FontSize"];
             FontBox.SelectedItem = (FontFamily)Application.Current.Resources["AppEditorFont"];
-        }
-
-        public void Generate_Logo()
-        {
-            if ((string)Application.Current.Resources["AppChosenLogo"] == "/greenLogo.png")
-            {
-                Image img = new Image
-                {
-                    Source = new BitmapImage(new Uri("/greenLogo.png", UriKind.Relative))
-                };
-                Logo.Child = img;
-            }
-            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/fallbackLogo.png")
-            {
-                Image img = new Image
-                {
-                    Source = new BitmapImage(new Uri("/fallbackLogo.png", UriKind.Relative))
-                };
-                Logo.Child = img;
-            }
-            else
-            {
-                Log.Warning("No logo found.");
-            }
         }
 
         public void Name_Click(object sender, RoutedEventArgs e)

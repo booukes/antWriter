@@ -2,17 +2,15 @@
 using Microsoft.Win32;
 using Serilog;
 using System.IO;
-using System.Reflection;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Threading;
 namespace antWriter
 {
-    public partial class EditorWindow : MetroWindow
+    public partial class EditorWindow : Window
     {
         public enum Caller
         {
@@ -172,29 +170,29 @@ namespace antWriter
         }
 
     public void SetNavbarBg()
+    {
+        string theme = (string)Application.Current.Resources["AppNavbarTheme"];
+        menuBorder.Background = theme switch
         {
-            string theme = (string)Application.Current.Resources["AppNavbarTheme"];
-            menuBorder.Background = theme switch
+            "kitty" => (Brush)Application.Current.Resources["KittyBackgroundBrush"],
+            "seamless" => (Brush)Application.Current.Resources["AppBackgroundBrush"],
+            "pig" => (Brush)Application.Current.Resources["PigBackgroundBrush"],
+            "normal" => (Brush)Application.Current.Resources["AppMenuBrush"],
+            _ => (Brush)Application.Current.Resources["AppMenuBrush"]
+        };
+        if (menuBorder.Background == (Brush)Application.Current.Resources["PigBackgroundBrush"]){
+            Generate_Logo(true);
+            foreach (UIElement child in options.Children)
             {
-                "kitty" => (Brush)Application.Current.Resources["KittyBackgroundBrush"],
-                "seamless" => (Brush)Application.Current.Resources["AppBackgroundBrush"],
-                "pig" => (Brush)Application.Current.Resources["PigBackgroundBrush"],
-                "normal" => (Brush)Application.Current.Resources["AppMenuBrush"],
-                _ => (Brush)Application.Current.Resources["AppMenuBrush"]
-            };
-            if (menuBorder.Background == (Brush)Application.Current.Resources["PigBackgroundBrush"]){
-                Generate_Logo(true);
-                foreach (UIElement child in options.Children)
+                if (child is Button btn)
                 {
-                    if (child is Button btn)
-                    {
-                        
-                        btn.Foreground = new SolidColorBrush(Colors.Black);
-                    }
+                    
+                    btn.Foreground = new SolidColorBrush(Colors.Black);
                 }
             }
-
         }
+
+    }
 
 
         /// <summary>
@@ -207,26 +205,6 @@ namespace antWriter
             {
                 Logo.Child = new Image { Source = new BitmapImage(new Uri("/blackLogo.png", UriKind.Relative)) };
                 return;
-            }
-            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/greenLogo.png")
-            {
-                Image img = new Image
-                {
-                    Source = new BitmapImage(new Uri("/greenLogo.png", UriKind.Relative))
-                };
-                Logo.Child = img;
-            }
-            else if ((string)Application.Current.Resources["AppChosenLogo"] == "/fallbackLogo.png")
-            {
-                Image img = new Image
-                {
-                    Source = new BitmapImage(new Uri("/fallbackLogo.png", UriKind.Relative))
-                };
-                Logo.Child = img;
-            }
-            else
-            {
-                Log.Warning("No logo found.");
             }
         }
 
@@ -711,7 +689,7 @@ namespace antWriter
         {
             MenuWindow menuWindow = new MenuWindow();
             menuWindow.Show();
-            this.Close();
+            this.Hide();
         }
     }
 }

@@ -15,6 +15,7 @@
     <None Remove="fonts\Montserrat-VariableFont_wght.ttf" />
     <None Remove="icon.ico" />
     <None Remove="kitty.jpg" />
+    <None Remove="menuLogo.png" />
   </ItemGroup>
 
   <ItemGroup>
@@ -39,6 +40,7 @@
     <Resource Include="kitty.jpg">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Resource>
+    <Resource Include="menuLogo.png" />
     <Resource Include="piggyNav.png" />
   </ItemGroup>
 
