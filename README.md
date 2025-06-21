@@ -44,25 +44,25 @@ For now, the most important ones include:
 
 ## 1.0.0-stable [17-06-2025]
 
-- Removed concurrency and async from the startup task, making the app more robust.
+- Removed concurrency and `async` from the startup task, making the app more robust.
 - Cleaned up the directory, making the app 8mb instead of 55mb.
 - Fixed the 1mb threshold not working.
-- Cleaned up logs from duplicate AS Event messages.
+- Cleaned up logs from duplicate `AS Event` messages.
 - Resource refactoring.
 - Many little bugs removed.
 
 ## 1.0.1-stable [19-06-2025]
-- Moved away from the Metro Framework, now only dependent on one element.
+- Moved away from the `Metro` Framework, now only dependent on one element.
 - Changed app logo to a more concise one.
 - Logo now generated statically.
 - Removed the option of logo changing, it was just cluttering the settings.
 
 ## 1.0.2-stable [21-06-2025]
-- App now runs in borderless fullscreen.
+- App now runs in `borderless fullscreen`.
 - Fixed flickering on window changing.
-- Created an installer with ISScript
-- Font selection box now shows the fonts style, instead of just the name
-
+- Created an installer with `ISScript`.
+- Font selection box now shows the fonts style, instead of just the name.
+  
 ## 0.9.0-stable [04-06-2025]
 
 - The editor now supports dragging and dropping of files.
