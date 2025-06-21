@@ -5,24 +5,27 @@
 
 ---
 
-## <a id="install"></a> Install guide and app overview (Current version: **0.7.4-stable**)
+## <a id="install"></a> Install guide and app overview (Current version: **1.0.2-stable**)
 
 ### What is antWriter?
 antWriter is a ***modern text editor*** made for poets and alike with Zen mode (distraction-free), autosave, multi-document support,  live character counter and a constantly expanding list of customization options.
 
-## 📦 Download
+## antWriter — Installation Guide
+> 🔒 **Note**: antWriter may be flagged by antivirus software on first install due to being unsigned. This is a false positive — once verified by Avast or Windows Defender, the app runs clean. You can verify the integrity of the installer manually or run it in a sandbox for peace of mind.
+### 🖥 Requirements
+- Windows 10 or later
+- [.NET Desktop Runtime 6.0 or newer](https://dotnet.microsoft.com/en-us/download/dotnet/6.0)  
+  (Make sure to install the **Desktop Runtime**, not just the SDK)
 
-> 👉 [Click here to download the latest version (.7z)](https://github.com/booukes/antWriter/releases)
+### 📥 Installation Steps
+1. Download `awInstaller-x64-<version>.exe` from the release folder or your source.> 👉 [Click here to download the latest version](https://github.com/booukes/antWriter/releases)
+2. Run the installer and follow the on-screen instructions.
+3. Optionally, check the box to create a desktop shortcut during installation.
+4. Once installed, launch `antWriter` from the Start Menu or Desktop.
 
-1. Download the `.7z` archive from the newest entry of the **Releases** section  
-2. Extract it to any folder you want (e.g. `C:\Programs\antWriter`)  
-3. Run `antWriter.exe`
-
-## 🧑‍💻 Prerequisites
-- 7z
-- Windows 10/11  
-- ~100 MB of free disk space
-- The app is self-contained, so no .NET required!
+### ❌ Uninstallation
+- Go to *Control Panel > Programs and Features* and uninstall **antWriter**, or
+- Use the *Uninstall antWriter* shortcut from the Start Menu.
 
 ## 🚀 Features
 Our **features list** is and will be rapidly growing through the updates!
@@ -30,14 +33,42 @@ For now, the most important ones include:
 
 - ✍️ Simple, elegant user interface  
 - 🧘 Zen Mode – hides all GUI elements for a distraction-free experience  
-- 🎨 Custom themes & backgrounds (including **Kitty Zen** mode 🐱)  
+- 🎨 Custom themes & backgrounds (including **Kitty** mode 🐱)  
 - 💾 Automatic file saving, even covering app crashes, so you will NEVER lose your work!  
 - 📂 Multi-document support
 - 🔢 Live character count
 
 ---
 
-## <a id="changelog"></a>Full Changelog (Current version: **0.7.4-stable**)
+## <a id="changelog"></a>Full Changelog (Current version: **1.0.2-stable**)
+
+## 1.0.0-stable [17-06-2025]
+
+- Removed concurrency and async from the startup task, making the app more robust.
+- Cleaned up the directory, making the app 8mb instead of 55mb.
+- Fixed the 1mb threshold not working.
+- Cleaned up logs from duplicate AS Event messages.
+- Resource refactoring.
+- Many little bugs removed.
+
+## 1.0.1-stable [19-06-2025]
+- Moved away from the Metro Framework, now only dependent on one element.
+- Changed app logo to a more concise one.
+- Logo now generated statically.
+- Removed the option of logo changing, it was just cluttering the settings.
+
+## 1.0.2-stable [21-06-2025]
+- App now runs in borderless fullscreen.
+- Fixed flickering on window changing.
+- Created an installer with ISScript
+- Font selection box now shows the fonts style, instead of just the name
+
+## 0.9.0-stable [04-06-2025]
+
+- The editor now supports dragging and dropping of files.
+- Refactored zen mode and themes.
+- Themes now are implemented into the navbar instead of the whole editor, making the UX better and clearer.
+- Removed console from release.
 
 ## 0.7.0-rc [28-05-2025]
 - Completely rewrote all of the `EditorWindow` code and most of the C# codebase.
